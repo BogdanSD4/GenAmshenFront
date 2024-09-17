@@ -1,0 +1,490 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    background:#ECECEC;
+}
+
+#navbar {
+    background-color:#282F44;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: block;
+    transition: top 0.3s;
+    z-index: 1;
+    min-height: 90px;
+    padding: 18px 0;
+    background: #282F44;
+}
+
+a {
+    color: #E6AF2E;
+    text-decoration: none;
+}
+
+.nav-link {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-style: normal;       
+    font-size: 18px;
+    line-height: normal;
+}
+
+.nav-link:hover {
+    color: #ECECEC;
+}
+
+.bar {
+    display: block;
+    width: 37.95px;
+    height: 7.5px;
+    margin: 2px;
+    border: #E6AF2E 1px solid;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color:#282F44;
+}
+
+.hamburger {
+    display: block;
+    margin-right: 50px;
+    margin-top: -4px;
+    margin-left: 7px;
+    cursor: pointer;
+}
+
+.hamburger.active .bar:nth-child(2){
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(1){
+    transform: translateY(9.5px) rotate(45deg);  
+}
+
+.hamburger.active .bar:nth-child(3){
+    transform: translateY(-9.5px) rotate(-45deg);
+}
+
+.nav-menu {
+    position: fixed;
+    right: -100%;
+    top: 88px;
+    gap: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-left: 30px;
+    width: 16%;
+    transition: 0.7s;
+    background-color: rgb(40, 47, 68, 0.95);
+    border-bottom-left-radius: 7px;
+}
+
+.nav-item {
+    margin: 25px 0;
+    list-style: none;
+}
+
+.nav-menu.active {
+    right: 0;
+}
+
+.nav-back {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    margin-left: 50px;
+}
+
+.logo-size {
+    width: 50px;
+    height: 50px;
+}
+
+.navbar-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.size-home {
+    height: 27px;
+    width: 27px;
+    margin: 7px;
+}
+
+.size {
+    height: 27px;
+    width: 37.95px;
+    margin: 7px;
+}
+
+#form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 156px;
+    margin-bottom: 66px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 384px;
+    border-radius: 20px;
+    background: #282F44;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+h3 {
+    color: #ffffff;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 250px;
+    height: 50px;
+    border-radius: 10px;
+    background: #ECECEC;
+    border: none;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: #000;
+}
+
+input[type="text"]::placeholder {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: #828282;
+}
+
+input[type="email"]::placeholder {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: #828282;
+}
+
+input[type="password"]::placeholder {
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: #828282;
+}
+
+.input {
+    position: relative;
+}
+
+.eye-closed {
+    width: 32.64px;
+    height: 23.45px;
+    position: absolute;
+    right: 20px;
+    top: 30%;
+    transform: translateY(-30%);
+    cursor: pointer;
+}
+
+.eye-open {
+    position: absolute;
+    width: 32.64px;
+    height: 23.45px;
+    right: 20px;
+    top: 30%;
+    transform: translateY(-30%);
+    cursor: pointer;
+}
+
+.cancel-signin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cancelbtn {
+    border-radius: 32px;
+    background: #ECECEC;
+    border: none;
+    width: 100px;
+    height: 32px;
+    margin-right: 25px;
+    transition: 0.3s ease;
+}
+
+.signinbtn {
+    border-radius: 32px;
+    background: rgba(230, 175, 46, 0.90);
+    border: none;
+    width: 100px;
+    height: 32px;
+    margin-left: 25px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.cancelbtn:hover, 
+.signinbtn:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease;
+}
+
+.center {
+    text-align: center;
+    color: #282F44;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 200px;
+    background: #ECECEC;
+    background: #ECECEC;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.footer-link {
+    color: #282F44;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 0;
+    margin: 5px;
+    transition: 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #E6AF2E;
+    transition: 0.3s ease;
+}
+
+#social-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-media {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    transition: 0.3s ease;
+}
+
+.social-media:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease;
+}
+
+.design {
+    padding: 0 200px 6.25px 200px;
+}
+
+.color-blue {
+    color: #282F44;
+    font-family: "Montserrat", sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.46px;
+}
+
+#error,
+#error-email,
+#error-pswd {
+    width: 250px;
+    height: 12px;
+    color:  #e74c3c;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+
+#message {
+    text-align: center;
+    color:  #e74c3c;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
+
+
+
+@media all and (max-width: 1200px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+        padding: 50px 50px;
+    }
+
+    .design {
+        padding: 0px 50px 6.25px 50px;
+    }
+}
+
+
+@media all and (max-width: 1100px) {
+    .nav-menu {
+        width: 30%;
+    }
+}
+
+
+
+@media all and (max-width: 768px) {
+    .nav-menu {
+        width: 35%;
+    }
+}
+
+
+
+@media all and (max-width: 600px) {
+    #navbar {
+        min-height: 60px;
+    }
+
+    .hamburger {
+        margin-right: 30px;
+    }
+
+    .mobile-none {
+        display: none;
+    }
+
+    .nav-menu {
+        width: 50%;
+        top: 63px;
+    }
+
+    .logo {
+        margin-left: 30px;
+    }
+
+    .logo-size {
+        width: 40px;
+        height: 40px;
+    }
+
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .hide-link {
+        display: none;
+    }
+
+    .design {
+        padding: 0px 30px 6.25px 30px;
+    }
+}
+
+
+
+@media all and (max-width: 400px){
+    .design {
+        padding: 0px 50px 6.25px 50px;
+    }
+}
+
+
+
+@media all and (max-width: 380px){
+    .design {
+        padding: 0px 30px 6.25px 30px;
+    }
+}
+
+
+
+@media all and (max-width: 340px){
+    .nav-link {
+        font-size: 16px;
+    }
+}
+
+
+
+@media (max-width: 1200px) and (orientation: landscape) {
+    .nav-menu {
+        width: 25%;
+    }
+}
+
+
+
+@media (max-width: 950px) and (orientation: landscape){
+    .nav-link {
+        font-size: 18px;
+    }
+}
+
+
+
+@media (max-width: 750px) and (orientation: landscape){
+    .nav-link {
+        font-size: 16px;
+    }
+}
+
+
+
+@media (max-width: 660px) and (orientation: landscape) {
+    .design {
+        padding: 0px 50px 6.25px 50px;
+    }
+}
