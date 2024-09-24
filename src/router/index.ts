@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { userStote } from '@/stores/userRole'
 
 const catchPath = 'catchAll'
 
@@ -9,13 +10,40 @@ const routes = [
     component: () => import('../layouts/DefaultLayout.vue'),
     children: [
       {
-        path: '/some',
-        name: 'some',
-        component: () => import('../pages/login/LoginPage.vue'),
+        path: ':role/person',
+        name: 'person',
+        component: () => import('../pages/person/PersonalDataPage.vue'),
         meta: {
           requiresAuth: true
         }
       },
+      {
+        path: ':role',
+        name: 'rolePage',
+        component: () => import('../pages/users/MainUserPage.vue'),
+        meta: {
+          requiresAuth: true
+        },
+        children: []
+      }
+    ]
+  },
+  {
+    path: '/welcome',
+    name: 'welcome',
+    component: () => import('../pages/main/MainPage.vue'),
+    meta: {
+      requiresAuth: false
+    },
+    children: [
+      {
+        path: '/welcome/:id',
+        name: 'welcomeTo',
+        component: () => import('../pages/main/MainPage.vue'),
+        meta: {
+          requiresAuth: false
+        }
+      }
     ]
   },
   {
@@ -37,23 +65,23 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  console.log(to)
-  console.log(router)
-
-  if (to.redirectedFrom){
-    const matches = to.redirectedFrom.matched
-    console.log(matches)
-    if (matches.length != 0 && matches[0].path.includes(catchPath)) {
-      router.back()
-    }
-  }
-
-
+router.beforeEach(async (to, from, next) => {
   const authEnable = import.meta.env.VITE_AUTH == 'true'
   if (authEnable && to.matched.some((record) => record.meta.requiresAuth)) {
-    //TODO: check token
-    next()
+    const user = userStote()
+    const valid = await user.valid()
+
+    const role = to.params.role as string
+    console.log(role)
+    if (valid) {
+      if (user.role != role) {
+        if (to.redirectedFrom) {
+          await router.push(to.redirectedFrom.path)
+        } else router.back()
+      } else next()
+    } else {
+      next('/login')
+    }
   } else next()
 })
 

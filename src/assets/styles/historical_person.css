@@ -1,0 +1,305 @@
+.container-historical-person {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr;
+    justify-content: center;
+    align-items: center;
+    padding: 0 30px;
+    gap: 2.5px;
+    flex: 1; /* Allow the columns-grid to take up remaining space */
+    overflow-y: auto; /* Enable scrolling for the columns-grid */
+}
+
+.name-back {
+    text-align: center;
+    align-content: center;
+    width: 310px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #000;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.edit-save-back {
+    text-align: center;
+    align-content: center;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #000;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.book-part-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 30px;
+    min-width: 1480px;
+}
+
+.btn-open-book,
+#showBtnBirth,
+#showBtnWed,
+#showBtnDeath,
+#showBtnChildren,
+#showBtnBirthBook,
+#showBtnWedBook,
+#showBtnDeathBook {
+    width: 150px;
+    height: 32px;
+    border: none;
+    border-radius: 32px;
+    background: #E6AF2E;
+    color: #282F44;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+}
+
+#content-birth,
+#content-wed,
+#content-death,
+#content-children,
+#content-birth-book,
+#content-wedding-book,
+#content-death-book {
+    display: none;
+    
+}
+
+.part-name {
+    color: #282F44;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.container-historical-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: fit-content;
+}
+
+#birth-image,
+#wed-image,
+#death-image,
+#children-image,
+#book-birth-image,
+#book-wed-image,
+#book-death-image {
+    display: none;
+}
+
+.image-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%; /* Set the width of the container to 100% */
+    height: 50vh; /* Set the height of the container to 50vh */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Disable horizontal scrolling */
+}
+
+.image {
+    width: 100%; /* Ensure the image width adjusts to the container width */
+    height: auto; /* Ensure the image height adjusts proportionally */
+}
+
+.columns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr;
+    justify-content: center;
+    align-items: start;
+    gap: 2.5px;
+    padding: 0 30px;
+    flex: 1; /* Allow the columns-grid to take up remaining space */
+    overflow-y: auto; /* Enable scrolling for the columns-grid */
+}
+
+.column-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 310px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding-bottom: 25px;
+    margin-bottom: 2.5px;
+}
+
+.column-ar,
+.column-ru,
+.column-en {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 310px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding-bottom: 25px;
+    margin-bottom: 2.5px;
+}
+
+.column-edit-save {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding-bottom: 25px;
+    margin-bottom: 2.5px;
+}
+
+.break {
+    margin-top: 19px;
+}
+
+.btn-edit-save {
+    width: 150px;
+    height: 32px;
+    border: none;
+    border-radius: 32px;
+    background: rgba(129, 129, 129, 0.90);
+    color: #ffffff;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.name {
+    margin: 25px 0 0 0;
+    color: #000;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+input,
+textarea {
+    width: 260px;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid #818181;
+    background: #ffffff;
+    color: #000;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-left: 12.5px;
+}
+
+textarea {
+    min-width: 260px;
+    max-width: 260px;
+    min-height: 50px;
+    padding-top: 12.5px;
+    padding-right: 12.5px;
+}
+
+input[type="text"]::placeholder,
+textarea[type="text"]::placeholder {
+    color: #000;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.column-title input {
+    width: 260px;
+    height: 50px;
+    border: none;
+    background: #ffffff;
+    color: #000;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-left: 12.5px;
+}
+
+.btn-verified {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 25px 0px;
+}
+
+#btn-birth-verified,
+#btn-wedding-verified,
+#btn-death-verified,
+#btn-children-verified,
+#btn-birth-book-verified,
+#btn-wedding-book-verified,
+#btn-death-book-verified {
+    width: 150px;
+    height: 32px;
+    margin-right: 25px;
+    border-radius: 32px;
+    border: none;
+    background: #E6AF2E;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color: #282F44;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.container-back {
+    border-bottom: #ffffff 1px solid;
+    margin: 25px 0;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+

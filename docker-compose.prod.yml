@@ -8,4 +8,4 @@ services:
       dockerfile: Dockerfile
       target: "prod"
     ports:
-      - '81:81'
+      - '82:82'

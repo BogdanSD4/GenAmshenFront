@@ -1,36 +1,78 @@
 <script setup lang="ts">
-import { getImg } from '../../utils/imageManager'
-import { RouterLink } from "vue-router"
+import { getImg } from '@/utils/imageManager'
 import { ref } from 'vue'
+import MainHeader from '@/components/MainHeader.vue'
+import MainFooter from '@/components/MainFooter.vue'
+import { login } from '@/api/authorize'
+import router from '@/router'
+import { UserRole } from '@/types/userRole'
+import { userStote } from '@/stores/userRole'
+import { useCookies } from 'vue3-cookies'
 
-const name = ref('')
-const email = ref('')
-const password = ref('')
+document.title = 'ГенАмшен - Войти'
 
-function handleSignInSubmit(event: Event) {
+interface LoginField {
+  text: string
+  error: string
+}
+const name = ref<LoginField>({ text: '', error: '' })
+const email = ref<LoginField>({ text: '', error: '' })
+const password = ref<LoginField>({ text: '', error: '' })
 
+async function handleSignInSubmit() {
+  if (!validation()) return
+
+  const creditals = {
+    username: name.value.text,
+    password: password.value.text
+  }
+  await login(creditals).then((response) => {
+    const user = userStote()
+
+    const cookies = useCookies().cookies
+    cookies.set('gen_token', response.token)
+
+    user.setRole(response.role)
+    user.username = response.username
+    user.email = response.email
+
+    router.push({
+      name: 'rolePage',
+      params: {
+        role: user.role
+      }
+    })
+  })
+}
+
+function validation() {
+  const email_check = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+
+  if (name.value.text === '') {
+    name.value.error = 'Введите имя пользователя'
+    return false
+  }
+
+  // if (!email_check.test(email.value.text)) {
+  //   email.value.error = 'Введите электронную почту'
+  //   return false
+  // }
+
+  if (password.value.text === '') {
+    password.value.error = 'Введите пароль'
+    return false
+  }
+
+  return true
+}
+
+function onInput(field: LoginField) {
+  field.error = ''
 }
 </script>
 
 <template>
-  <header>
-    <nav id="navbar">
-
-      <div class="nav-back">
-        <div class="logo">
-          <RouterLink to="/login">
-            <img class="logo-size" :src="getImg('logo')" alt="Logo">
-          </RouterLink>
-        </div>
-
-        <div class="navbar-right">
-          <a class="mobile-none" href="#"><img class="size-home" :src="getImg('home')" alt="Image"></a>
-          <a class="mobile-none" href="mailto:genamshen@mail.com"><img class="size" :src="getImg('email')" alt="Image"></a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
+  <MainHeader />
   <div>
     <section id="form">
       <div class="form">
@@ -38,29 +80,52 @@ function handleSignInSubmit(event: Event) {
           <h3>Войти в ГенАмшен</h3>
         </div>
 
-        <form id="my-form" name="form">
+        <form id="my-form" name="form" @submit.prevent>
           <div>
             <label for="uname"></label>
-            <input v-model="name" type="text" name="uname" id="uname" placeholder="Имя пользователя">
-            <div id="error"></div>
+            <input
+              v-model="name.text"
+              type="text"
+              name="uname"
+              id="uname"
+              placeholder="Имя пользователя"
+              @mousedown="onInput(name)"
+            />
+            <div id="error">{{ name.error }}</div>
           </div>
-          <br>
+          <br />
           <div>
             <label for="email"></label>
-            <input v-model="email" type="email" name="email" id="email-address" placeholder="Электронная почта">
-            <div id="error-email"></div>
+            <input
+              v-model="email.text"
+              type="email"
+              name="email"
+              id="email-address"
+              placeholder="Электронная почта"
+              @mousedown="onInput(email)"
+            />
+            <div id="error">{{ email.error }}</div>
           </div>
-          <br>
+          <br />
           <div class="input">
             <label for="pswd"></label>
-            <input v-model="password" type="password" name="pswd" id="password" placeholder="Пароль">
-            <img id="toggle-password" class="eye-closed" :src="getImg('eye-closed')" alt="Image">
-            <div id="error-pswd"></div>
+            <input
+              v-model="password.text"
+              type="password"
+              name="pswd"
+              id="password"
+              placeholder="Пароль"
+              @mousedown="onInput(password)"
+            />
+            <img id="toggle-password" class="eye-closed" :src="getImg('eye-closed')" alt="Image" />
+            <div id="error">{{ password.error }}</div>
           </div>
-          <br>
+          <br />
           <div class="cancel-signin">
-            <button type="button" class="cancelbtn"><a class="center" href="/">Отмена</a></button>
-            <button type="submit" class="signinbtn center" @click="handleSignInSubmit">Войти</button>
+            <button type="button" class="cancelbtn"><a class="center" href="#">Отмена</a></button>
+            <button type="submit" class="signinbtn center" @click="handleSignInSubmit">
+              Войти
+            </button>
           </div>
         </form>
       </div>
@@ -71,29 +136,9 @@ function handleSignInSubmit(event: Event) {
     </section>
   </div>
 
-  <div>
-    <div class="container">
-      <div class="hide-link">
-        <a href="#"><p class="footer-link">О проекте</p></a>
-        <a href="#"><p class="footer-link">Метрические книги</p></a>
-        <a href="#"><p class="footer-link">Карта миграции</p></a>
-        <a href="#"><p class="footer-link">Команда</p></a>
-        <a href="#"><p class="footer-link">Поддержать проект</p></a>
-      </div>
-
-      <div id="social-media">
-        <a target="_blank" href="https://vk.com/gen.amshen"><img class="social-media" src="{% static 'images/vk.png' %}" alt="Vkontakte"></a>
-        <a target="_blank" href="https://www.facebook.com/profile.php?id=61557531427489&mibextid=ZbWKwL"><img class="social-media" src="{% static 'images/facebook.png' %}" alt="Facebook"></a>
-        <a target="_blank" href="https://www.instagram.com/genamshen?igsh=MW53MHUxaGc5MjNpdA=="><img class="social-media" src="{% static 'images/instagram.png' %}" alt="Instagram"></a>
-      </div>
-    </div>
-
-    <div class="design">
-      <a class="color-blue" target="_blank" href="https://volha.ca">Сайт разработан компанией VOLHA Web Design</a>
-    </div>
-  </div>
+  <MainFooter />
 </template>
 
 <style scoped>
-@import "signin.css";
+@import 'signin.css';
 </style>

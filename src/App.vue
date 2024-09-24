@@ -1,23 +1,29 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 
+onMounted(() => {
+  window.onscroll = function () {
+    const navbar = document.querySelector('#navbar') as HTMLElement
+    if (!navbar) return
 
+    if (window.scrollY < 50) {
+      navbar.style.top = '0'
+    } else {
+      navbar.style.top = '-120px'
+    }
+  }
+})
 </script>
 
 <template>
   <RouterView />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+<style>
+@import 'src/assets/styles/normalize.css';
+
+.yellow-btn:hover {
+  color: #e6af2e !important;
+  transition: color 0.3s;
 }
 </style>
