@@ -6,6 +6,13 @@ import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
 import { createBook, createPersonDeath } from '@/api/person'
 import { userStote } from '@/stores/userRole'
 
+defineProps({
+  bookName: {
+    type: String,
+    required: true
+  }
+})
+
 const book = ref<BookModel>(new BookModel())
 const comment = ref<string>('')
 let moreActive = false

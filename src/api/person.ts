@@ -16,7 +16,7 @@ const userType = computed(() => {
 })
 
 export async function getPersonData(): Promise<any> {
-  return await api.get(`api/data/get/${userType.value}/`).then((response) => response.data)
+  return await api.get(`api/check/${userType.value}/`).then((response) => response.data)
 }
 
 export async function createBook(params: any): Promise<any> {

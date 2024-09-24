@@ -128,7 +128,7 @@ async function onSave() {
       <label></label>
       <input
         id="burial_place_note"
-        v-model="adress.date_note"
+        v-model="adress.place_note"
         class="input-300"
         type="text"
         placeholder="Примечания"

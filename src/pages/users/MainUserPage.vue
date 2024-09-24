@@ -11,7 +11,7 @@ import AdminDatabaseControlPanel from '@/pages/users/components/dbControl/AdminD
 import AdminProfileControlPanel from '@/pages/users/components/profileControl/AdminProfileControlPanel.vue'
 import HistoricalPersonData from '@/pages/database/HistoricalPersonData.vue'
 import PendingRequests from '@/pages/database/PendingRequests.vue'
-import AcceptPersonPage from '@/pages/users/components/userControl/AcceptPersonPage.vue'
+import AcceptPersonPage from '@/pages/person/AcceptPersonPage.vue'
 
 const user = userStote()
 const panelIndex = ref<number>()
