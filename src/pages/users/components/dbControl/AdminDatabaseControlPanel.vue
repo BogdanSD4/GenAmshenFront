@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { userStote } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
+import router from '@/router'
 
 const user = userStote()
 const emit = defineEmits(['changePanel'])
 
 function changeIndex(index: number) {
   emit('changePanel', index)
+}
+
+async function toDatabase() {
+  await router.push('/admin/')
 }
 </script>
 
@@ -21,7 +26,7 @@ function changeIndex(index: number) {
           id="btn-go-to-database"
           v-if="user.access(UserRole.ADMIN)"
           class="yellow-btn"
-          @click="changeIndex(3)"
+          @click="toDatabase"
         >
           Перейти в базу данных
         </button></a

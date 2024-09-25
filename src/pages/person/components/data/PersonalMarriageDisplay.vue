@@ -9,7 +9,8 @@ import {
 import { ref } from 'vue'
 import MarriageAdress from '@/pages/person/components/data/content/PersonAdress.vue'
 import { userStote } from '@/stores/userRole'
-import { createPersonBirth, createPersonMarriage } from '@/api/person'
+import { createPerson } from '@/api/person'
+import { PersonType } from '@/pages/database/types/historicalTypes'
 
 const man = ref<MarriagePersonModel>(new MarriagePersonModel())
 const bride = ref<BrideModel>(new BrideModel())
@@ -110,7 +111,7 @@ async function onSave() {
     user: user.id
   }
 
-  await createPersonMarriage(data)
+  await createPerson(PersonType.WEDDING, data)
 }
 </script>
 
@@ -144,10 +145,13 @@ async function onSave() {
 
     <div class="labels-left">
       <label></label>
-      <input id="bride_wedding_number" class="input-195" type="text" placeholder="Брак №" /><span
-        id="dotsFour"
-      >
-      </span>
+      <input
+        id="bride_wedding_number"
+        v-model="bride.wedding_number"
+        class="input-195"
+        type="text"
+        placeholder="Брак №"
+      /><span id="dotsFour"> </span>
     </div>
 
     <span class="bride more">

@@ -5,12 +5,12 @@ import { getPersonData } from '@/api/person'
 import PersonalBirthDisplay from '@/pages/person/components/data/PersonalBirthDisplay.vue'
 import PersonalMarriageDisplay from '@/pages/person/components/data/PersonalMarriageDisplay.vue'
 import PersonalDeathDisplay from '@/pages/person/components/data/PersonalDeathDisplay.vue'
+import { acceptStore } from '@/stores/acceptPerson'
 
 const displayIndex = ref<number>(-1)
 
 onMounted(async () => {
-  const data = await getPersonData()
-  displayIndex.value = data.capture
+  await getPersonData()
 })
 </script>
 

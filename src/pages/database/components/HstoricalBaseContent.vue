@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { type PropType, ref } from 'vue'
+import type { PersonType } from '@/pages/database/types/historicalTypes'
+import { userUpdate } from '@/api/users'
 
 defineProps({
   label: {
@@ -42,11 +44,6 @@ const expandImage = ref<boolean>(false)
         <br />
 
         <slot />
-        <div class="btn-verified">
-          <button onclick="btnClickVerified('btn-birth-verified')" id="btn-birth-verified">
-            Проверено
-          </button>
-        </div>
       </div>
     </div>
   </div>

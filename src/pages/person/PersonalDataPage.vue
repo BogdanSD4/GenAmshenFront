@@ -5,6 +5,7 @@ import PersonalDataPanel from '@/pages/person/components/PersonalDataPanel.vue'
 import { onUnmounted, ref } from 'vue'
 import BooksPanel from '@/pages/person/components/BooksPanel.vue'
 import { getImg } from '@/utils/imageManager'
+import UserInfo from '@/components/UserInfo.vue'
 
 const menuIndex = ref<number>(0)
 
@@ -28,25 +29,7 @@ onUnmounted(() => {
 
   <main>
     <section>
-      <div class="container-top">
-        <div class="image-back"></div>
-
-        <div class="personal-photo">
-          <input type="file" id="file" accept="image/*" hidden />
-          <div class="img-area">
-            <img class="photo-upload" :src="getImg('user-login')" alt="" />
-          </div>
-          <div class="change-photo">
-            <button class="select-image">
-              <img class="change-photo-icon" :src="getImg('change-photo')" alt="Image" />
-            </button>
-          </div>
-          <div class="name-personal">
-            <h2 id="output1">Имя</h2>
-            <h2 id="output2">Фамилия</h2>
-          </div>
-        </div>
-      </div>
+      <UserInfo />
 
       <div class="bottom">
         <button id="personal-btn" :class="{ 'active-btn': menuIndex == 0 }" @click="changeMenu(0)">

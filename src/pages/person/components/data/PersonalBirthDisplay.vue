@@ -2,8 +2,9 @@
 import BirthObject from '@/pages/person/components/data/content/BirthObject.vue'
 import { BaseBirthModel } from '@/pages/person/components/data/models/birthModel'
 import { ref } from 'vue'
-import { createPersonBirth, createPersonDeath } from '@/api/person'
+import { createPerson } from '@/api/person'
 import { userStote } from '@/stores/userRole'
+import { PersonType } from '@/pages/database/types/historicalTypes'
 
 const person = ref<BaseBirthModel>(new BaseBirthModel('Имя', '', false, true))
 const father = ref<BaseBirthModel>(new BaseBirthModel('Отец', 'father', true))
@@ -117,7 +118,7 @@ async function onSave() {
     user: user.id
   }
 
-  await createPersonBirth(data)
+  await createPerson(PersonType.BIRTH, data)
 }
 </script>
 

@@ -1,21 +1,21 @@
 import { HistoricalLang } from '@/pages/database/types/historicalTypes'
+import { Exception } from 'sass'
 
-export function getWord(key: keyof Translation, lang: HistoricalLang): string {
-  let lnIndex = 0
+export function getLangIndex(lang: HistoricalLang) {
   switch (lang) {
     case HistoricalLang.ARMENIAN:
-      lnIndex = 0
-      break
+      return 0
     case HistoricalLang.RUSSIAN:
-      lnIndex = 1
-      break
+      return 1
     case HistoricalLang.ENGLISH:
-      lnIndex = 2
-      break
+      return 2
     default:
-      lnIndex = 0
+      throw new Error('Invalid language')
   }
+}
 
+export function getWord(key: keyof Translation, lang: HistoricalLang): string {
+  const lnIndex = getLangIndex(lang)
   return language[key][lnIndex]
 }
 

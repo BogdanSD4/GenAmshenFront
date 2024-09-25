@@ -3,25 +3,45 @@ import HstoricalBaseContent from '@/pages/database/components/HstoricalBaseConte
 import type { HistoricalBlock } from '@/pages/database/models/historicalModels'
 import HistoricalColumnContent from '@/pages/database/elements/HistoricalColumnContent.vue'
 import HistoricalColumnEdit from '@/pages/database/elements/HistoricalColumnEdit.vue'
+import type { PropType } from 'vue'
+import { userUpdate } from '@/api/users'
+import { updatePerson, updatePersonByModer } from '@/api/person'
+import type { PersonType } from '@/pages/database/types/historicalTypes'
+import { acceptStore } from '@/stores/acceptPerson'
+import axios from 'axios'
 
-defineProps({
+const props = defineProps({
   label: {
     type: String,
+    required: true
+  },
+  type: {
+    type: Object as PropType<PersonType>,
     required: true
   }
 })
 
 const block = defineModel<HistoricalBlock>('historicalBlock', { required: true })
+
+async function approve() {
+  const accept = acceptStore()
+  const data = block.value.getData()
+
+  await updatePersonByModer(accept.approve, data)
+}
 </script>
 
 <template>
-  <HstoricalBaseContent :label="label">
+  <HstoricalBaseContent :label="label" :type="type">
     <div class="columns-grid">
       <HistoricalColumnContent :historical-column="block.title" />
       <HistoricalColumnContent :historical-column="block.arContent" />
       <HistoricalColumnContent :historical-column="block.ruContent" />
       <HistoricalColumnContent :historical-column="block.enContent" />
       <HistoricalColumnEdit :edit-column="block.editContent" />
+    </div>
+    <div class="btn-verified">
+      <button @click="approve()" id="btn-birth-verified">Проверено</button>
     </div>
   </HstoricalBaseContent>
 </template>

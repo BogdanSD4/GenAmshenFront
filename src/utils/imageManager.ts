@@ -1,3 +1,3 @@
 export function getImg(name: string) {
-  return `images/${name}.png`
+  return `/images/${name}.png`
 }

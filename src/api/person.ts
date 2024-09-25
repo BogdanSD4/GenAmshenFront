@@ -3,6 +3,8 @@ import { userStote } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 import { computed } from 'vue'
 import { toFormData } from '@/api/serializers/formData'
+import type { ApprovePerson } from '@/api/types/request'
+import { type HistoricalPerson, PersonType } from '@/pages/database/types/historicalTypes'
 
 const user = userStote()
 const userType = computed(() => {
@@ -15,8 +17,9 @@ const userType = computed(() => {
   return ''
 })
 
-export async function getPersonData(): Promise<any> {
-  return await api.get(`api/check/${userType.value}/`).then((response) => response.data)
+export async function getPersonData(params?: ApprovePerson): Promise<HistoricalPerson> {
+  console.log(params)
+  return await api.get(`api/check/${userType.value}/`, { params }).then((response) => response.data)
 }
 
 export async function createBook(params: any): Promise<any> {
@@ -25,12 +28,26 @@ export async function createBook(params: any): Promise<any> {
     .then((response) => response.data)
 }
 
-export async function createPersonBirth(params: any): Promise<any> {
-  return await api.post(`api/person/${userType.value}/`, params).then((response) => response.data)
+export async function updatePersonByModer(params: ApprovePerson, data: any) {
+  return await api
+    .post('api/check/by_moder/', toFormData(data), { params })
+    .then((response) => response.data)
 }
-export async function createPersonMarriage(params: any): Promise<any> {
-  return await api.post(`api/wedding/${userType.value}/`, params).then((response) => response.data)
+
+export async function createPerson(type: PersonType, params: any): Promise<any> {
+  return await api.post(`api/${type}/${userType.value}/`, params).then((response) => response.data)
 }
-export async function createPersonDeath(params: any): Promise<any> {
-  return await api.post(`api/death/${userType.value}/`, params).then((response) => response.data)
+export async function updatePerson(type: PersonType, params: any): Promise<any> {
+  switch (userType.value) {
+    case 'by_moder':
+      return await api
+        .post(`api/${type}/${userType.value}/`, params)
+        .then((response) => response.data)
+    case 'by_clerk':
+      return await api
+        .put(`api/${type}/${userType.value}/`, params)
+        .then((response) => response.data)
+    default:
+      throw new Error('Invalid user')
+  }
 }

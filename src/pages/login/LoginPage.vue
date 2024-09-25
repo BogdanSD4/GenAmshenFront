@@ -18,6 +18,7 @@ interface LoginField {
 const name = ref<LoginField>({ text: '', error: '' })
 const email = ref<LoginField>({ text: '', error: '' })
 const password = ref<LoginField>({ text: '', error: '' })
+const visible = ref<boolean>(false)
 
 async function handleSignInSubmit() {
   if (!validation()) return
@@ -26,7 +27,7 @@ async function handleSignInSubmit() {
     username: name.value.text,
     password: password.value.text
   }
-  await login(creditals).then((response) => {
+  await login(creditals).then(async (response) => {
     const user = userStote()
 
     const cookies = useCookies().cookies
@@ -36,12 +37,7 @@ async function handleSignInSubmit() {
     user.username = response.username
     user.email = response.email
 
-    router.push({
-      name: 'rolePage',
-      params: {
-        role: user.role
-      }
-    })
+    await router.push(`/${user.role}`)
   })
 }
 
@@ -111,13 +107,19 @@ function onInput(field: LoginField) {
             <label for="pswd"></label>
             <input
               v-model="password.text"
-              type="password"
+              :type="visible ? 'text' : 'password'"
               name="pswd"
               id="password"
               placeholder="Пароль"
               @mousedown="onInput(password)"
             />
-            <img id="toggle-password" class="eye-closed" :src="getImg('eye-closed')" alt="Image" />
+            <img
+              id="toggle-password"
+              class="eye-closed"
+              :src="getImg(visible ? 'eye-open' : 'eye-closed')"
+              alt="Image"
+              @mousedown="visible = !visible"
+            />
             <div id="error">{{ password.error }}</div>
           </div>
           <br />

@@ -10,6 +10,8 @@ interface State {
   username: string
   email: string
   photo: string
+  first_name: string
+  last_name: string
 }
 
 const defaultState: State = {
@@ -17,7 +19,9 @@ const defaultState: State = {
   role: UserRole.GUEST,
   username: '',
   email: '',
-  photo: ''
+  photo: '',
+  first_name: '',
+  last_name: ''
 }
 
 export const userStote = defineStore('user', {
@@ -34,6 +38,8 @@ export const userStote = defineStore('user', {
           this.username = response.username
           this.email = response.email
           this.photo = response.photo
+          this.first_name = response.first_name
+          this.last_name = response.last_name
         })
         .catch((error) => (result = false))
 

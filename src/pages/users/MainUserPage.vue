@@ -12,18 +12,11 @@ import AdminProfileControlPanel from '@/pages/users/components/profileControl/Ad
 import HistoricalPersonData from '@/pages/database/HistoricalPersonData.vue'
 import PendingRequests from '@/pages/database/PendingRequests.vue'
 import AcceptPersonPage from '@/pages/person/AcceptPersonPage.vue'
+import UserInfo from '@/components/UserInfo.vue'
 
 const user = userStote()
 const panelIndex = ref<number>()
 const userRoleName = ref<string>('')
-
-const name = computed(() => {
-  //return user.
-})
-const imgSource = computed(() => {
-  console.log()
-  return user.photo ?? getImg('user-login')
-})
 
 function changePanel(index: number) {
   panelIndex.value = index
@@ -63,34 +56,7 @@ onMounted(async () => {
 
   <main>
     <section>
-      <div class="container-top">
-        <div class="banner-back">
-          <div class="image-back"></div>
-          <label class="change-photo-back" for="file-back">
-            <img class="change-photo-icon" :src="getImg('change-photo')" alt="Image" />
-          </label>
-          <input type="file" id="file-back" accept="image/*" hidden />
-        </div>
-
-        <div class="personal-photo">
-          <input type="file" id="file" accept="image/*" hidden />
-          <div class="img-area">
-            <img class="photo-upload" :src="imgSource" alt="" />
-          </div>
-          <div class="change-photo">
-            <button class="select-image">
-              <img class="change-photo-icon" :src="getImg('change-photo')" alt="Image" />
-            </button>
-          </div>
-          <div class="name-personal">
-            <h2 id="output1">Имя</h2>
-            <h2 id="output2">Фамилия</h2>
-          </div>
-          <div>
-            <h2 class="role">{{ userRoleName }}</h2>
-          </div>
-        </div>
-      </div>
+      <UserInfo :role-name="userRoleName" />
 
       <div class="bottom">
         <button
@@ -139,7 +105,7 @@ onMounted(async () => {
       <AdminProfileControlPanel v-show="panelIndex == 2" class="active-btn" />
       <div id="historical-person-data">
         <HistoricalPersonData v-if="panelIndex == 3" />
-        <PendingRequests v-if="panelIndex == 4" />
+        <PendingRequests v-if="panelIndex == 4" @change-panel="changePanel" />
         <AcceptPersonPage v-if="panelIndex == 5" />
       </div>
     </div>

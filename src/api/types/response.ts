@@ -5,4 +5,18 @@ export interface LoginResponse {
   email: string
   role: string
   photo: string
+  first_name: string
+  last_name: string
+}
+
+export interface PendingResponse {
+  id: number
+  user: PendingUser
+}
+export interface PendingUser {
+  id: number
+  first_name: string
+  last_name: string
+  photo: string
+  capture: number
 }

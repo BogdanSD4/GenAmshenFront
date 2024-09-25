@@ -5,6 +5,8 @@ import BookView from '@/pages/main/components/BookView.vue'
 import { onMounted, ref } from 'vue'
 import router from '@/router'
 import { useRoute } from 'vue-router'
+import MainFooter from '@/components/MainFooter.vue'
+import MainHeader from '@/components/MainHeader.vue'
 
 document.title = 'ГенАмшен'
 
@@ -49,6 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <MainHeader />
   <main>
     <section>
       <div class="cover">
@@ -146,15 +149,15 @@ onMounted(() => {
           <h3 class="color-white">Тулумджян Ардавазд Левонович</h3>
           <p class="team-lead-text-city">г. Краснодар, Россия</p>
           <p class="team-text">
-            Заместитель председателя Совета «Региональной армянской национально-культурной
-            автономии Краснодарского края»
+            Заместитель председателя Совета «Региональной армянской национально-культурной автономии
+            Краснодарского края»
           </p>
         </div>
         <div class="top-100-one">
           <img class="team-size" :src="getImg('gohar')" alt="Image" />
           <h3 class="color-white">
-            Авакян Гоар<br />
-            Георгиевна 
+            Авакян Гоар<br />
+            Георгиевна
           </h3>
           <p class="team-lead-text-city">г. Ереван, Армения</p>
           <p class="team-text">
@@ -171,7 +174,7 @@ onMounted(() => {
           <h3 class="color-white">Еник Дмитрий Игорьевич</h3>
           <p class="team-lead-text-city">г. Сухум, Абхазия</p>
           <p class="team-text">
-            Заместитель начальника Государственного Архивного Управления Республики Абхазия
+            Заместитель начальника Государственного Архивного Управления Республики Абхазия
           </p>
         </div>
       </div>
@@ -242,6 +245,8 @@ onMounted(() => {
       </div>
     </section>
   </main>
+
+  <MainFooter />
 </template>
 
 <style scoped>

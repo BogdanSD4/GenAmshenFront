@@ -8,3 +8,8 @@ export interface Login {
 export interface UserListResponce {
   group_id: UserType
 }
+
+export interface ApprovePerson {
+  id: number
+  capture: number
+}

@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { userStote } from '@/stores/userRole'
+import { UserRole } from '@/types/userRole'
 
 const catchPath = 'catchAll'
 
 const routes = [
   {
     path: '/',
-    redirect: '/login',
+    redirect: '/welcome',
     component: () => import('../layouts/DefaultLayout.vue'),
     children: [
       {
@@ -56,7 +57,7 @@ const routes = [
   },
   {
     path: `/:${catchPath}(.*)`,
-    redirect: '/login'
+    redirect: '/welcome'
   }
 ]
 
@@ -66,6 +67,14 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  if (to.fullPath == '/administrator/') {
+    const user = userStote()
+    const valid = await user.valid()
+    if (valid && user.role == UserRole.ADMIN) {
+      next()
+    }
+  }
+
   const authEnable = import.meta.env.VITE_AUTH == 'true'
   if (authEnable && to.matched.some((record) => record.meta.requiresAuth)) {
     const user = userStote()

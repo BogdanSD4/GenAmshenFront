@@ -6,8 +6,9 @@ import {
   BasePersonModel
 } from '@/pages/person/components/data/models/base'
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
-import { createPersonDeath } from '@/api/person'
+import { createPerson, createPersonDeath } from '@/api/person'
 import { userStote } from '@/stores/userRole'
+import { PersonType } from '@/pages/database/types/historicalTypes'
 
 const person = ref<BasePersonModel>(new BasePersonModel())
 const death = ref<BaseDateModel>(new BaseDateModel())
@@ -38,7 +39,7 @@ async function onSave() {
     user: user.id
   }
 
-  await createPersonDeath(data)
+  await createPerson(PersonType.WEDDING, data)
 }
 </script>
 
