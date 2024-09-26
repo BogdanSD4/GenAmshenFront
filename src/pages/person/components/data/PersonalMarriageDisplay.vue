@@ -29,18 +29,22 @@ interface MoreTypes {
   [key: string]: boolean
 }
 
-const moreActive: MoreTypes = {
+const moreActive = ref<MoreTypes>({
   man: false,
   bride: false,
   date: false,
   witness: false
+})
+
+function toggleName(value: keyof MoreTypes) {
+  return moreActive.value[value] ? 'Свернуть' : 'Добавить данные'
 }
 
-function moreToggle(value: string) {
+function moreToggle(value: keyof MoreTypes) {
   const element = document.querySelector(`.${value}`) as HTMLElement
   if (element) {
-    element.style.height = `${moreActive[value] ? 0 : element.scrollHeight}px`
-    moreActive[value] = !moreActive[value]
+    element.style.height = `${moreActive.value[value] ? 0 : element.scrollHeight}px`
+    moreActive.value[value] = !moreActive.value[value]
   }
 }
 
@@ -137,7 +141,7 @@ async function onSave() {
     </span>
 
     <div v-if="!personData" class="add-data">
-      <button id="myBtnDataThree" @click="moreToggle('man')">Добавить данные</button>
+      <button id="myBtnDataThree" @click="moreToggle('man')">{{ toggleName('man') }}</button>
     </div>
 
     <br />
@@ -168,7 +172,7 @@ async function onSave() {
     </span>
 
     <div v-if="!personData" class="add-data">
-      <button id="myBtnDataFour" @click="moreToggle('bride')">Добавить данные</button>
+      <button id="myBtnDataFour" @click="moreToggle('bride')">{{ toggleName('bride') }}</button>
     </div>
 
     <br />
@@ -198,7 +202,7 @@ async function onSave() {
     </span>
 
     <div v-if="!personData" class="add-data">
-      <button id="myBtnDataFive" @click="moreToggle('date')">Добавить данные</button>
+      <button id="myBtnDataFive" @click="moreToggle('date')">{{ toggleName('date') }}</button>
     </div>
 
     <br />
@@ -223,7 +227,7 @@ async function onSave() {
     </span>
 
     <div v-if="!personData" class="add-data">
-      <button id="myBtnDataSix" @click="moreToggle('witness')">Добавить данные</button>
+      <button id="myBtnDataSix" @click="moreToggle('witness')">{{ toggleName('witness') }}</button>
     </div>
 
     <br />

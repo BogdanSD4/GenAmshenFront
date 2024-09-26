@@ -2,26 +2,32 @@
 import { getImg } from '@/utils/imageManager'
 import MainPageInfo from '@/pages/main/components/MainPageInfo.vue'
 import BookView from '@/pages/main/components/BookView.vue'
-import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
+import { onBeforeMount, onMounted, onUnmounted, ref, watch } from 'vue'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import MainFooter from '@/components/MainFooter.vue'
+import '@/assets/styles/style.css'
 import MainHeader from '@/components/MainHeader.vue'
-import { addStyle, deleteStyle } from '@/utils/styleManager'
 
 document.title = 'ГенАмшен'
 
+const route = useRoute()
 const name = ref<string>()
 const email = ref<string>()
 const message = ref<string>()
+
+watch(
+  () => route.params.id,
+  (n, o) => {
+    goToObject(n as string)
+  }
+)
 
 function handleFeedbackFormSubmit() {
   //TODO: send feedback
 }
 
-onMounted(() => {
-  const route = useRoute()
-  const id = route.params.id
+function goToObject(id: string) {
   let elementId = ''
   switch (id) {
     case 'about':
@@ -44,20 +50,20 @@ onMounted(() => {
   }
 
   const element = document.querySelector(`#${elementId}`)
-  console.log(element)
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' })
   }
-})
-onBeforeMount(() => {
-  addStyle('style.css')
-})
-onUnmounted(() => {
-  deleteStyle('style.css')
+}
+
+onMounted(() => {
+  const id = route.params.id as string
+  goToObject(id)
 })
 </script>
 
 <template>
+  <MainHeader :is-main="true" />
+
   <main>
     <section>
       <div class="cover">
@@ -254,7 +260,3 @@ onUnmounted(() => {
 
   <MainFooter :enable-login-link="true" />
 </template>
-
-<style scoped>
-@import '@/assets/styles/style.css';
-</style>

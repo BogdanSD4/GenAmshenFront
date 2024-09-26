@@ -13,7 +13,7 @@ import HistoricalPersonData from '@/pages/database/HistoricalPersonData.vue'
 import PendingRequests from '@/pages/database/PendingRequests.vue'
 import AcceptPersonPage from '@/pages/person/AcceptPersonPage.vue'
 import UserInfo from '@/components/UserInfo.vue'
-import { addStyle, deleteStyle } from '@/utils/styleManager'
+import '@/assets/styles/user.css'
 
 const user = userStore()
 const panelIndex = ref<number>()
@@ -23,12 +23,6 @@ function changePanel(index: number) {
   panelIndex.value = index
 }
 
-onBeforeMount(() => {
-  addStyle('user.css')
-})
-onUnmounted(() => {
-  deleteStyle('user.css')
-})
 onMounted(async () => {
   console.log(user)
   if (user.role == UserRole.GUEST) {
@@ -68,7 +62,7 @@ onMounted(async () => {
       <div class="bottom">
         <button
           id="team-btn"
-          v-if="user.access(UserRole.ADMIN)"
+          v-if="user.access(UserRole.MODER)"
           :class="{ 'active-btn': panelIndex == 0 }"
           @click="changePanel(0)"
         >

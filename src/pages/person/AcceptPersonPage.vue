@@ -11,7 +11,7 @@ import type {
   HistoricalDeath,
   PersonInfo
 } from '@/pages/database/types/historicalTypes'
-import { addStyle, deleteStyle } from '@/utils/styleManager'
+import '@/assets/styles/personal_data.css'
 
 const emit = defineEmits(['changePanel'])
 const displayIndex = ref<number>(-1)
@@ -21,12 +21,6 @@ function changePanel(index: number) {
   emit('changePanel', index)
 }
 
-onBeforeMount(() => {
-  addStyle('personal_data')
-})
-onUnmounted(() => {
-  deleteStyle('personal_data')
-})
 onMounted(async () => {
   await getPersonData()
     .then((response) => {

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import '@/assets/styles/style.css'
 
 const moreInfo = ref<number>(0)
 
 function expandAboutInfo() {
   if (moreInfo.value == 0) {
-    const info = document.querySelector('#more') as HTMLElement
+    const info = document.querySelector('#more-info-main') as HTMLElement
     if (info) {
       moreInfo.value = info.scrollHeight
     }
@@ -41,7 +42,7 @@ function expandAboutInfo() {
         <b>максимально достоверную историю семьи</b>. Человек, который знает историю своего рода, не
         оглядывается назад в поисках точки опоры, а идёт только вперёд.
       </p>
-      <span id="more" :style="{ height: `${moreInfo}px` }">
+      <span id="more-info-main" :style="{ height: `${moreInfo}px` }">
         <p>
           Единственным документальным источником досоветского периода, содержащем информацию об
           амшенцах Российской империи, являются метрические книги армянских церквей, в которых
@@ -93,6 +94,10 @@ function expandAboutInfo() {
   </section>
 </template>
 
-<style scoped>
-@import '@/assets/styles/style.css';
+<style>
+#more-info-main {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s;
+}
 </style>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { BookModel } from '@/pages/person/components/book/models/bookModel'
 import PersonAdress from '@/pages/person/components/data/content/PersonAdress.vue'
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
-import { createBook, createPersonDeath } from '@/api/person'
+import { createBook } from '@/api/person'
 import { userStore } from '@/stores/userRole'
 
 defineProps({
@@ -15,7 +15,7 @@ defineProps({
 
 const book = ref<BookModel>(new BookModel())
 const comment = ref<string>('')
-let moreActive = false
+let moreActive = ref<boolean>(false)
 
 function photoValid(file: File) {
   const size = 2
@@ -37,8 +37,8 @@ function imageHandler(event: Event) {
 function moreToggle(value: string) {
   const element = document.querySelector(`.${value}`) as HTMLElement
   if (element) {
-    element.style.height = `${moreActive ? element.scrollHeight : 0}px`
-    moreActive = !moreActive
+    element.style.height = `${!moreActive.value ? element.scrollHeight : 0}px`
+    moreActive.value = !moreActive.value
   }
 }
 
@@ -193,7 +193,9 @@ async function onSave() {
     </span>
 
     <div class="add-data">
-      <button id="myBtnDataEight" @click="moreToggle(bookName)">Добавить данные</button>
+      <button id="myBtnDataEight" @click="moreToggle(bookName)">
+        {{ moreActive ? 'Свернуть' : 'Добавить данные' }}
+      </button>
     </div>
 
     <br />

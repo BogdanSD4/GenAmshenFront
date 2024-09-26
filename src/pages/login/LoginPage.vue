@@ -9,7 +9,7 @@ import { UserRole } from '@/types/userRole'
 import { userStore } from '@/stores/userRole'
 import { useCookies } from 'vue3-cookies'
 import type { Login } from '@/api/types/request'
-import { addStyle, deleteStyle } from '@/utils/styleManager'
+import '@/assets/styles/signin.css'
 
 document.title = 'ГенАмшен - Войти'
 
@@ -25,15 +25,17 @@ const visible = ref<boolean>(false)
 async function handleSignInSubmit() {
   if (!validation()) return
 
+  const cookies = useCookies().cookies
   const creditals: Login = {
     username: name.value.text,
     email: email.value.text,
     password: password.value.text
   }
+  cookies.remove('gen_token')
+
   await login(creditals).then(async (response) => {
     const user = userStore()
 
-    const cookies = useCookies().cookies
     cookies.set('gen_token', response.token)
 
     user.setRole(response.role)
@@ -68,13 +70,6 @@ function validation() {
 function onInput(field: LoginField) {
   field.error = ''
 }
-
-onBeforeMount(() => {
-  addStyle('signin.css')
-})
-onUnmounted(() => {
-  deleteStyle('signin.css')
-})
 </script>
 
 <template>

@@ -7,21 +7,14 @@ import BooksPanel from '@/pages/person/components/BooksPanel.vue'
 import { getImg } from '@/utils/imageManager'
 import UserInfo from '@/components/UserInfo.vue'
 import { addStyle, deleteStyle } from '@/utils/styleManager'
+import '@/assets/styles/user.css'
+import '@/assets/styles/personal_data.css'
 
 const menuIndex = ref<number>(0)
 
 function changeMenu(index: number) {
   menuIndex.value = index
 }
-
-onBeforeMount(() => {
-  addStyle('user.css')
-  addStyle('personal_data.css')
-})
-onUnmounted(() => {
-  deleteStyle('user.css')
-  deleteStyle('personal_data.css')
-})
 </script>
 
 <template>

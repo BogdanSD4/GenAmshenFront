@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import UserList from '@/pages/users/components/userControl/UserList.vue'
-import { computed, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import UserAdd from '@/pages/users/components/userControl/UserAdd.vue'
-import {
-  type EditUser,
-  UserMenuType,
-  UserType
-} from '@/pages/users/components/userControl/types/userData'
+import { type EditUser, UserType } from '@/pages/users/components/userControl/types/userData'
 import UserEdit from '@/pages/users/components/userControl/UserEdit.vue'
+import { userStore } from '@/stores/userRole'
+import { UserRole } from '@/types/userRole'
 
+const user = userStore()
 const menuIndex = ref<number>(-1)
 const editUserData = ref<EditUser>({
   user: UserType.NONE,
@@ -22,6 +21,12 @@ function editUser(value: number, option: EditUser) {
   editUserData.value = option
   changeIndex(value)
 }
+
+onMounted(() => {
+  if (user.role == UserRole.MODER) {
+    menuIndex.value = 0
+  }
+})
 </script>
 
 <template>
@@ -30,23 +35,31 @@ function editUser(value: number, option: EditUser) {
       <h6>Команда</h6>
       <br />
       <br />
-      <h6>Операторы ввода данных</h6>
-      <button id="btn-team-display" class="yellow-btn" @click="changeIndex(0)">
-        Список операторов
-      </button>
-      <button id="btn-team-add-clerk" class="yellow-btn" @click="changeIndex(1)">
-        Добавить оператора
-      </button>
+      <div>
+        <h6>Операторы ввода данных</h6>
+        <div v-if="user.access(UserRole.ADMIN)">
+          <button id="btn-team-display" class="yellow-btn" @click="changeIndex(0)">
+            Список операторов
+          </button>
+          <button id="btn-team-add-clerk" class="yellow-btn" @click="changeIndex(1)">
+            Добавить оператора
+          </button>
+        </div>
+      </div>
 
       <br />
 
-      <h6>Модераторы</h6>
-      <button id="btn-team-moderator-display" class="yellow-btn" @click="changeIndex(2)">
-        Список модераторов
-      </button>
-      <button id="btn-team-add-mod" class="yellow-btn" @click="changeIndex(3)">
-        Добавить модератора
-      </button>
+      <div v-if="user.access(UserRole.ADMIN)">
+        <h6>Модераторы</h6>
+        <div>
+          <button id="btn-team-moderator-display" class="yellow-btn" @click="changeIndex(2)">
+            Список модераторов
+          </button>
+          <button id="btn-team-add-mod" class="yellow-btn" @click="changeIndex(3)">
+            Добавить модератора
+          </button>
+        </div>
+      </div>
     </div>
 
     <div id="infoDisplayTeam">

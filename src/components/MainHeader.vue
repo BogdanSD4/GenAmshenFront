@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { getImg } from '@/utils/imageManager'
-import { RouterLink } from 'vue-router'
-import { computed, ref } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { computed, ref, watch } from 'vue'
 import router from '@/router'
 import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 
+const isMain = defineModel('isMain', { default: false })
 const hamburger = ref<boolean>(false)
 const user = userStore()
 
@@ -18,7 +19,8 @@ function onHamburgerMouseDown() {
 }
 
 async function goToWelcomePage(id: string) {
-  await router.push({ name: 'welcomeTo', params: { id: id } })
+  console.log('go-to')
+  await router.replace({ name: 'welcomeTo', params: { id: id } })
 }
 
 async function logout() {
@@ -30,7 +32,7 @@ async function logout() {
   <header>
     <nav id="navbar">
       <div class="nav-back">
-        <div class="logo">
+        <div v-if="!isMain" class="logo">
           <RouterLink to="/welcome">
             <img class="logo-size" :src="getImg('logo')" alt="Logo" />
           </RouterLink>

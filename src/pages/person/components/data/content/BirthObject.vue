@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import type { BaseBirthModel } from '@/pages/person/components/data/models/birthModel'
-import type { ModelRef } from 'vue'
+import { type ModelRef, ref } from 'vue'
 
 const model = defineModel<BaseBirthModel>('birthModel', {
   required: true
 }) as ModelRef<BaseBirthModel>
-let moreActive = false
+let moreActive = ref<boolean>(false)
 
 function moreToggle() {
   const element = document.querySelector(`.${model.value.moreClass}`) as HTMLElement
   if (element) {
-    element.style.height = `${moreActive ? 0 : element.scrollHeight}px`
-    moreActive = !moreActive
+    element.style.height = `${moreActive.value ? 0 : element.scrollHeight}px`
+    moreActive.value = !moreActive.value
   }
 }
 </script>
@@ -77,7 +77,7 @@ function moreToggle() {
   </div>
 
   <span :class="[model.moreClass, { more: model.haveMoreInfo }]">
-    <div class="field-name">
+    <div class="field-name no-margin">
       <h4>Дата рождения</h4>
     </div>
 
@@ -95,7 +95,7 @@ function moreToggle() {
       />
     </div>
 
-    <div class="field-name">
+    <div class="field-name no-margin">
       <h4>Место рождения</h4>
     </div>
 
@@ -168,7 +168,7 @@ function moreToggle() {
       />
     </div>
 
-    <div class="field-name">
+    <div class="field-name no-margin">
       <h4>Крещение</h4>
     </div>
 
@@ -186,7 +186,7 @@ function moreToggle() {
       />
     </div>
 
-    <div class="field-name">
+    <div class="field-name no-margin">
       <h4>Место крещения</h4>
     </div>
 
@@ -261,6 +261,8 @@ function moreToggle() {
   </span>
 
   <div v-if="model.haveMoreInfo" class="add-data">
-    <button id="myBtnData" @click="moreToggle()">Добавить данные</button>
+    <button id="myBtnData" @click="moreToggle()">
+      {{ moreActive ? 'Свернуть' : 'Добавить данные' }}
+    </button>
   </div>
 </template>

@@ -17,3 +17,10 @@ export function addStyle(name: string) {
   link.href = `/src/assets/styles/${name}`
   document.head.appendChild(link)
 }
+
+//Свернуть
+//Назви колонок
+//Профілів у опретора може бути не один(багато)
+//Модальні вікна
+
+//пендігн не приходит
