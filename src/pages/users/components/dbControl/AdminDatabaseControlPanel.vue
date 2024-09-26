@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 import router from '@/router'
 
-const user = userStote()
+const user = userStore()
 const emit = defineEmits(['changePanel'])
 
 function changeIndex(index: number) {
@@ -13,6 +13,9 @@ function changeIndex(index: number) {
 async function toDatabase() {
   await router.push('/admin/')
 }
+
+const host = import.meta.env.VITE_API_URL
+const adminLink = `${host}administrator`
 </script>
 
 <template>
@@ -21,7 +24,7 @@ async function toDatabase() {
       <h6>База данных</h6>
       <br />
       <br />
-      <a href="#"
+      <a :href="adminLink"
         ><button
           id="btn-go-to-database"
           v-if="user.access(UserRole.ADMIN)"

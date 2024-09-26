@@ -224,6 +224,15 @@ input[type="file"]{
     z-index: 200;
 }
 
+.change-photo-back {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: relative;
+    margin-top: -35px;
+    margin-left: -5px;
+}
+
 .img-area.active:hover::before {
     opacity: 1;
 }
@@ -231,6 +240,7 @@ input[type="file"]{
 .change-photo-icon {
     width: 32px;
     height: 32px;
+    cursor: pointer;
 }
 
 .photo-upload {
@@ -314,6 +324,7 @@ h6 {
 .back {
     display: flex;
     justify-content: center;
+    padding: 20px 0 20px 0;
 }
 
 #personal-data,

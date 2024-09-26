@@ -3,11 +3,11 @@ import { getImg } from '@/utils/imageManager'
 import { RouterLink } from 'vue-router'
 import { computed, ref } from 'vue'
 import router from '@/router'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 
 const hamburger = ref<boolean>(false)
-const user = userStote()
+const user = userStore()
 
 const isAuth = computed(() => {
   return user.role != UserRole.GUEST
@@ -31,13 +31,13 @@ async function logout() {
     <nav id="navbar">
       <div class="nav-back">
         <div class="logo">
-          <RouterLink to="/login">
+          <RouterLink to="/welcome">
             <img class="logo-size" :src="getImg('logo')" alt="Logo" />
           </RouterLink>
         </div>
 
         <div class="navbar-right">
-          <RouterLink class="mobile-none" to="/login">
+          <RouterLink class="mobile-none" to="/welcome">
             <img class="size-home" :src="getImg('home')" alt="Image" />
           </RouterLink>
           <a class="mobile-none" href="mailto:genamshen@mail.com"
@@ -75,7 +75,3 @@ async function logout() {
     </nav>
   </header>
 </template>
-
-<style scoped>
-@import 'src/assets/styles/user.css';
-</style>

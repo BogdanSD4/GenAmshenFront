@@ -2,6 +2,7 @@ import type { UserType } from '@/pages/users/components/userControl/types/userDa
 
 export interface Login {
   username: string
+  email: string
   password: string
 }
 

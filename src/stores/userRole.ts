@@ -24,7 +24,7 @@ const defaultState: State = {
   last_name: ''
 }
 
-export const userStote = defineStore('user', {
+export const userStore = defineStore('user', {
   state: (): State => {
     return { ...defaultState }
   },

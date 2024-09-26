@@ -49,7 +49,7 @@ function changeMenu(index: number) {
   </div>
 </template>
 
-<style scoped>
+<style>
 .more {
   height: 0;
   overflow: hidden;

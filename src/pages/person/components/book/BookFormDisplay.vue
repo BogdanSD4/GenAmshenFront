@@ -4,7 +4,7 @@ import { BookModel } from '@/pages/person/components/book/models/bookModel'
 import PersonAdress from '@/pages/person/components/data/content/PersonAdress.vue'
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
 import { createBook, createPersonDeath } from '@/api/person'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 
 defineProps({
   bookName: {

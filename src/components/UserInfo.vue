@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getImg } from '@/utils/imageManager'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { computed, onMounted, ref } from 'vue'
 import { UserRole } from '@/types/userRole'
 import { changePhoto } from '@/api/users'
@@ -10,7 +10,7 @@ defineProps({
     type: String
   }
 })
-const user = userStote()
+const user = userStore()
 
 const name = computed(() => {
   return `${user.first_name} ${user.last_name}`

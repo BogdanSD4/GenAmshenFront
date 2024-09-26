@@ -2,11 +2,12 @@
 import { getImg } from '@/utils/imageManager'
 import MainPageInfo from '@/pages/main/components/MainPageInfo.vue'
 import BookView from '@/pages/main/components/BookView.vue'
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import MainFooter from '@/components/MainFooter.vue'
 import MainHeader from '@/components/MainHeader.vue'
+import { addStyle, deleteStyle } from '@/utils/styleManager'
 
 document.title = 'ГенАмшен'
 
@@ -48,10 +49,15 @@ onMounted(() => {
     element.scrollIntoView({ behavior: 'smooth' })
   }
 })
+onBeforeMount(() => {
+  addStyle('style.css')
+})
+onUnmounted(() => {
+  deleteStyle('style.css')
+})
 </script>
 
 <template>
-  <MainHeader />
   <main>
     <section>
       <div class="cover">
@@ -246,7 +252,7 @@ onMounted(() => {
     </section>
   </main>
 
-  <MainFooter />
+  <MainFooter :enable-login-link="true" />
 </template>
 
 <style scoped>

@@ -9,7 +9,7 @@ import {
   type HistoricalFormItem,
   type HistoricalInput,
   HistoricalLang,
-  type HistoricalPerson,
+  type HistoricalPersonTls,
   type HistoricalPersonBase
 } from '@/pages/database/types/historicalTypes'
 import { acceptStore } from '@/stores/acceptPerson'

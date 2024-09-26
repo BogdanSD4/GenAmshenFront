@@ -1,12 +1,16 @@
 import api from '@/api/axios/api'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 import { computed } from 'vue'
 import { toFormData } from '@/api/serializers/formData'
 import type { ApprovePerson } from '@/api/types/request'
-import { type HistoricalPerson, PersonType } from '@/pages/database/types/historicalTypes'
+import {
+  type HistoricalPersonTls,
+  type PersonInfo,
+  PersonType
+} from '@/pages/database/types/historicalTypes'
 
-const user = userStote()
+const user = userStore()
 const userType = computed(() => {
   switch (user.role) {
     case UserRole.USER:
@@ -17,7 +21,7 @@ const userType = computed(() => {
   return ''
 })
 
-export async function getPersonData(params?: ApprovePerson): Promise<HistoricalPerson> {
+export async function getPersonData(params?: ApprovePerson): Promise<PersonInfo> {
   console.log(params)
   return await api.get(`api/check/${userType.value}/`, { params }).then((response) => response.data)
 }
@@ -37,6 +41,7 @@ export async function updatePersonByModer(params: ApprovePerson, data: any) {
 export async function createPerson(type: PersonType, params: any): Promise<any> {
   return await api.post(`api/${type}/${userType.value}/`, params).then((response) => response.data)
 }
+
 export async function updatePerson(type: PersonType, params: any): Promise<any> {
   switch (userType.value) {
     case 'by_moder':

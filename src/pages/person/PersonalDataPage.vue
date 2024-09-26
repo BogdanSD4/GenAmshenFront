@@ -2,10 +2,11 @@
 import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import PersonalDataPanel from '@/pages/person/components/PersonalDataPanel.vue'
-import { onUnmounted, ref } from 'vue'
+import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
 import BooksPanel from '@/pages/person/components/BooksPanel.vue'
 import { getImg } from '@/utils/imageManager'
 import UserInfo from '@/components/UserInfo.vue'
+import { addStyle, deleteStyle } from '@/utils/styleManager'
 
 const menuIndex = ref<number>(0)
 
@@ -13,14 +14,13 @@ function changeMenu(index: number) {
   menuIndex.value = index
 }
 
+onBeforeMount(() => {
+  addStyle('user.css')
+  addStyle('personal_data.css')
+})
 onUnmounted(() => {
-  const style = document.querySelectorAll('style')
-  style.forEach((s) => {
-    const atr = s.getAttribute('data-vite-dev-id')
-    if (atr && atr.includes('PersonalDataPage')) {
-      document.head.removeChild(s)
-    }
-  })
+  deleteStyle('user.css')
+  deleteStyle('personal_data.css')
 })
 </script>
 
@@ -92,7 +92,3 @@ onUnmounted(() => {
 
   <MainFooter />
 </template>
-
-<style>
-@import '@/assets/styles/personal_data.css';
-</style>

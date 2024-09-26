@@ -2,12 +2,20 @@
 import { getImg } from '@/utils/imageManager'
 import router from '@/router'
 
+defineProps({
+  enableLoginLink: {
+    type: Boolean,
+    default: false
+  }
+})
+
 async function goToWelcomePage(id: string) {
   await router.push({ name: 'welcomeTo', params: { id: id } })
 }
 </script>
 
 <template>
+  <link rel="canonical" href="https://www.genamshen.com/" />
   <div>
     <div class="container">
       <div class="hide-link">
@@ -34,13 +42,12 @@ async function goToWelcomePage(id: string) {
     </div>
 
     <div class="design">
+      <RouterLink v-if="enableLoginLink" to="/login">
+        <img class="login" :src="getImg('login')" alt="Sign in" />
+      </RouterLink>
       <a class="color-blue" target="_blank" href="https://volha.ca"
         >Сайт разработан компанией VOLHA Web Design</a
       >
     </div>
   </div>
 </template>
-
-<style scoped>
-@import 'src/assets/styles/user.css';
-</style>

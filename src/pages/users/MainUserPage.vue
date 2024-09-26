@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getImg } from '@/utils/imageManager'
-import { computed, onMounted, ref } from 'vue'
-import { userStote } from '@/stores/userRole'
+import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
+import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
@@ -13,8 +13,9 @@ import HistoricalPersonData from '@/pages/database/HistoricalPersonData.vue'
 import PendingRequests from '@/pages/database/PendingRequests.vue'
 import AcceptPersonPage from '@/pages/person/AcceptPersonPage.vue'
 import UserInfo from '@/components/UserInfo.vue'
+import { addStyle, deleteStyle } from '@/utils/styleManager'
 
-const user = userStote()
+const user = userStore()
 const panelIndex = ref<number>()
 const userRoleName = ref<string>('')
 
@@ -22,6 +23,12 @@ function changePanel(index: number) {
   panelIndex.value = index
 }
 
+onBeforeMount(() => {
+  addStyle('user.css')
+})
+onUnmounted(() => {
+  deleteStyle('user.css')
+})
 onMounted(async () => {
   console.log(user)
   if (user.role == UserRole.GUEST) {
@@ -147,8 +154,3 @@ onMounted(async () => {
 
   <MainFooter />
 </template>
-
-<style>
-@import 'src/assets/styles/user.css';
-@import '@/assets/styles/historical_person.css';
-</style>

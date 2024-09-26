@@ -1,3 +1,5 @@
+import type { PersonInfo } from '@/pages/person/components/types/person'
+
 export class BasePersonModel {
   first_name: string = ''
   last_name: string = ''

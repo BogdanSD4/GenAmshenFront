@@ -3,7 +3,7 @@ import BirthObject from '@/pages/person/components/data/content/BirthObject.vue'
 import { BaseBirthModel } from '@/pages/person/components/data/models/birthModel'
 import { ref } from 'vue'
 import { createPerson } from '@/api/person'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { PersonType } from '@/pages/database/types/historicalTypes'
 
 const person = ref<BaseBirthModel>(new BaseBirthModel('Имя', '', false, true))
@@ -13,7 +13,7 @@ const godFather = ref<BaseBirthModel>(new BaseBirthModel('Крестный/По�
 const comment = ref<string>('')
 
 async function onSave() {
-  const user = userStote()
+  const user = userStore()
 
   const data = {
     main: {

@@ -8,9 +8,12 @@ import {
 } from '@/pages/person/components/data/models/marriageModel'
 import { ref } from 'vue'
 import MarriageAdress from '@/pages/person/components/data/content/PersonAdress.vue'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { createPerson } from '@/api/person'
-import { PersonType } from '@/pages/database/types/historicalTypes'
+import { type HistoricalDeath, PersonType } from '@/pages/database/types/historicalTypes'
+
+const emit = defineEmits(['changePanel'])
+const personData = defineModel<HistoricalDeath>('personData')
 
 const man = ref<MarriagePersonModel>(new MarriagePersonModel())
 const bride = ref<BrideModel>(new BrideModel())
@@ -42,7 +45,7 @@ function moreToggle(value: string) {
 }
 
 async function onSave() {
-  const user = userStote()
+  const user = userStore()
 
   const data = {
     groom_first_name: man.value.info.first_name,
@@ -133,7 +136,7 @@ async function onSave() {
       <MarriageAdress :adress="man.adress" />
     </span>
 
-    <div class="add-data">
+    <div v-if="!personData" class="add-data">
       <button id="myBtnDataThree" @click="moreToggle('man')">Добавить данные</button>
     </div>
 
@@ -164,7 +167,7 @@ async function onSave() {
       />
     </span>
 
-    <div class="add-data">
+    <div v-if="!personData" class="add-data">
       <button id="myBtnDataFour" @click="moreToggle('bride')">Добавить данные</button>
     </div>
 
@@ -194,7 +197,7 @@ async function onSave() {
       <MarriageAdress label="Адрес свадьбы" :adress="weddingDate.adress" />
     </span>
 
-    <div class="add-data">
+    <div v-if="!personData" class="add-data">
       <button id="myBtnDataFive" @click="moreToggle('date')">Добавить данные</button>
     </div>
 
@@ -219,7 +222,7 @@ async function onSave() {
       <MarriageAdress :adress="witness.second_witness_adress" />
     </span>
 
-    <div class="add-data">
+    <div v-if="!personData" class="add-data">
       <button id="myBtnDataSix" @click="moreToggle('witness')">Добавить данные</button>
     </div>
 

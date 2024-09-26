@@ -120,7 +120,7 @@ a {
     align-items: center;
     height: 100vh;
     background-color: #282F44;
-    background-image: url('/static/images/tree-logo.png');
+    background-image: url('/images/tree-logo.png');
     background-repeat: no-repeat;
     background-position: top left;
     background-size: 45%;
@@ -386,7 +386,7 @@ p {
     justify-content: center;
     align-items: center;
     background-color: #282F44;
-    background-image: url('/static/images/map-cover.png');
+    background-image: url('/images/map-cover.png');
     background-repeat: no-repeat;
     background-position: bottom right;
     padding-top: 100px;
@@ -543,7 +543,7 @@ h3 {
     align-items: center;
     background-color:#282F44;
     padding: 0 200px 100px 200px;
-    background-image: url('/static/images/sun.png');
+    background-image: url('/images/sun.png');
     background-size: 35%;
     background-repeat: no-repeat;
     background-position: bottom right;

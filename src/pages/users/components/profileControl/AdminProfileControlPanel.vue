@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 
-const user = userStote()
+const user = userStore()
 </script>
 
 <template>

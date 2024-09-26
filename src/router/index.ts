@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 
 const catchPath = 'catchAll'
@@ -67,31 +67,32 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.fullPath == '/administrator/') {
-    const user = userStote()
-    const valid = await user.valid()
-    if (valid && user.role == UserRole.ADMIN) {
-      next()
-    }
-  }
-
   const authEnable = import.meta.env.VITE_AUTH == 'true'
+
   if (authEnable && to.matched.some((record) => record.meta.requiresAuth)) {
-    const user = userStote()
+    const user = userStore()
     const valid = await user.valid()
 
     const role = to.params.role as string
-    console.log(role)
+
     if (valid) {
-      if (user.role != role) {
+      if (user.role !== role) {
+        console.warn(`Role mismatch: user role is ${user.role}, but trying to access ${role}`)
+
         if (to.redirectedFrom) {
-          await router.push(to.redirectedFrom.path)
-        } else router.back()
-      } else next()
+          return next(to.redirectedFrom.path)
+        } else {
+          return router.back() // или next('/some-default-route');
+        }
+      } else {
+        return next() // Всё верно, переходим дальше.
+      }
     } else {
-      next('/login')
+      return next('/login') // Пользователь не аутентифицирован.
     }
-  } else next()
+  } else {
+    return next() // Роут не требует аутентификации.
+  }
 })
 
 export default router

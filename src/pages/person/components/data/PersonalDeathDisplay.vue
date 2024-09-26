@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import {
   AdressModel,
   BaseDateModel,
   BasePersonModel
 } from '@/pages/person/components/data/models/base'
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
-import { createPerson, createPersonDeath } from '@/api/person'
-import { userStote } from '@/stores/userRole'
-import { PersonType } from '@/pages/database/types/historicalTypes'
+import { createPerson, updatePerson } from '@/api/person'
+import { userStore } from '@/stores/userRole'
+import { type HistoricalDeath, PersonType } from '@/pages/database/types/historicalTypes'
+
+const emit = defineEmits(['changePanel'])
+const personData = defineModel<HistoricalDeath>('personData')
 
 const person = ref<BasePersonModel>(new BasePersonModel())
 const death = ref<BaseDateModel>(new BaseDateModel())
@@ -17,7 +20,7 @@ const adress = ref<AdressModel>(new AdressModel())
 const comment = ref<string>('')
 
 async function onSave() {
-  const user = userStote()
+  const user = userStore()
 
   const data = {
     first_name: person.value.first_name,
@@ -39,8 +42,34 @@ async function onSave() {
     user: user.id
   }
 
-  await createPerson(PersonType.WEDDING, data)
+  if (personData.value) {
+    await updatePerson(PersonType.DEATH, data)
+  } else {
+    await createPerson(PersonType.DEATH, data)
+  }
+  emit('changePanel', 2)
 }
+
+onMounted(() => {
+  if (!personData.value) return
+  person.value.first_name = personData.value.first_name
+  person.value.last_name = personData.value.last_name
+  person.value.age = personData.value.age
+  person.value.patronymic = personData.value.patronymic
+  person.value.name_note = personData.value.name_note
+
+  death.value.date = personData.value.death_date
+  death.value.date_note = personData.value.death_date_note
+
+  burial.value.date = personData.value.burial_date
+  burial.value.date_note = personData.value.burial_date_note
+
+  adress.value.country = personData.value.burial_country
+  adress.value.region = personData.value.burial_region
+  adress.value.city = personData.value.burial_city
+  adress.value.street = personData.value.burial_street
+  adress.value.place_note = personData.value.burial_place_note
+})
 </script>
 
 <template>

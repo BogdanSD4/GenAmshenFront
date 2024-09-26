@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { getImg } from '@/utils/imageManager'
-import { ref } from 'vue'
+import { onBeforeMount, onUnmounted, ref } from 'vue'
 import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import { login } from '@/api/authorize'
 import router from '@/router'
 import { UserRole } from '@/types/userRole'
-import { userStote } from '@/stores/userRole'
+import { userStore } from '@/stores/userRole'
 import { useCookies } from 'vue3-cookies'
+import type { Login } from '@/api/types/request'
+import { addStyle, deleteStyle } from '@/utils/styleManager'
 
 document.title = 'ГенАмшен - Войти'
 
@@ -23,12 +25,13 @@ const visible = ref<boolean>(false)
 async function handleSignInSubmit() {
   if (!validation()) return
 
-  const creditals = {
+  const creditals: Login = {
     username: name.value.text,
+    email: email.value.text,
     password: password.value.text
   }
   await login(creditals).then(async (response) => {
-    const user = userStote()
+    const user = userStore()
 
     const cookies = useCookies().cookies
     cookies.set('gen_token', response.token)
@@ -37,7 +40,7 @@ async function handleSignInSubmit() {
     user.username = response.username
     user.email = response.email
 
-    await router.push(`/${user.role}`)
+    await router.push(`/${user.role}`).catch((error) => console.log(error))
   })
 }
 
@@ -49,10 +52,10 @@ function validation() {
     return false
   }
 
-  // if (!email_check.test(email.value.text)) {
-  //   email.value.error = 'Введите электронную почту'
-  //   return false
-  // }
+  if (!email_check.test(email.value.text)) {
+    email.value.error = 'Введите электронную почту'
+    return false
+  }
 
   if (password.value.text === '') {
     password.value.error = 'Введите пароль'
@@ -65,6 +68,13 @@ function validation() {
 function onInput(field: LoginField) {
   field.error = ''
 }
+
+onBeforeMount(() => {
+  addStyle('signin.css')
+})
+onUnmounted(() => {
+  deleteStyle('signin.css')
+})
 </script>
 
 <template>
@@ -140,7 +150,3 @@ function onInput(field: LoginField) {
 
   <MainFooter />
 </template>
-
-<style scoped>
-@import 'signin.css';
-</style>

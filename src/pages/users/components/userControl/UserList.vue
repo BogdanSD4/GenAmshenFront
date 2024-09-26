@@ -55,12 +55,25 @@ onMounted(async () => {
     <h4>{{ label }}</h4>
     <br />
     <div class="team-member" v-for="(user, index) in users" :key="index">
-      <img id="clerk-image" class="user-size" :src="imgSource(index)" alt="Image" />
-      <h4 id="clerk-name" class="member-name">{{ user.first_name }} {{ user.last_name }}</h4>
-      <button class="btn-edit-clerk" @click="editClerk(user.id)">Редактировать</button>
-      <button class="btn-delete-clerk" @click="deleteClerk(user.id)">Удалить</button>
+      <div class="user-list-info">
+        <img id="clerk-image" class="user-size" :src="imgSource(index)" alt="Image" />
+        <h4 id="clerk-name" class="member-name">{{ user.first_name }} {{ user.last_name }}</h4>
+      </div>
+
+      <div class="user-list-btn">
+        <button class="btn-edit-clerk" @click="editClerk(user.id)">Редактировать</button>
+        <button class="btn-delete-clerk" @click="deleteClerk(user.id)">Удалить</button>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.user-list-info {
+  display: flex;
+}
+.user-list-btn {
+  display: flex;
+  gap: 20px;
+}
+</style>
