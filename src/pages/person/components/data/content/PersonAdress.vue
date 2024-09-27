@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { AdressModel } from '@/pages/person/components/data/models/base'
+import { checkSymbolArmenian } from '@/utils/textCheck'
 
 defineProps({
   label: {
@@ -12,6 +13,10 @@ defineProps({
   }
 })
 const adress = defineModel<AdressModel>('adress', { required: true })
+
+function onInput(event: KeyboardEvent) {
+  checkSymbolArmenian(event)
+}
 </script>
 
 <template>
@@ -27,6 +32,7 @@ const adress = defineModel<AdressModel>('adress', { required: true })
       class="input-195"
       type="text"
       placeholder="Страна"
+      @keydown="onInput"
     />
 
     <label></label>
@@ -36,6 +42,7 @@ const adress = defineModel<AdressModel>('adress', { required: true })
       class="input-195"
       type="text"
       placeholder="Регион/Область"
+      @keydown="onInput"
     />
 
     <label></label>
@@ -45,6 +52,7 @@ const adress = defineModel<AdressModel>('adress', { required: true })
       class="input-195"
       type="text"
       placeholder="Город/Деревня"
+      @keydown="onInput"
     />
   </div>
 
@@ -56,6 +64,7 @@ const adress = defineModel<AdressModel>('adress', { required: true })
       class="input-410"
       type="text"
       placeholder="Улица"
+      @keydown="onInput"
     />
 
     <label></label>
@@ -65,6 +74,7 @@ const adress = defineModel<AdressModel>('adress', { required: true })
       class="input-195"
       type="text"
       placeholder="№ здания"
+      @keydown="onInput"
     />
   </div>
 
@@ -76,6 +86,7 @@ const adress = defineModel<AdressModel>('adress', { required: true })
       class="input-195"
       type="text"
       placeholder="Индекс"
+      @keydown="onInput"
     />
 
     <label></label>
@@ -85,8 +96,11 @@ const adress = defineModel<AdressModel>('adress', { required: true })
       class="input-410"
       type="text"
       placeholder="Примечания"
+      @keydown="onInput"
     />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+</style>

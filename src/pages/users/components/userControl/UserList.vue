@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, type PropType, ref } from 'vue'
+import { onMounted, type PropType, ref } from 'vue'
 import { getImg } from '@/utils/imageManager'
 import { type UserInfo, UserType } from '@/pages/users/components/userControl/types/userData'
 import { userDelete, userList } from '@/api/users'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
 
 const emit = defineEmits(['editUser'])
 const users = ref<UserInfo[]>([])
@@ -21,8 +22,23 @@ function imgSource(index: number) {
 }
 
 async function deleteClerk(id: number) {
-  await userDelete(id).then(async () => {
-    await updateListData()
+  const modal = modalStore()
+  let type: ModalTypes = ModalTypes.NONE
+  switch (props.user) {
+    case UserType.CLERK:
+      type = ModalTypes.NINE
+      break
+    case UserType.MODER:
+      type = ModalTypes.TEN
+      break
+  }
+
+  modal.activate(type, {
+    onApprove: async () => {
+      await userDelete(id).then(async () => {
+        await updateListData()
+      })
+    }
   })
 }
 function editClerk(id: number) {
@@ -69,6 +85,8 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+@import '@/assets/styles/user.css';
+
 .user-list-info {
   display: flex;
 }

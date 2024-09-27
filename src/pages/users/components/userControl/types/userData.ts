@@ -5,7 +5,7 @@ export interface UserData {
   last_name: string
   patronymic: string
   names_note: string
-  birth_date: string
+  birth_date?: string
   birthday_note: string
   country: string
   region: string
@@ -14,6 +14,7 @@ export interface UserData {
   building: string
   postal: string
   photo?: File | string
+  background_photo?: File | string
   address_note: string
   comments: string
   groups: UserType[]

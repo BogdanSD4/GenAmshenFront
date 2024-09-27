@@ -11,7 +11,6 @@ import type {
   HistoricalDeath,
   PersonInfo
 } from '@/pages/database/types/historicalTypes'
-import '@/assets/styles/personal_data.css'
 
 const emit = defineEmits(['changePanel'])
 const displayIndex = ref<number>(-1)
@@ -44,7 +43,9 @@ onMounted(async () => {
   <p v-if="displayIndex == 4" class="no-profiles">Немає профілів на підтвердження</p>
 </template>
 
-<style>
+<style scoped>
+@import '@/assets/styles/user.css';
+
 .no-profiles {
   font-family: 'Montserrat', sans-serif;
   font-size: 18px;

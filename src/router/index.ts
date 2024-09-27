@@ -82,7 +82,7 @@ router.beforeEach(async (to, from, next) => {
         if (to.redirectedFrom) {
           return next(to.redirectedFrom.path)
         } else {
-          return router.back() // или next('/some-default-route');
+          return next(from.fullPath) // или next('/some-default-route');
         }
       } else {
         return next() // Всё верно, переходим дальше.

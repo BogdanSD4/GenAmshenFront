@@ -4,7 +4,8 @@ import { BookModel } from '@/pages/person/components/book/models/bookModel'
 import PersonAdress from '@/pages/person/components/data/content/PersonAdress.vue'
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
 import { createBook } from '@/api/person'
-import { userStore } from '@/stores/userRole'
+import { checkSymbolArmenian } from '@/utils/textCheck'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
 
 defineProps({
   bookName: {
@@ -29,7 +30,11 @@ function imageHandler(event: Event) {
   const file = target.files[0]
 
   if (file) {
-    if (!photoValid(file)) return
+    if (!photoValid(file)) {
+      const modal = modalStore()
+      modal.activate(ModalTypes.SEVEN)
+      return
+    }
     book.value.book_image = file
   }
 }
@@ -40,6 +45,10 @@ function moreToggle(value: string) {
     element.style.height = `${!moreActive.value ? element.scrollHeight : 0}px`
     moreActive.value = !moreActive.value
   }
+}
+
+function onKeyDown(event: KeyboardEvent) {
+  checkSymbolArmenian(event)
 }
 
 async function onSave() {
@@ -96,13 +105,31 @@ async function onSave() {
 
     <div class="labels">
       <label></label>
-      <input class="input-195" v-model="book.archive" type="text" placeholder="Название архива" />
+      <input
+        class="input-195"
+        v-model="book.archive"
+        type="text"
+        placeholder="Название архива"
+        @keydown="onKeyDown"
+      />
 
       <label></label>
-      <input class="input-195" v-model="book.fund" type="text" placeholder="Фонд" />
+      <input
+        class="input-195"
+        v-model="book.fund"
+        type="text"
+        placeholder="Фонд"
+        @keydown="onKeyDown"
+      />
 
       <label></label>
-      <input class="input-195" v-model="book.description" type="text" placeholder="Опись" />
+      <input
+        class="input-195"
+        v-model="book.description"
+        type="text"
+        placeholder="Опись"
+        @keydown="onKeyDown"
+      />
     </div>
 
     <PersonAdress :no-margin="false" label="Место нахождения архива" :adress="book.adress" />
@@ -118,18 +145,37 @@ async function onSave() {
         v-model="book.book_number"
         type="text"
         placeholder="Номер книги/Дело"
+        @keydown="onKeyDown"
       />
 
       <label></label>
-      <input class="input-195" v-model="book.book_slide" type="text" placeholder="Номер слайда" />
+      <input
+        class="input-195"
+        v-model="book.book_slide"
+        type="text"
+        placeholder="Номер слайда"
+        @keydown="onKeyDown"
+      />
 
       <label></label>
-      <input class="input-195" v-model="book.book_page" type="text" placeholder="Номер страницы" />
+      <input
+        class="input-195"
+        v-model="book.book_page"
+        type="text"
+        placeholder="Номер страницы"
+        @keydown="onKeyDown"
+      />
     </div>
 
     <div class="labels-btn">
       <label></label>
-      <input class="input-410" v-model="book.book_note" type="text" placeholder="Примечания" />
+      <input
+        class="input-410"
+        v-model="book.book_note"
+        type="text"
+        placeholder="Примечания"
+        @keydown="onKeyDown"
+      />
       <br />
       <label for="imageInput" class="custom-file-upload">Добавить фото</label>
       <input type="file" id="imageInput" accept="image/*" @change="imageHandler($event)" />
@@ -154,6 +200,7 @@ async function onSave() {
           type="date"
           id="dateInput"
           placeholder=""
+          @keydown="onKeyDown"
         />
 
         <label></label>
@@ -162,6 +209,7 @@ async function onSave() {
           v-model="book.priest_birth_date.date_note"
           type="text"
           placeholder="Примечания"
+          @keydown="onKeyDown"
         />
       </div>
 
@@ -178,6 +226,7 @@ async function onSave() {
           v-model="book.priest_baptism_date.date"
           type="date"
           placeholder=""
+          @keydown="onKeyDown"
         />
 
         <label></label>
@@ -186,6 +235,7 @@ async function onSave() {
           v-model="book.priest_baptism_date.date_note"
           type="text"
           placeholder="Примечания"
+          @keydown="onKeyDown"
         />
       </div>
 
@@ -208,7 +258,13 @@ async function onSave() {
 
     <div class="labels">
       <label></label>
-      <input class="input-625" v-model="comment" type="text" placeholder="Комментарии" />
+      <input
+        class="input-625"
+        v-model="comment"
+        type="text"
+        placeholder="Комментарии"
+        @keydown="onKeyDown"
+      />
     </div>
 
     <div class="save-btn">
@@ -217,4 +273,12 @@ async function onSave() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+
+.more {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s;
+}
+</style>

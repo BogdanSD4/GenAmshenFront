@@ -782,6 +782,7 @@ textarea[type="text"]::placeholder {
     padding: 0;
     margin: 5px;
     transition: 0.3s ease;
+    cursor: pointer;
 }
 
 .footer-link:hover {

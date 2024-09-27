@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { getImg } from '@/utils/imageManager'
-import { onBeforeMount, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import { login } from '@/api/authorize'
 import router from '@/router'
-import { UserRole } from '@/types/userRole'
 import { userStore } from '@/stores/userRole'
 import { useCookies } from 'vue3-cookies'
 import type { Login } from '@/api/types/request'
-import '@/assets/styles/signin.css'
 
 document.title = 'ГенАмшен - Войти'
 
@@ -67,6 +65,9 @@ function validation() {
   return true
 }
 
+async function onCancel() {
+  await router.push('/welcome')
+}
 function onInput(field: LoginField) {
   field.error = ''
 }
@@ -129,7 +130,7 @@ function onInput(field: LoginField) {
           </div>
           <br />
           <div class="cancel-signin">
-            <button type="button" class="cancelbtn"><a class="center" href="#">Отмена</a></button>
+            <button type="button" class="cancelbtn" @click="onCancel()">Отмена</button>
             <button type="submit" class="signinbtn center" @click="handleSignInSubmit">
               Войти
             </button>
@@ -145,3 +146,7 @@ function onInput(field: LoginField) {
 
   <MainFooter />
 </template>
+
+<style scoped>
+@import '@/assets/styles/signin.css';
+</style>

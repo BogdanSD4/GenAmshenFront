@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import type { ApprovePerson } from '@/api/types/request'
-import type { HistoricalPersonTls } from '@/pages/database/types/historicalTypes'
+import type { HistoricalPersonTls, ModerPersonInfo } from '@/pages/database/types/historicalTypes'
 
 interface State {
   approve: ApprovePerson
-  data?: HistoricalPersonTls
+  data?: ModerPersonInfo
 }
 
 export const acceptStore = defineStore('acceptPerson', {

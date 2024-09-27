@@ -79,5 +79,5 @@ async function logout() {
 </template>
 
 <style scoped>
-@import '@/assets/styles/user.css';
+@import '@/assets/styles/style.css';
 </style>

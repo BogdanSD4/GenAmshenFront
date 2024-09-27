@@ -13,7 +13,6 @@ import HistoricalPersonData from '@/pages/database/HistoricalPersonData.vue'
 import PendingRequests from '@/pages/database/PendingRequests.vue'
 import AcceptPersonPage from '@/pages/person/AcceptPersonPage.vue'
 import UserInfo from '@/components/UserInfo.vue'
-import '@/assets/styles/user.css'
 
 const user = userStore()
 const panelIndex = ref<number>()
@@ -110,41 +109,11 @@ onMounted(async () => {
         <AcceptPersonPage v-if="panelIndex == 5" />
       </div>
     </div>
-
-    <!--    TODO: remake modal views-->
-    <!--Modals-->
-    <div id="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p class="modal-text">
-          Вы вышли из личного кабинета и будете перенаправлены на страницу "Войти в ГенАмшен"
-        </p>
-      </div>
-    </div>
-
-    <div id="modal-img">
-      <div class="modal-content">
-        <span class="closeImg">&times;</span>
-        <br />
-        <p id="modal-text" class="modal-text">Размер фото должен быть меньше 2MB</p>
-      </div>
-    </div>
-
-    <div id="modal-verified" style="display: none">
-      <div class="modal-content">
-        <span class="closeVerified">&times;</span>
-        <br />
-        <p id="modal-text-verified" class="modal-text">Данные успешно проверены и сохранены</p>
-      </div>
-    </div>
-
-    <div id="modal-data-not-found" style="display: none" class="modal">
-      <div class="modal-content">
-        <span class="close closeNotFound">&times;</span>
-        <p id="modal-text-not-found"></p>
-      </div>
-    </div>
   </main>
 
   <MainFooter />
 </template>
+
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>

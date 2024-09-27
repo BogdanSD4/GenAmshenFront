@@ -9,7 +9,7 @@ export class BaseBirthModel {
   date: BaseDateModel = new BaseDateModel()
   gender: string = ''
   birth_adress: AdressModel = new AdressModel()
-  babtism_date: BaseDateModel = new BaseDateModel()
+  baptism_date: BaseDateModel = new BaseDateModel()
   baptism_adress: AdressModel = new AdressModel()
 
   label: string

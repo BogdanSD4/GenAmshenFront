@@ -11,6 +11,7 @@ import MarriageAdress from '@/pages/person/components/data/content/PersonAdress.
 import { userStore } from '@/stores/userRole'
 import { createPerson } from '@/api/person'
 import { type HistoricalDeath, PersonType } from '@/pages/database/types/historicalTypes'
+import { checkSymbolArmenian, isEnglishLang } from '@/utils/textCheck'
 
 const emit = defineEmits(['changePanel'])
 const personData = defineModel<HistoricalDeath>('personData')
@@ -120,6 +121,10 @@ async function onSave() {
 
   await createPerson(PersonType.WEDDING, data)
 }
+
+function onKeyDown(event: KeyboardEvent) {
+  checkSymbolArmenian(event)
+}
 </script>
 
 <template>
@@ -134,6 +139,7 @@ async function onSave() {
         class="input-195"
         type="text"
         placeholder="Брак №"
+        @keydown="onKeyDown"
       /><span id="dotsThree"> </span>
     </div>
     <span class="man more">
@@ -158,6 +164,7 @@ async function onSave() {
         class="input-195"
         type="text"
         placeholder="Брак №"
+        @keydown="onKeyDown"
       /><span id="dotsFour"> </span>
     </div>
 
@@ -194,6 +201,7 @@ async function onSave() {
         class="input-300"
         type="text"
         placeholder="Примечания"
+        @keydown="onKeyDown"
       />
       <span id="dotsFive"></span>
     </div>
@@ -246,6 +254,7 @@ async function onSave() {
         class="input-625"
         type="text"
         placeholder="Комментарии"
+        @keydown="onKeyDown"
       ></textarea>
     </div>
 
@@ -255,4 +264,12 @@ async function onSave() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+
+.more {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s;
+}
+</style>

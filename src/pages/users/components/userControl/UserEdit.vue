@@ -7,6 +7,7 @@ import {
 import BaseUserForm from '@/pages/users/components/userControl/elements/BaseUserForm.vue'
 import { computed, onMounted, ref } from 'vue'
 import { userEdit, userUpdate } from '@/api/users'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
 
 const edit = defineModel<EditUser>('edit', { required: true })
 const emit = defineEmits(['changeIndex', 'editUser'])
@@ -49,7 +50,24 @@ function cancel() {
 }
 
 async function onSave() {
+  const modal = modalStore()
+  if (userForm.value.first_name == '' || userForm.value.last_name == '') {
+    modal.activate(ModalTypes.THREE)
+    return
+  } else if (
+    userForm.value.username == '' ||
+    userForm.value.email == '' ||
+    userForm.value.password == ''
+  ) {
+    modal.activate(ModalTypes.FOUR)
+    return
+  }
+
   userForm.value.groups = [edit.value.user]
+
+  if (!userForm.value.background_photo) delete userForm.value.background_photo
+  if (!userForm.value.birth_date) delete userForm.value.birth_date
+
   await userUpdate(userForm.value)
 }
 
@@ -75,4 +93,6 @@ onMounted(async () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>

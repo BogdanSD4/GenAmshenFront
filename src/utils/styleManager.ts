@@ -1,13 +1,23 @@
-export function deleteStyle(name: string) {
+export function deleteLink(name: string[]) {
   const link = document.querySelectorAll('link')
   link.forEach((s) => {
-    if (s.href.includes(name)) {
+    if (name.some((n) => s.href.includes(n))) {
       document.head.removeChild(s)
     }
   })
 }
 
-export function addStyle(name: string) {
+export function deleteStyle(name: string[]) {
+  const style = document.querySelectorAll('style')
+  style.forEach((s) => {
+    const atr = s.getAttribute('data-vite-dev-id')
+    if (atr && name.some((n) => atr.includes(n))) {
+      document.head.removeChild(s)
+    }
+  })
+}
+
+export function addLink(name: string) {
   const links = document.querySelectorAll('link')
   const arr = Array.from(links)
 
@@ -17,7 +27,6 @@ export function addStyle(name: string) {
   link.href = `/src/assets/styles/${name}`
   document.head.appendChild(link)
 }
-
 //Свернуть
 //Назви колонок
 //Профілів у опретора може бути не один(багато)

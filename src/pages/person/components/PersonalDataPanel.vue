@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import MarriageDisplay from '@/pages/person/components/data/PersonalMarriageDisplay.vue'
 import DeathDisplay from '@/pages/person/components/data/PersonalDeathDisplay.vue'
 
-const menuIndex = ref<number>(-1)
+const menuIndex = defineModel<number>('menu', { default: -1 })
 
 function changeMenu(index: number) {
   menuIndex.value = index
@@ -49,10 +49,6 @@ function changeMenu(index: number) {
   </div>
 </template>
 
-<style>
-.more {
-  height: 0;
-  overflow: hidden;
-  transition: height 0.5s;
-}
+<style scoped>
+@import '@/assets/styles/personal_data.css';
 </style>

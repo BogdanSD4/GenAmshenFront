@@ -47,3 +47,7 @@ const adminLink = `${host}administrator`
     </div>
   </div>
 </template>
+
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>

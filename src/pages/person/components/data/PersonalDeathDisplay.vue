@@ -9,6 +9,8 @@ import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
 import { createPerson, updatePerson } from '@/api/person'
 import { userStore } from '@/stores/userRole'
 import { type HistoricalDeath, PersonType } from '@/pages/database/types/historicalTypes'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
+import { checkSymbolArmenian } from '@/utils/textCheck'
 
 const emit = defineEmits(['changePanel'])
 const personData = defineModel<HistoricalDeath>('personData')
@@ -37,17 +39,31 @@ async function onSave() {
     burial_city: adress.value.city,
     burial_street: adress.value.street,
     burial_place_note: adress.value.place_note,
-    death_comments: comment.value,
-    book: 1,
-    user: user.id
+    death_comments: comment.value
+  }
+
+  if (data.first_name == '' || data.last_name == '') {
+    const modal = modalStore()
+    modal.activate(ModalTypes.SIX)
   }
 
   if (personData.value) {
-    await updatePerson(PersonType.DEATH, data)
+    await updatePerson(PersonType.DEATH, data).catch((error) => {
+      console.log(error)
+    })
   } else {
-    await createPerson(PersonType.DEATH, data)
+    await createPerson(PersonType.DEATH, data).catch((error) => {
+      if ('non_field_errors' in error.response.data) {
+        const modal = modalStore()
+        modal.activate(ModalTypes.ELEVEN)
+      }
+    })
   }
   emit('changePanel', 2)
+}
+
+function onKeyDown(event: KeyboardEvent) {
+  checkSymbolArmenian(event)
 }
 
 onMounted(() => {
@@ -91,6 +107,7 @@ onMounted(() => {
         class="input-300"
         type="text"
         placeholder="Примечания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -109,6 +126,7 @@ onMounted(() => {
         class="input-300"
         type="text"
         placeholder="Примечания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -124,6 +142,7 @@ onMounted(() => {
         class="input-195"
         type="text"
         placeholder="Страна"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -133,6 +152,7 @@ onMounted(() => {
         class="input-195"
         type="text"
         placeholder="Регион/Область"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -142,6 +162,7 @@ onMounted(() => {
         class="input-195"
         type="text"
         placeholder="Город/Деревня"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -153,6 +174,7 @@ onMounted(() => {
         class="input-300"
         type="text"
         placeholder="Улица"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -162,6 +184,7 @@ onMounted(() => {
         class="input-300"
         type="text"
         placeholder="Примечания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -181,6 +204,7 @@ onMounted(() => {
         class="input-625"
         type="text"
         placeholder="Комментарии"
+        @keydown="onKeyDown"
       ></textarea>
     </div>
 
@@ -190,4 +214,6 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+</style>

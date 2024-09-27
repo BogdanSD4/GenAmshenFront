@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import '@/assets/styles/style.css'
 
 const moreInfo = ref<number>(0)
 
@@ -88,13 +87,17 @@ function expandAboutInfo() {
       <br />
       <br />
       <div class="read-more">
-        <button @click="expandAboutInfo()" id="myBtnRead">Развернуть</button>
+        <button @click="expandAboutInfo()" id="myBtnRead">
+          {{ moreInfo == 0 ? 'Развернуть' : 'Свернуть' }}
+        </button>
       </div>
     </div>
   </section>
 </template>
 
-<style>
+<style scoped>
+@import '@/assets/styles/style.css';
+
 #more-info-main {
   height: 0;
   overflow: hidden;

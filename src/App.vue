@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import ModalViews from '@/components/ModalViews.vue'
 
 onMounted(() => {
   window.onscroll = function () {
@@ -16,7 +17,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <RouterView />
+  <RouterView :key="$route.fullPath" />
+  <ModalViews />
 </template>
 
 <style>

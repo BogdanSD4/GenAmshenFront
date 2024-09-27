@@ -6,8 +6,9 @@ import { onBeforeMount, onMounted, onUnmounted, ref, watch } from 'vue'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import MainFooter from '@/components/MainFooter.vue'
-import '@/assets/styles/style.css'
+
 import MainHeader from '@/components/MainHeader.vue'
+import MainLandingHeader from '@/components/MainLandingHeader.vue'
 
 document.title = 'ГенАмшен'
 
@@ -62,7 +63,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <MainHeader :is-main="true" />
+  <MainLandingHeader :is-main="true" />
 
   <main>
     <section>
@@ -260,3 +261,7 @@ onMounted(() => {
 
   <MainFooter :enable-login-link="true" />
 </template>
+
+<style scoped>
+@import '@/assets/styles/style.css';
+</style>

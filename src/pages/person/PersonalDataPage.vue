@@ -2,19 +2,27 @@
 import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import PersonalDataPanel from '@/pages/person/components/PersonalDataPanel.vue'
-import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import BooksPanel from '@/pages/person/components/BooksPanel.vue'
 import { getImg } from '@/utils/imageManager'
 import UserInfo from '@/components/UserInfo.vue'
-import { addStyle, deleteStyle } from '@/utils/styleManager'
-import '@/assets/styles/user.css'
-import '@/assets/styles/personal_data.css'
+import { useCookies } from 'vue3-cookies'
 
 const menuIndex = ref<number>(0)
+const saveIndex = ref<number>(-1)
 
 function changeMenu(index: number) {
   menuIndex.value = index
 }
+
+onMounted(() => {
+  const cookies = useCookies().cookies
+  const data = cookies.get('person_save') as any
+  if (data) {
+    menuIndex.value = data.type
+    saveIndex.value = data.chapter
+  }
+})
 </script>
 
 <template>
@@ -36,52 +44,16 @@ function changeMenu(index: number) {
     </section>
 
     <div class="back">
-      <PersonalDataPanel v-show="menuIndex == 0" />
-      <BooksPanel v-show="menuIndex == 1" />
+      <PersonalDataPanel v-if="menuIndex == 0" :menu="saveIndex" />
+      <BooksPanel v-if="menuIndex == 1" :menu="saveIndex" />
     </div>
 
-    <!--Modals-->
-    <div id="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p class="modal-text">
-          Вы вышли из личного кабинета и будете перенаправлены на страницу "Войти в ГенАмшен"
-        </p>
-      </div>
-    </div>
-
-    <div id="modal-img">
-      <div class="modal-content">
-        <span class="closeImg">&times;</span>
-        <br />
-        <p id="modal-text" class="modal-text"></p>
-      </div>
-    </div>
-
-    <div id="modal-required-fields">
-      <div class="modal-content">
-        <span class="close-required-fields">&times;</span>
-        <p class="modal-text-required"></p>
-      </div>
-    </div>
-
-    <div id="modal-check-language">
-      <div class="modal-content">
-        <span class="close-check-language">&times;</span>
-        <p class="modal-text-check-language"></p>
-      </div>
-    </div>
-
-    <div id="modal-person-exist">
-      <div class="modal-content">
-        <span class="close-person-exist">&times;</span>
-        <p class="modal-text-person-exist">
-          Человек с такими именем и фамилией уже существует в базе данных. Пожалуйста, обратитесь к
-          модератору.
-        </p>
-      </div>
-    </div>
+    <div id="modal-person-exist"></div>
   </main>
 
   <MainFooter />
 </template>
+
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+</style>

@@ -7,6 +7,7 @@ export interface LoginResponse {
   photo: string
   first_name: string
   last_name: string
+  background_photo: string
 }
 
 export interface PendingResponse {

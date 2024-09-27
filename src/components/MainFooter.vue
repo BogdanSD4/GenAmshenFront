@@ -51,3 +51,7 @@ async function goToWelcomePage(id: string) {
     </div>
   </div>
 </template>
+
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>

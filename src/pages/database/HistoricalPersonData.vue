@@ -9,9 +9,7 @@ import {
 import { onMounted, ref } from 'vue'
 import { acceptStore } from '@/stores/acceptPerson'
 import { getPersonData, updatePersonByModer } from '@/api/person'
-import { PersonType } from '@/pages/database/types/historicalTypes'
-import axios from 'axios'
-import api from '@/api/axios/api'
+import { type ModerPersonInfo, PersonType } from '@/pages/database/types/historicalTypes'
 
 const birthBlock = ref<HistoricalBlock>()
 const marriageBlock = ref<HistoricalBlock>()
@@ -28,7 +26,7 @@ onMounted(async () => {
 
   const data = await getPersonData({ id: accept.approve.id, capture: accept.approve.capture })
   displayIndex.value = accept.approve.capture
-  accept.data = data
+  accept.data = data as ModerPersonInfo
 
   if (displayIndex.value == 1) birthBlock.value = new HistoricalBlock(HPersonBirthContent)
   else if (displayIndex.value == 2)
@@ -83,4 +81,6 @@ onMounted(async () => {
   <!--  />-->
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>

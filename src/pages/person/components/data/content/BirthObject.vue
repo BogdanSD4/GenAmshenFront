@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { BaseBirthModel } from '@/pages/person/components/data/models/birthModel'
 import { type ModelRef, ref } from 'vue'
+import { checkSymbolArmenian, isArmenianLanguage } from '@/utils/textCheck'
 
 const model = defineModel<BaseBirthModel>('birthModel', {
   required: true
@@ -13,6 +14,9 @@ function moreToggle() {
     element.style.height = `${moreActive.value ? 0 : element.scrollHeight}px`
     moreActive.value = !moreActive.value
   }
+}
+function onKeyDown(event: KeyboardEvent) {
+  checkSymbolArmenian(event)
 }
 </script>
 
@@ -30,6 +34,7 @@ function moreToggle() {
       type="text"
       placeholder="Имя"
       required
+      @keydown="onKeyDown"
     />
 
     <label for="last_name"></label>
@@ -40,6 +45,7 @@ function moreToggle() {
       type="text"
       placeholder="Фамилия"
       required
+      @keydown="onKeyDown"
     />
 
     <label></label>
@@ -49,6 +55,7 @@ function moreToggle() {
       class="input-195"
       type="text"
       placeholder="Отчество"
+      @keydown="onKeyDown"
     />
   </div>
 
@@ -73,6 +80,7 @@ function moreToggle() {
       class="input-410"
       type="text"
       placeholder="Примечания"
+      @keydown="onKeyDown"
     />
   </div>
 
@@ -92,6 +100,7 @@ function moreToggle() {
         class="input-300"
         type="text"
         placeholder="Примечания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -107,6 +116,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Страна"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -116,6 +126,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Регион/Область"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -125,6 +136,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Город/Деревня"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -136,6 +148,7 @@ function moreToggle() {
         class="input-410"
         type="text"
         placeholder="Улица"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -145,6 +158,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="№ здания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -156,6 +170,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Индекс"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -165,6 +180,7 @@ function moreToggle() {
         class="input-410"
         type="text"
         placeholder="Примечания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -174,15 +190,16 @@ function moreToggle() {
 
     <div class="labels">
       <label></label>
-      <input id="baptism_date" v-model="model.babtism_date.date" class="input-300" type="date" />
+      <input id="baptism_date" v-model="model.baptism_date.date" class="input-300" type="date" />
 
       <label></label>
       <input
         id="baptism_date_note"
-        v-model="model.babtism_date.date_note"
+        v-model="model.baptism_date.date_note"
         class="input-300"
         type="text"
         placeholder="Примечания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -198,6 +215,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Страна"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -207,6 +225,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Регион/Область"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -216,6 +235,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Город/Деревня"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -227,6 +247,7 @@ function moreToggle() {
         class="input-410"
         type="text"
         placeholder="Улица"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -236,6 +257,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="№ здания"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -247,6 +269,7 @@ function moreToggle() {
         class="input-195"
         type="text"
         placeholder="Индекс"
+        @keydown="onKeyDown"
       />
 
       <label></label>
@@ -256,6 +279,7 @@ function moreToggle() {
         class="input-410"
         type="text"
         placeholder="Примечания/Священник"
+        @keydown="onKeyDown"
       />
     </div>
   </span>
@@ -266,3 +290,12 @@ function moreToggle() {
     </button>
   </div>
 </template>
+
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+.more {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s;
+}
+</style>

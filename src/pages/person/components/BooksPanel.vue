@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import BookFormDisplay from '@/pages/person/components/book/BookFormDisplay.vue'
 
-const menuIndex = ref<number>(-1)
+const menuIndex = defineModel<number>('menu', { default: -1 })
 
 function changeMenu(index: number) {
   menuIndex.value = index
@@ -45,3 +45,7 @@ function changeMenu(index: number) {
     </div>
   </div>
 </template>
+
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+</style>

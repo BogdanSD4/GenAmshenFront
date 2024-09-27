@@ -33,3 +33,9 @@ export async function changePhoto(photo: File): Promise<any> {
     .put('users/photo/', toFormData({ photo: photo }))
     .then((response) => response.data)
 }
+
+export async function changeBackPhoto(photo: File): Promise<any> {
+  return await api
+    .put('users/background_photo/', toFormData({ background_photo: photo }))
+    .then((response) => response.data)
+}

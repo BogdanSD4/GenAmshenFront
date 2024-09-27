@@ -2,6 +2,7 @@
 import type { UserData } from '@/pages/users/components/userControl/types/userData'
 import { computed, ref } from 'vue'
 import { getImg } from '@/utils/imageManager'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
 
 const userForm = defineModel<UserData>('userData', { required: true })
 const imagePath = defineModel<string>('userImage')
@@ -27,7 +28,11 @@ function photoHandler(event: Event) {
   const file = target.files[0]
 
   if (file) {
-    if (!photoValid(file)) return
+    if (!photoValid(file)) {
+      const modal = modalStore()
+      modal.activate(ModalTypes.SEVEN)
+      return
+    }
     userForm.value.photo = file
 
     const reader = new FileReader()
@@ -244,4 +249,6 @@ function photoHandler(event: Event) {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { getImg } from '@/utils/imageManager.js'
 import { computed, type PropType, ref } from 'vue'
 import { type UserData, UserType } from '@/pages/users/components/userControl/types/userData'
 import { userAdd } from '@/api/users'
 import BaseUserForm from '@/pages/users/components/userControl/elements/BaseUserForm.vue'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
 
 const emit = defineEmits(['changeIndex', 'editUser'])
 
@@ -14,7 +14,7 @@ const props = defineProps({
   }
 })
 
-const userForm = ref<UserData>({
+const defaultUD: UserData = {
   groups: [],
   first_name: '',
   last_name: '',
@@ -34,7 +34,9 @@ const userForm = ref<UserData>({
   email: '',
   password: '',
   comments: ''
-})
+}
+
+const userForm = ref<UserData>({ ...defaultUD })
 
 const textAdd = computed(() => {
   let text = ''
@@ -56,8 +58,23 @@ function cancel() {
 }
 
 async function onSave() {
+  const modal = modalStore()
+  if (userForm.value.first_name == '' || userForm.value.last_name == '') {
+    modal.activate(ModalTypes.THREE)
+    return
+  } else if (
+    userForm.value.username == '' ||
+    userForm.value.email == '' ||
+    userForm.value.password == ''
+  ) {
+    modal.activate(ModalTypes.FOUR)
+    return
+  }
+
   userForm.value.groups = [props.user]
-  await userAdd(userForm.value)
+  await userAdd(userForm.value).then(() => {
+    userForm.value = { ...defaultUD }
+  })
 }
 </script>
 
@@ -76,4 +93,6 @@ async function onSave() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>

@@ -3,6 +3,7 @@ import { UserRole } from '@/types/userRole'
 import { useCookies } from 'vue3-cookies'
 import { personInfo } from '@/api/authorize'
 import router from '@/router'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
 
 interface State {
   id: number
@@ -12,6 +13,7 @@ interface State {
   photo: string
   first_name: string
   last_name: string
+  background_photo: string
 }
 
 const defaultState: State = {
@@ -21,7 +23,8 @@ const defaultState: State = {
   email: '',
   photo: '',
   first_name: '',
-  last_name: ''
+  last_name: '',
+  background_photo: ''
 }
 
 export const userStore = defineStore('user', {
@@ -40,6 +43,7 @@ export const userStore = defineStore('user', {
           this.photo = response.photo
           this.first_name = response.first_name
           this.last_name = response.last_name
+          this.background_photo = response.background_photo
         })
         .catch((error) => (result = false))
 
@@ -78,8 +82,10 @@ export const userStore = defineStore('user', {
       const cookies = useCookies().cookies
       cookies.remove('gen_token')
       this.$state = { ...defaultState }
-      console.log('User', this.role)
-      await router.push('/welcome')
+
+      const modal = modalStore()
+      modal.activate(ModalTypes.FIRST)
+      await router.push('/login')
     }
   }
 })

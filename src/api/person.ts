@@ -12,10 +12,12 @@ import {
 
 const user = userStore()
 const userType = computed(() => {
+  console.log(user.role)
   switch (user.role) {
     case UserRole.USER:
       return 'by_clerk'
-    case UserRole.MODER || UserRole.ADMIN:
+    case UserRole.MODER:
+    case UserRole.ADMIN:
       return 'by_moder'
   }
   return ''

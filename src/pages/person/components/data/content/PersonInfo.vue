@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BasePersonModel } from '@/pages/person/components/data/models/base'
+import { checkSymbolArmenian } from '@/utils/textCheck'
 
 defineProps({
   lable: {
@@ -12,6 +13,10 @@ defineProps({
   noMargin: Boolean
 })
 const item = defineModel<BasePersonModel>('personItem', { required: true })
+
+function onKeyDown(event: KeyboardEvent) {
+  checkSymbolArmenian(event)
+}
 </script>
 
 <template>
@@ -31,6 +36,7 @@ const item = defineModel<BasePersonModel>('personItem', { required: true })
       class="input-195"
       type="text"
       placeholder="Имя"
+      @keydown="onKeyDown"
     />
 
     <label></label>
@@ -40,6 +46,7 @@ const item = defineModel<BasePersonModel>('personItem', { required: true })
       class="input-195"
       type="text"
       placeholder="Фамилия"
+      @keydown="onKeyDown"
     />
 
     <label></label>
@@ -49,6 +56,7 @@ const item = defineModel<BasePersonModel>('personItem', { required: true })
       class="input-195"
       type="text"
       placeholder="Отчество"
+      @keydown="onKeyDown"
     />
   </div>
 
@@ -61,6 +69,7 @@ const item = defineModel<BasePersonModel>('personItem', { required: true })
       class="input-195"
       type="text"
       placeholder="Возраст"
+      @keydown="onKeyDown"
     />
 
     <label></label>
@@ -70,6 +79,11 @@ const item = defineModel<BasePersonModel>('personItem', { required: true })
       class="input-410"
       type="text"
       placeholder="Примечания"
+      @keydown="onKeyDown"
     />
   </div>
 </template>
+
+<style scoped>
+@import '@/assets/styles/personal_data.css';
+</style>

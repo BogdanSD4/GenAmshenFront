@@ -32,4 +32,6 @@ onMounted(async () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/user.css';
+</style>
