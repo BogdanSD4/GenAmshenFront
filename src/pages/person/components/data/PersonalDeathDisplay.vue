@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { type ModelRef, onMounted, ref } from 'vue'
 import {
   AdressModel,
   BaseDateModel,
@@ -8,12 +8,16 @@ import {
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
 import { createPerson, updatePerson } from '@/api/person'
 import { userStore } from '@/stores/userRole'
-import { type HistoricalDeath, PersonType } from '@/pages/database/types/historicalTypes'
+import {
+  type ClerkPersonInfo,
+  type HistoricalDeath,
+  PersonType
+} from '@/pages/database/types/historicalTypes'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { checkSymbolArmenian } from '@/utils/textCheck'
 
 const emit = defineEmits(['changePanel'])
-const personData = defineModel<HistoricalDeath>('personData')
+const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalDeath>
 
 const person = ref<BasePersonModel>(new BasePersonModel())
 const death = ref<BaseDateModel>(new BaseDateModel())

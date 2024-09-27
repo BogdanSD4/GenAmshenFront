@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import ModalViews from '@/components/ModalViews.vue'
+import '@/assets/styles/normalize.css'
 
 onMounted(() => {
   window.onscroll = function () {
@@ -22,8 +23,6 @@ onMounted(() => {
 </template>
 
 <style>
-@import 'src/assets/styles/normalize.css';
-
 .yellow-btn:hover {
   color: #e6af2e !important;
   transition: color 0.3s;

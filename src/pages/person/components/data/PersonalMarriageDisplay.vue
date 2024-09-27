@@ -11,7 +11,7 @@ import MarriageAdress from '@/pages/person/components/data/content/PersonAdress.
 import { userStore } from '@/stores/userRole'
 import { createPerson } from '@/api/person'
 import { type HistoricalDeath, PersonType } from '@/pages/database/types/historicalTypes'
-import { checkSymbolArmenian, isEnglishLang } from '@/utils/textCheck'
+import { checkSymbolArmenian } from '@/utils/textCheck'
 
 const emit = defineEmits(['changePanel'])
 const personData = defineModel<HistoricalDeath>('personData')
