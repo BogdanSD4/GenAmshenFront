@@ -6,12 +6,10 @@ const englishReplace = /[^a-zA-Z0-9]/g
 
 const russianRegex = /[^а-яА-ЯёЁ0-9]/g
 
-export function isArmenianLanguage(value: string) {
-  return armenianRegex.test(value)
-}
+const langOption = Boolean(Number(import.meta.env.VITE_LANG_BLOCK))
 
 export function checkSymbolArmenian(event: KeyboardEvent) {
-  onKeydown(event, armenianRegex)
+  if (langOption) onKeydown(event, armenianRegex)
 }
 
 function isSomeLang(event: Event, lang: RegExp, rep: RegExp) {

@@ -14,7 +14,10 @@ export enum ModalTypes {
   EIGHT = 'Данные успешно проверены и сохранены',
   NINE = 'Вы уверены, что хотите удалить этого оператора?',
   TEN = 'Вы уверены, что хотите удалить этого модератора?',
-  ELEVEN = 'Человек с такими именем и фамилией уже существует в базе данных. Пожалуйста, обратитесь к модератору.'
+  ELEVEN = 'Человек с такими именем и фамилией уже существует в базе данных. Пожалуйста, обратитесь к модератору.',
+  TWELVE = 'Пользователь с такими никнеймом уже существует в базе данных.',
+  THIRTEEN = 'У вас есть не подтвержденная историческая личность',
+  FOURTEEN = 'У вас есть незавершенная историческая личность. Хотите создать новую?'
 }
 
 interface ModalCloseEvent {
@@ -30,6 +33,8 @@ type ModalEvent = ModalChoseEvent | ModalCloseEvent
 interface State {
   modalType: ModalTypes
   event?: ModalEvent
+  btnCancel?: string
+  btnApprove?: string
 }
 
 export const modalStore = defineStore('modalViews', {
@@ -39,15 +44,19 @@ export const modalStore = defineStore('modalViews', {
     }
   },
   actions: {
-    activate(type: ModalTypes, event?: ModalEvent) {
+    activate(type: ModalTypes, event?: ModalEvent, btnCancel?: string, btnApprove?: string) {
       this.event = event
       this.modalType = type
+      this.btnCancel = btnCancel
+      this.btnApprove = btnApprove
     },
     close() {
       if (this.event && 'onClose' in this.event) {
         this.event.onClose?.()
       }
       this.event = undefined
+      this.btnCancel = undefined
+      this.btnApprove = undefined
       this.modalType = ModalTypes.NONE
     }
   }

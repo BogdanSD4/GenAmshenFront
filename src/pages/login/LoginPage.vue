@@ -30,6 +30,7 @@ async function handleSignInSubmit() {
     password: password.value.text
   }
   cookies.remove('gen_token')
+  cookies.remove('person_save')
 
   await login(creditals).then(async (response) => {
     const user = userStore()
@@ -40,7 +41,7 @@ async function handleSignInSubmit() {
     user.username = response.username
     user.email = response.email
 
-    await router.push(`/${user.role}`).catch((error) => console.log(error))
+    await router.push(`/${user.role}`)
   })
 }
 

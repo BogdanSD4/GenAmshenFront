@@ -8,4 +8,4 @@ services:
       dockerfile: Dockerfile
       target: "prod"
     ports:
-      - '82:82'
+      - '443:443'

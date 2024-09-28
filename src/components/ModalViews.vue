@@ -36,8 +36,12 @@ function onClose() {
         {{ modal.modalType }}
       </p>
       <div v-if="isChoseButtonsActive" class="modal-btns">
-        <button class="cancel-modal-btn" @click="onCancel()">Отменить</button>
-        <button class="delete-modal-btn" @click="onApprove()">Удалить</button>
+        <button class="cancel-modal-btn" @click="onCancel()">
+          {{ modal.btnCancel ?? 'Отменить' }}
+        </button>
+        <button class="delete-modal-btn" @click="onApprove()">
+          {{ modal.btnApprove ?? 'Удалить' }}
+        </button>
       </div>
     </div>
   </div>
@@ -46,7 +50,7 @@ function onClose() {
 <style scoped>
 .modal-container {
   z-index: 101;
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import ModalViews from '@/components/ModalViews.vue'
 import '@/assets/styles/normalize.css'
+import { headerStore } from '@/stores/header'
 
 onMounted(() => {
   window.onscroll = function () {
@@ -12,6 +13,8 @@ onMounted(() => {
       navbar.style.top = '0'
     } else {
       navbar.style.top = '-120px'
+      const header = headerStore()
+      header.hamburger = false
     }
   }
 })

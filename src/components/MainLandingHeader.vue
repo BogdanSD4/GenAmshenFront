@@ -5,17 +5,18 @@ import { computed, ref, watch } from 'vue'
 import router from '@/router'
 import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
+import { headerStore } from '@/stores/header'
 
 const isMain = defineModel('isMain', { default: false })
-const hamburger = ref<boolean>(false)
 const user = userStore()
+const header = headerStore()
 
 const isAuth = computed(() => {
   return user.role != UserRole.GUEST
 })
 
 function onHamburgerMouseDown() {
-  hamburger.value = !hamburger.value
+  header.hamburger = !header.hamburger
 }
 
 async function goToWelcomePage(id: string) {
@@ -46,7 +47,10 @@ async function logout() {
             ><img class="size" :src="getImg('email')" alt="Image"
           /></a>
 
-          <div :class="['hamburger', { active: hamburger }]" @mousedown="onHamburgerMouseDown">
+          <div
+            :class="['hamburger', { active: header.hamburger }]"
+            @mousedown="onHamburgerMouseDown"
+          >
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
@@ -54,7 +58,7 @@ async function logout() {
         </div>
       </div>
 
-      <ul :class="['nav-menu', { active: hamburger }]">
+      <ul :class="['nav-menu', { active: header.hamburger }]">
         <li class="nav-item">
           <a class="nav-link" @click="goToWelcomePage('about')">О проекте</a>
         </li>

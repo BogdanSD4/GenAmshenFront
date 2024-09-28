@@ -6,15 +6,28 @@ import {
   MarriagePersonModel,
   WitnessModel
 } from '@/pages/person/components/data/models/marriageModel'
-import { ref } from 'vue'
+import { type ModelRef, onMounted, onUnmounted, ref } from 'vue'
 import MarriageAdress from '@/pages/person/components/data/content/PersonAdress.vue'
 import { userStore } from '@/stores/userRole'
 import { createPerson } from '@/api/person'
-import { type HistoricalDeath, PersonType } from '@/pages/database/types/historicalTypes'
+import {
+  type ClerkPersonInfo,
+  type HistoricalMarriage,
+  PersonType
+} from '@/pages/database/types/historicalTypes'
 import { checkSymbolArmenian } from '@/utils/textCheck'
+import { modalStore, ModalTypes } from '@/stores/modalViews'
+import { useCookies } from 'vue3-cookies'
+import { isEmpty } from '@/utils/objectManager'
 
-const emit = defineEmits(['changePanel'])
-const personData = defineModel<HistoricalDeath>('personData')
+const props = defineProps({
+  index: {
+    type: Number,
+    required: true
+  }
+})
+const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
+const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalMarriage>
 
 const man = ref<MarriagePersonModel>(new MarriagePersonModel())
 const bride = ref<BrideModel>(new BrideModel())
@@ -29,7 +42,6 @@ interface MoreTypes {
   witness: boolean
   [key: string]: boolean
 }
-
 const moreActive = ref<MoreTypes>({
   man: false,
   bride: false,
@@ -40,7 +52,6 @@ const moreActive = ref<MoreTypes>({
 function toggleName(value: keyof MoreTypes) {
   return moreActive.value[value] ? 'Свернуть' : 'Добавить данные'
 }
-
 function moreToggle(value: keyof MoreTypes) {
   const element = document.querySelector(`.${value}`) as HTMLElement
   if (element) {
@@ -49,10 +60,75 @@ function moreToggle(value: keyof MoreTypes) {
   }
 }
 
-async function onSave() {
-  const user = userStore()
+function setData() {
+  if (!personData.value) return
+  man.value.info.first_name = personData.value.groom_first_name
+  man.value.info.last_name = personData.value.groom_last_name
+  man.value.info.patronymic = personData.value.groom_patronymic
+  man.value.info.age = personData.value.groom_age
+  man.value.info.name_note = personData.value.groom_name_note
+  man.value.wedding_number = personData.value.groom_wedding_number
+  man.value.adress.country = personData.value.groom_country
+  man.value.adress.region = personData.value.groom_region
+  man.value.adress.city = personData.value.groom_city
+  man.value.adress.street = personData.value.groom_street
+  man.value.adress.building = personData.value.groom_building
+  man.value.adress.postal = personData.value.groom_postal_code
+  man.value.adress.place_note = personData.value.groom_place_note
 
-  const data = {
+  bride.value.info.first_name = personData.value.bride_first_name
+  bride.value.info.last_name = personData.value.bride_last_name
+  bride.value.info.patronymic = personData.value.bride_patronymic
+  bride.value.info.age = personData.value.bride_age
+  bride.value.info.name_note = personData.value.bride_name_note
+  bride.value.wedding_number = personData.value.bride_wedding_number
+  bride.value.adress.country = personData.value.bride_country
+  bride.value.adress.region = personData.value.bride_region
+  bride.value.adress.city = personData.value.bride_city
+  bride.value.adress.street = personData.value.bride_street
+  bride.value.adress.building = personData.value.bride_building
+  bride.value.adress.postal = personData.value.bride_postal_code
+  bride.value.adress.place_note = personData.value.bride_place_note
+  bride.value.father.first_name = personData.value.bride_father_first_name
+  bride.value.father.last_name = personData.value.bride_father_first_name
+  bride.value.father.patronymic = personData.value.bride_father_patronymic
+  bride.value.father.name_note = personData.value.bride_father_name_note
+
+  weddingDate.value.date = personData.value.wedding_date
+  weddingDate.value.date_note = personData.value.wedding_date_note
+  weddingDate.value.adress.country = personData.value.wedding_country
+  weddingDate.value.adress.region = personData.value.wedding_region
+  weddingDate.value.adress.city = personData.value.wedding_city
+  weddingDate.value.adress.street = personData.value.wedding_street
+  weddingDate.value.adress.building = personData.value.wedding_building
+  weddingDate.value.adress.postal = personData.value.wedding_postal_code
+  weddingDate.value.adress.place_note = personData.value.wedding_place_note
+
+  witness.value.first_witness_info.first_name = personData.value.witness_1_first_name
+  witness.value.first_witness_info.last_name = personData.value.witness_1_last_name
+  witness.value.first_witness_info.patronymic = personData.value.witness_1_patronymic
+  witness.value.first_witness_info.name_note = personData.value.witness_1_name_note
+  witness.value.first_witness_adress.country = personData.value.witness_1_country
+  witness.value.first_witness_adress.region = personData.value.witness_1_region
+  witness.value.first_witness_adress.city = personData.value.witness_1_city
+  witness.value.first_witness_adress.street = personData.value.witness_1_street
+  witness.value.first_witness_adress.building = personData.value.witness_1_building
+  witness.value.first_witness_adress.postal = personData.value.witness_1_postal
+  witness.value.first_witness_adress.place_note = personData.value.witness_1_place_note
+  witness.value.second_witness_info.first_name = personData.value.witness_2_first_name
+  witness.value.second_witness_info.last_name = personData.value.witness_2_last_name
+  witness.value.second_witness_info.patronymic = personData.value.witness_2_patronymic
+  witness.value.second_witness_info.name_note = personData.value.witness_2_name_note
+  witness.value.second_witness_adress.country = personData.value.witness_2_country
+  witness.value.second_witness_adress.region = personData.value.witness_2_region
+  witness.value.second_witness_adress.city = personData.value.witness_2_city
+  witness.value.second_witness_adress.street = personData.value.witness_2_street
+  witness.value.second_witness_adress.building = personData.value.witness_2_building
+  witness.value.second_witness_adress.postal = personData.value.witness_2_postal
+  witness.value.second_witness_adress.place_note = personData.value.witness_2_place_note
+}
+function getData() {
+  return {
     groom_first_name: man.value.info.first_name,
     groom_last_name: man.value.info.last_name,
     groom_patronymic: man.value.info.patronymic,
@@ -66,6 +142,7 @@ async function onSave() {
     groom_building: man.value.adress.building,
     groom_postal_code: man.value.adress.postal,
     groom_place_note: man.value.adress.place_note,
+
     bride_first_name: bride.value.info.first_name,
     bride_last_name: bride.value.info.last_name,
     bride_patronymic: bride.value.info.patronymic,
@@ -83,6 +160,7 @@ async function onSave() {
     bride_father_last_name: bride.value.father.last_name,
     bride_father_patronymic: bride.value.father.patronymic,
     bride_father_name_note: bride.value.father.name_note,
+
     wedding_date: weddingDate.value.date,
     wedding_date_note: weddingDate.value.date_note,
     wedding_country: weddingDate.value.adress.country,
@@ -92,6 +170,7 @@ async function onSave() {
     wedding_building: weddingDate.value.adress.building,
     wedding_postal_code: weddingDate.value.adress.postal,
     wedding_place_note: weddingDate.value.adress.place_note,
+
     witness_1_first_name: witness.value.first_witness_info.first_name,
     witness_1_last_name: witness.value.first_witness_info.last_name,
     witness_1_patronymic: witness.value.first_witness_info.patronymic,
@@ -103,6 +182,7 @@ async function onSave() {
     witness_1_building: witness.value.first_witness_adress.building,
     witness_1_postal: witness.value.first_witness_adress.postal,
     witness_1_place_note: witness.value.first_witness_adress.place_note,
+
     witness_2_first_name: witness.value.second_witness_info.first_name,
     witness_2_last_name: witness.value.second_witness_info.last_name,
     witness_2_patronymic: witness.value.second_witness_info.patronymic,
@@ -113,18 +193,63 @@ async function onSave() {
     witness_2_street: witness.value.second_witness_adress.street,
     witness_2_building: witness.value.second_witness_adress.building,
     witness_2_postal: witness.value.second_witness_adress.postal,
-    witness_2_place_note: witness.value.second_witness_adress.place_note,
-    comments: comment.value,
-    book: 1,
-    user: user.id
+    witness_2_place_note: witness.value.second_witness_adress.place_note
+  }
+}
+
+function clear() {
+  man.value = new MarriagePersonModel()
+  bride.value = new BrideModel()
+  weddingDate.value = new MarriageDateModel()
+  witness.value = new WitnessModel()
+  comment.value = ''
+}
+
+function validation(data: any): boolean {
+  if (data.groom_first_name == '' || data.groom_last_name == '') {
+    const modal = modalStore()
+    modal.activate(ModalTypes.SIX)
+    return false
   }
 
-  await createPerson(PersonType.WEDDING, data)
+  return true
+}
+
+async function onSave() {
+  const data = getData()
+
+  if (!validation(data)) return
+
+  emit('onSave', PersonType.WEDDING, props.index, data, clear)
+}
+
+function saveToCookie() {
+  const data = getData()
+  if (!isEmpty(data)) emit('onSaveToCookies', data, props.index)
 }
 
 function onKeyDown(event: KeyboardEvent) {
   checkSymbolArmenian(event)
 }
+
+onMounted(() => {
+  window.addEventListener('beforeunload', () => {
+    saveToCookie()
+  })
+
+  const cookies = useCookies().cookies
+
+  const option = cookies.get('person_save') as any
+  if (option && option.menuChapter == props.index) {
+    personData.value = option as any
+    emit('changePanel', props.index)
+  }
+
+  setData()
+})
+onUnmounted(() => {
+  saveToCookie()
+})
 </script>
 
 <template>

@@ -50,7 +50,7 @@ main() {
           esac
           ;;
         "$DOWN")
-          docker rm -f $(docker ps -a | grep core-front | awk '{print $1}')
+          docker rm -f $(docker ps -a | grep genamshenfron | awk '{print $1}')
           docker image prune -fa
           docker volume prune -fa
           ;;

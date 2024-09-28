@@ -7,10 +7,19 @@ import { createBook } from '@/api/person'
 import { checkSymbolArmenian } from '@/utils/textCheck'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 
-defineProps({
+const props = defineProps({
   bookName: {
     type: String,
     required: true
+  },
+  index: {
+    type: Number,
+    require: true,
+    default: 1
+  },
+  currentIndex: {
+    type: Number,
+    require: true
   }
 })
 
@@ -52,7 +61,7 @@ function onKeyDown(event: KeyboardEvent) {
 }
 
 async function onSave() {
-  const data = {
+  const data: any = {
     archive: book.value.archive,
     fund: book.value.fund,
     description: book.value.description,
@@ -67,7 +76,6 @@ async function onSave() {
     slide_number: book.value.book_slide,
     page_number: book.value.book_page,
     book_note: book.value.book_note,
-    book_photo: book.value.book_image,
     priest_first_name: book.value.priest.first_name,
     priest_last_name: book.value.priest.last_name,
     priest_patronymic: book.value.priest.patronymic,
@@ -93,12 +101,12 @@ async function onSave() {
     comments: comment.value
   }
 
-  await createBook(data)
+  await createBook(props.index, data)
 }
 </script>
 
 <template>
-  <div class="birth-date">
+  <div v-show="index == currentIndex" class="birth-date">
     <div class="field-name">
       <h4>Архив</h4>
     </div>

@@ -28,9 +28,11 @@ export async function getPersonData(params?: ApprovePerson): Promise<PersonInfo>
   return await api.get(`api/check/${userType.value}/`, { params }).then((response) => response.data)
 }
 
-export async function createBook(params: any): Promise<any> {
+export async function createBook(book_capture: number, data: any): Promise<any> {
   return await api
-    .post(`api/book/create/${userType.value}/`, toFormData(params))
+    .post(`api/book/create/${userType.value}/`, toFormData(data), {
+      params: { book_capture: book_capture }
+    })
     .then((response) => response.data)
 }
 

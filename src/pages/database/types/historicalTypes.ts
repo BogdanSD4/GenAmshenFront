@@ -152,7 +152,6 @@ export interface HistoricalMarriage {
 }
 
 export type ClerkPersonInfo = HistoricalDeath | HistoricalMarriage
-
 export type ModerPersonInfo = HistoricalPersonTls
 
 export type PersonInfo = ClerkPersonInfo | ModerPersonInfo

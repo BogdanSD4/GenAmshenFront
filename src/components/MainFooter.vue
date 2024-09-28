@@ -42,7 +42,7 @@ async function goToWelcomePage(id: string) {
     </div>
 
     <div class="design">
-      <RouterLink v-if="enableLoginLink" to="/login">
+      <RouterLink v-if="enableLoginLink" to="/login" class="footer-login-link">
         <img class="login" :src="getImg('login')" alt="Sign in" />
       </RouterLink>
       <a class="color-blue" target="_blank" href="https://volha.ca"
@@ -54,4 +54,10 @@ async function goToWelcomePage(id: string) {
 
 <style scoped>
 @import '@/assets/styles/user.css';
+
+.footer-login-link {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
 </style>

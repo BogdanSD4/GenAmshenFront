@@ -72,9 +72,15 @@ async function onSave() {
   }
 
   userForm.value.groups = [props.user]
-  await userAdd(userForm.value).then(() => {
-    userForm.value = { ...defaultUD }
-  })
+  await userAdd(userForm.value)
+    .then(() => {
+      userForm.value = { ...defaultUD }
+    })
+    .catch((error) => {
+      const data = error.response.data
+      const modal = modalStore()
+      if ('username' in data) modal.activate(ModalTypes.TWELVE)
+    })
 }
 </script>
 

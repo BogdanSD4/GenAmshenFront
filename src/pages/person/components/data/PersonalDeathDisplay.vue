@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { type ModelRef, onMounted, ref } from 'vue'
+import { type ModelRef, onMounted, onUnmounted, ref, watch } from 'vue'
 import {
   AdressModel,
   BaseDateModel,
   BasePersonModel
 } from '@/pages/person/components/data/models/base'
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
-import { createPerson, updatePerson } from '@/api/person'
-import { userStore } from '@/stores/userRole'
 import {
   type ClerkPersonInfo,
   type HistoricalDeath,
@@ -15,8 +13,16 @@ import {
 } from '@/pages/database/types/historicalTypes'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { checkSymbolArmenian } from '@/utils/textCheck'
+import { useCookies } from 'vue3-cookies'
+import { isEmpty } from '@/utils/objectManager'
 
-const emit = defineEmits(['changePanel'])
+const props = defineProps({
+  index: {
+    type: Number,
+    required: true
+  }
+})
+const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
 const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalDeath>
 
 const person = ref<BasePersonModel>(new BasePersonModel())
@@ -25,52 +31,7 @@ const burial = ref<BaseDateModel>(new BaseDateModel())
 const adress = ref<AdressModel>(new AdressModel())
 const comment = ref<string>('')
 
-async function onSave() {
-  const user = userStore()
-
-  const data = {
-    first_name: person.value.first_name,
-    last_name: person.value.last_name,
-    patronymic: person.value.patronymic,
-    age: person.value.age,
-    name_note: person.value.name_note,
-    death_date: death.value.date,
-    death_date_note: death.value.date_note,
-    burial_date: burial.value.date,
-    burial_date_note: burial.value.date_note,
-    burial_country: adress.value.country,
-    burial_region: adress.value.region,
-    burial_city: adress.value.city,
-    burial_street: adress.value.street,
-    burial_place_note: adress.value.place_note,
-    death_comments: comment.value
-  }
-
-  if (data.first_name == '' || data.last_name == '') {
-    const modal = modalStore()
-    modal.activate(ModalTypes.SIX)
-  }
-
-  if (personData.value) {
-    await updatePerson(PersonType.DEATH, data).catch((error) => {
-      console.log(error)
-    })
-  } else {
-    await createPerson(PersonType.DEATH, data).catch((error) => {
-      if ('non_field_errors' in error.response.data) {
-        const modal = modalStore()
-        modal.activate(ModalTypes.ELEVEN)
-      }
-    })
-  }
-  emit('changePanel', 2)
-}
-
-function onKeyDown(event: KeyboardEvent) {
-  checkSymbolArmenian(event)
-}
-
-onMounted(() => {
+function setData() {
   if (!personData.value) return
   person.value.first_name = personData.value.first_name
   person.value.last_name = personData.value.last_name
@@ -89,6 +50,80 @@ onMounted(() => {
   adress.value.city = personData.value.burial_city
   adress.value.street = personData.value.burial_street
   adress.value.place_note = personData.value.burial_place_note
+}
+function getData() {
+  return {
+    first_name: person.value.first_name,
+    last_name: person.value.last_name,
+    patronymic: person.value.patronymic,
+    age: person.value.age,
+    name_note: person.value.name_note,
+    death_date: death.value.date,
+    death_date_note: death.value.date_note,
+    burial_date: burial.value.date,
+    burial_date_note: burial.value.date_note,
+    burial_country: adress.value.country,
+    burial_region: adress.value.region,
+    burial_city: adress.value.city,
+    burial_street: adress.value.street,
+    burial_place_note: adress.value.place_note,
+    death_comments: comment.value
+  }
+}
+
+function clear() {
+  person.value = new BasePersonModel()
+  death.value = new BaseDateModel()
+  burial.value = new BaseDateModel()
+  adress.value = new AdressModel()
+  comment.value = ''
+}
+
+function validation(data: any): boolean {
+  if (data.first_name == '' || data.last_name == '') {
+    const modal = modalStore()
+    modal.activate(ModalTypes.SIX)
+    return false
+  }
+
+  return true
+}
+
+async function onSave() {
+  const data = getData()
+
+  if (!validation(data)) return
+
+  emit('onSave', PersonType.DEATH, props.index, data, clear)
+}
+
+function saveToCookie() {
+  const data = getData()
+  if (!isEmpty(data)) emit('onSaveToCookies', data, props.index)
+}
+
+function onKeyDown(event: KeyboardEvent) {
+  checkSymbolArmenian(event)
+}
+
+onMounted(() => {
+  window.addEventListener('beforeunload', () => {
+    saveToCookie()
+  })
+
+  const cookies = useCookies().cookies
+
+  const option = cookies.get('person_save') as any
+
+  if (option && option.menuChapter == props.index) {
+    personData.value = option
+    emit('changePanel', props.index)
+  }
+
+  setData()
+})
+onUnmounted(() => {
+  saveToCookie()
 })
 </script>
 

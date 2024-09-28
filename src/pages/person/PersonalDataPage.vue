@@ -14,15 +14,6 @@ const saveIndex = ref<number>(-1)
 function changeMenu(index: number) {
   menuIndex.value = index
 }
-
-onMounted(() => {
-  const cookies = useCookies().cookies
-  const data = cookies.get('person_save') as any
-  if (data) {
-    menuIndex.value = data.type
-    saveIndex.value = data.chapter
-  }
-})
 </script>
 
 <template>
