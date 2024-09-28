@@ -65,13 +65,13 @@ onMounted(async () => {
 
 <template>
   <div v-if="isEdit">
-    <PersonalBirthDisplay v-if="displayIndex == 1" />
-    <PersonalMarriageDisplay
-      v-if="displayIndex == 2"
-      :person-data="personData"
-      @change-panel="changePanel"
-    />
-    <PersonalDeathDisplay v-if="displayIndex == 3" :person-data="personData" @on-save="onSave" />
+    <!--    <PersonalBirthDisplay v-if="displayIndex == 1" />-->
+    <!--    <PersonalMarriageDisplay-->
+    <!--      v-if="displayIndex == 2"-->
+    <!--      :person-data="personData"-->
+    <!--      @change-panel="changePanel"-->
+    <!--    />-->
+    <!--    <PersonalDeathDisplay v-if="displayIndex == 3" :person-data="personData" @on-save="onSave" />-->
   </div>
   <div v-else>
     <BirthAccept v-if="displayIndex == 1" />

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BaseBirthModel } from '@/pages/person/components/data/models/birthModel'
 import { type ModelRef, ref } from 'vue'
-import { checkSymbolArmenian, isArmenianLanguage } from '@/utils/textCheck'
+import { checkSymbolArmenian } from '@/utils/textCheck'
 
 const model = defineModel<BaseBirthModel>('birthModel', {
   required: true
