@@ -14,7 +14,9 @@ COPY ./.certs /tmp/certs
 RUN mv /tmp/certs/${CERT_NAME}.crt ${CERTS_PATH}/${CERT_NAME}.crt && \
     mv /tmp/certs/${CERT_NAME}.key ${CERTS_PATH}/${CERT_NAME}.key
 
-COPY nginx/nginx.prod.conf /etc/nginx/nginx.conf
+COPY ./certs/genamshen.com /etc/nginx/genamshen.com
+
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
 
