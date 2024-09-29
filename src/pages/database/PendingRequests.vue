@@ -11,7 +11,7 @@ const members = ref<PendingResponse[]>([])
 
 async function check(user: PendingResponse) {
   const accept = acceptStore()
-  accept.approve.id = user.id
+  accept.approve.id = 29 //user.id
   accept.approve.capture = user.user.capture
   emit('changePanel', 3)
 }

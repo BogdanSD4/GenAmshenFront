@@ -20,7 +20,8 @@ const props = defineProps({
   index: {
     type: Number,
     required: true
-  }
+  },
+  toCookies: Boolean
 })
 const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
 const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalDeath>
@@ -107,23 +108,25 @@ function onKeyDown(event: KeyboardEvent) {
 }
 
 onMounted(() => {
-  window.addEventListener('beforeunload', () => {
-    saveToCookie()
-  })
+  if (props.toCookies) {
+    window.addEventListener('beforeunload', () => {
+      saveToCookie()
+    })
 
-  const cookies = useCookies().cookies
+    const cookies = useCookies().cookies
 
-  const option = cookies.get('person_save') as any
+    const option = cookies.get('person_save') as any
 
-  if (option && option.menuChapter == props.index) {
-    personData.value = option
-    emit('changePanel', props.index)
+    if (option && option.menuChapter == props.index) {
+      personData.value = option
+      emit('changePanel', props.index)
+    }
   }
 
   setData()
 })
 onUnmounted(() => {
-  saveToCookie()
+  if (props.toCookies) saveToCookie()
 })
 </script>
 

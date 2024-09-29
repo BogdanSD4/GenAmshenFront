@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BirthDisplay from '@/pages/person/components/data/PersonalBirthDisplay.vue'
-import MarriageDisplay from '@/pages/person/components/data/PersonalMarriageDisplay.vue'
-import DeathDisplay from '@/pages/person/components/data/PersonalDeathDisplay.vue'
+import PersonalBirthDisplay from '@/pages/person/components/data/PersonalBirthDisplay.vue'
+import PersonalMarriageDisplay from '@/pages/person/components/data/PersonalMarriageDisplay.vue'
+import PersonalDeathDisplay from '@/pages/person/components/data/PersonalDeathDisplay.vue'
 import { PersonType } from '@/pages/database/types/historicalTypes'
 import { createPerson } from '@/api/person'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
@@ -117,23 +117,25 @@ async function onSave(type: PersonType, panel: number, data: any, callback: () =
       </button>
     </div>
     <div id="infoDisplay">
-      <BirthDisplay
+      <PersonalBirthDisplay
         v-show="menuIndex == 1"
         :index="1"
         @change-panel="changeMenu"
         @on-save="onSave"
         @on-save-to-cookies="dataSave"
       />
-      <MarriageDisplay
+      <PersonalMarriageDisplay
         v-show="menuIndex == 2"
         :index="2"
+        to-cookies
         @change-panel="changeMenu"
         @on-save="onSave"
         @on-save-to-cookies="dataSave"
       />
-      <DeathDisplay
+      <PersonalDeathDisplay
         v-show="menuIndex == 3"
         :index="3"
+        to-cookies
         @change-panel="changeMenu"
         @on-save="onSave"
         @on-save-to-cookies="dataSave"

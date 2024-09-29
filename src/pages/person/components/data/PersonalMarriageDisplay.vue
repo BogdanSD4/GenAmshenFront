@@ -24,7 +24,8 @@ const props = defineProps({
   index: {
     type: Number,
     required: true
-  }
+  },
+  toCookies: Boolean
 })
 const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
 const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalMarriage>
@@ -62,19 +63,20 @@ function moreToggle(value: keyof MoreTypes) {
 
 function setData() {
   if (!personData.value) return
-  man.value.info.first_name = personData.value.groom_first_name
-  man.value.info.last_name = personData.value.groom_last_name
-  man.value.info.patronymic = personData.value.groom_patronymic
-  man.value.info.age = personData.value.groom_age
-  man.value.info.name_note = personData.value.groom_name_note
-  man.value.wedding_number = personData.value.groom_wedding_number
-  man.value.adress.country = personData.value.groom_country
-  man.value.adress.region = personData.value.groom_region
-  man.value.adress.city = personData.value.groom_city
-  man.value.adress.street = personData.value.groom_street
-  man.value.adress.building = personData.value.groom_building
-  man.value.adress.postal = personData.value.groom_postal_code
-  man.value.adress.place_note = personData.value.groom_place_note
+  console.log(props.toCookies, personData.value)
+  man.value.info.first_name = personData.value.first_name
+  man.value.info.last_name = personData.value.last_name
+  man.value.info.patronymic = personData.value.patronymic
+  man.value.info.age = personData.value.age
+  man.value.info.name_note = personData.value.name_note
+  man.value.wedding_number = personData.value.wedding_number
+  man.value.adress.country = personData.value.country
+  man.value.adress.region = personData.value.region
+  man.value.adress.city = personData.value.city
+  man.value.adress.street = personData.value.street
+  man.value.adress.building = personData.value.building
+  man.value.adress.postal = personData.value.postal_code
+  man.value.adress.place_note = personData.value.place_note
 
   bride.value.info.first_name = personData.value.bride_first_name
   bride.value.info.last_name = personData.value.bride_last_name
@@ -129,19 +131,19 @@ function setData() {
 }
 function getData() {
   return {
-    groom_first_name: man.value.info.first_name,
-    groom_last_name: man.value.info.last_name,
-    groom_patronymic: man.value.info.patronymic,
-    groom_age: man.value.info.age,
-    groom_name_note: man.value.info.name_note,
-    groom_wedding_number: man.value.wedding_number,
-    groom_country: man.value.adress.country,
-    groom_region: man.value.adress.region,
-    groom_city: man.value.adress.city,
-    groom_street: man.value.adress.street,
-    groom_building: man.value.adress.building,
-    groom_postal_code: man.value.adress.postal,
-    groom_place_note: man.value.adress.place_note,
+    first_name: man.value.info.first_name,
+    last_name: man.value.info.last_name,
+    patronymic: man.value.info.patronymic,
+    age: man.value.info.age,
+    name_note: man.value.info.name_note,
+    wedding_number: man.value.wedding_number,
+    country: man.value.adress.country,
+    region: man.value.adress.region,
+    city: man.value.adress.city,
+    street: man.value.adress.street,
+    building: man.value.adress.building,
+    postal_code: man.value.adress.postal,
+    place_note: man.value.adress.place_note,
 
     bride_first_name: bride.value.info.first_name,
     bride_last_name: bride.value.info.last_name,
@@ -206,7 +208,7 @@ function clear() {
 }
 
 function validation(data: any): boolean {
-  if (data.groom_first_name == '' || data.groom_last_name == '') {
+  if (data.first_name == '' || data.last_name == '') {
     const modal = modalStore()
     modal.activate(ModalTypes.SIX)
     return false
@@ -233,22 +235,24 @@ function onKeyDown(event: KeyboardEvent) {
 }
 
 onMounted(() => {
-  window.addEventListener('beforeunload', () => {
-    saveToCookie()
-  })
+  if (props.toCookies) {
+    window.addEventListener('beforeunload', () => {
+      saveToCookie()
+    })
 
-  const cookies = useCookies().cookies
+    const cookies = useCookies().cookies
 
-  const option = cookies.get('person_save') as any
-  if (option && option.menuChapter == props.index) {
-    personData.value = option as any
-    emit('changePanel', props.index)
+    const option = cookies.get('person_save') as any
+    if (option && option.menuChapter == props.index) {
+      personData.value = option as any
+      emit('changePanel', props.index)
+    }
   }
 
   setData()
 })
 onUnmounted(() => {
-  saveToCookie()
+  if (props.toCookies) saveToCookie()
 })
 </script>
 
@@ -271,7 +275,7 @@ onUnmounted(() => {
       <MarriageAdress :adress="man.adress" />
     </span>
 
-    <div v-if="!personData" class="add-data">
+    <div class="add-data">
       <button id="myBtnDataThree" @click="moreToggle('man')">{{ toggleName('man') }}</button>
     </div>
 
@@ -303,7 +307,7 @@ onUnmounted(() => {
       />
     </span>
 
-    <div v-if="!personData" class="add-data">
+    <div class="add-data">
       <button id="myBtnDataFour" @click="moreToggle('bride')">{{ toggleName('bride') }}</button>
     </div>
 
@@ -334,7 +338,7 @@ onUnmounted(() => {
       <MarriageAdress label="Адрес свадьбы" :adress="weddingDate.adress" />
     </span>
 
-    <div v-if="!personData" class="add-data">
+    <div class="add-data">
       <button id="myBtnDataFive" @click="moreToggle('date')">{{ toggleName('date') }}</button>
     </div>
 
@@ -359,7 +363,7 @@ onUnmounted(() => {
       <MarriageAdress :adress="witness.second_witness_adress" />
     </span>
 
-    <div v-if="!personData" class="add-data">
+    <div class="add-data">
       <button id="myBtnDataSix" @click="moreToggle('witness')">{{ toggleName('witness') }}</button>
     </div>
 

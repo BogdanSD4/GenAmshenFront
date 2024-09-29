@@ -106,7 +106,7 @@ onMounted(async () => {
       <div id="historical-person-data">
         <HistoricalPersonData v-if="panelIndex == 3" />
         <PendingRequests v-if="panelIndex == 4" @change-panel="changePanel" />
-        <AcceptPersonPage v-if="panelIndex == 5" />
+        <AcceptPersonPage v-if="panelIndex == 5" @change-panel="changePanel" />
       </div>
     </div>
   </main>

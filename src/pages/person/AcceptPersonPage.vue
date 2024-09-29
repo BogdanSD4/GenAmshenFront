@@ -23,7 +23,15 @@ const personData = ref<ClerkPersonInfo>()
 const isEdit = ref<boolean>(false)
 
 function changePanel(index: number) {
+  console.log('changePanel')
   emit('changePanel', index)
+}
+function changeMenu(index: number) {
+  displayIndex.value = index
+}
+function changeMode() {
+  console.log('changeMode')
+  isEdit.value = !isEdit.value
 }
 
 function catchErrors(error: any) {
@@ -40,21 +48,21 @@ function catchErrors(error: any) {
 }
 
 async function onSave(type: PersonType, panel: number, data?: any) {
-  console.log('save a')
   if (!data) data = personData.value
 
-  if (personData.value) {
-    await updatePerson(type, data).catch((error) => catchErrors(error))
-  } else {
-    await createPerson(type, data).catch((error) => catchErrors(error))
-  }
-  changePanel(panel)
+  await updatePerson(type, data)
+    .then(() => {
+      changePanel(panel)
+    })
+    .catch((error) => catchErrors(error))
 }
 
 onMounted(async () => {
   await getPersonData()
     .then((response) => {
+      console.log(response)
       personData.value = response as ClerkPersonInfo
+      console.log(personData.value)
       displayIndex.value = personData.value?.capture
     })
     .catch(() => {
@@ -65,18 +73,41 @@ onMounted(async () => {
 
 <template>
   <div v-if="isEdit">
-    <!--    <PersonalBirthDisplay v-if="displayIndex == 1" />-->
-    <!--    <PersonalMarriageDisplay-->
-    <!--      v-if="displayIndex == 2"-->
-    <!--      :person-data="personData"-->
-    <!--      @change-panel="changePanel"-->
-    <!--    />-->
-    <!--    <PersonalDeathDisplay v-if="displayIndex == 3" :person-data="personData" @on-save="onSave" />-->
+    <!--        <PersonalBirthDisplay v-if="displayIndex == 1" />-->
+    <PersonalMarriageDisplay
+      v-if="displayIndex == 2"
+      :index="2"
+      :person-data="personData"
+      @change-panel="changeMenu"
+      @on-save="onSave"
+    />
+    <PersonalDeathDisplay
+      v-if="displayIndex == 3"
+      :index="3"
+      :person-data="personData"
+      @on-save="onSave"
+      @change-panel="changeMenu"
+    />
   </div>
   <div v-else>
-    <BirthAccept v-if="displayIndex == 1" />
-    <MarriageAccept v-if="displayIndex == 2" />
-    <DeathAccept v-if="displayIndex == 3" />
+    <BirthAccept
+      v-if="displayIndex == 1"
+      :person-data="personData"
+      @on-save="onSave"
+      @change-panel="changeMode"
+    />
+    <MarriageAccept
+      v-if="displayIndex == 2"
+      :person-data="personData"
+      @on-save="onSave"
+      @change-panel="changeMode"
+    />
+    <DeathAccept
+      v-if="displayIndex == 3"
+      :person-data="personData"
+      @on-save="onSave"
+      @change-panel="changeMode"
+    />
   </div>
 
   <p v-if="displayIndex == 4" class="no-profiles">Немає профілів на підтвердження</p>

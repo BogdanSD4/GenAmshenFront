@@ -86,19 +86,19 @@ export interface HistoricalDeath {
 
 export interface HistoricalMarriage {
   id: number
-  groom_first_name: string
-  groom_last_name: string
-  groom_patronymic: string
-  groom_age: string
-  groom_name_note: string
-  groom_wedding_number: string
-  groom_country: string
-  groom_region: string
-  groom_city: string
-  groom_street: string
-  groom_building: string
-  groom_postal_code: string
-  groom_place_note: string
+  first_name: string
+  last_name: string
+  patronymic: string
+  age: string
+  name_note: string
+  wedding_number: string
+  country: string
+  region: string
+  city: string
+  street: string
+  building: string
+  postal_code: string
+  place_note: string
   bride_first_name: string
   bride_last_name: string
   bride_patronymic: string

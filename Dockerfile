@@ -6,14 +6,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine as prod
-ENV CERT_NAME='genamshen'
-ENV CERTS_PATH=/etc/nginx
-
-COPY ./.certs /tmp/certs
-
-RUN mv /tmp/certs/${CERT_NAME}.crt ${CERTS_PATH}/${CERT_NAME}.crt && \
-    mv /tmp/certs/${CERT_NAME}.key ${CERTS_PATH}/${CERT_NAME}.key
-
+COPY ./certs/genamshen.com /etc/nginx/genamshen.com
 COPY nginx/nginx.prod.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 defineProps({
-  index: {
-    type: Number,
-    required: true
-  },
+  isMain: Boolean,
   role: {
     type: String,
     required: true
@@ -22,7 +19,7 @@ function onEdit() {
 <template>
   <div class="confirm-hist-person">
     <div class="main-profile">
-      <p>{{ index == 0 ? 'Основной профиль' : 'Дополнительный профиль' }}</p>
+      <p>{{ isMain ? 'Основной профиль' : 'Дополнительный профиль' }}</p>
       <p>{{ role }}</p>
     </div>
     <div class="first-name-last-name">

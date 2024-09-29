@@ -1,24 +1,29 @@
 <script setup lang="ts">
 import AcceptProfile from '@/pages/person/components/accept/AcceptProfile.vue'
-import { PersonType } from '@/pages/database/types/historicalTypes'
+import {
+  type ClerkPersonInfo,
+  type HistoricalDeath,
+  PersonType
+} from '@/pages/database/types/historicalTypes'
+import type { ModelRef } from 'vue'
 
 const emit = defineEmits(['onSave', 'changePanel'])
-const persons = ['Умерший']
+const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalDeath>
 
-function changePanel() {
-  emit('changePanel', 3)
+function changePanel(): void {
+  emit('changePanel')
 }
 function onSave() {
-  emit('onSave', PersonType.DEATH, 4)
+  emit('onSave', PersonType.DEATH, 2)
 }
 </script>
 
 <template>
   <AcceptProfile
-    v-for="(name, index) in persons"
-    :key="index"
-    :index="index"
-    :role="name"
+    is-main
+    role="Умерший"
+    :first-name="personData.first_name"
+    :last-name="personData.last_name"
     @change-panel="changePanel"
   />
   <div class="btn-submit-container">
