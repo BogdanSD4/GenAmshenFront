@@ -4,13 +4,11 @@ import type { HistoricalBlock } from '@/pages/database/models/historicalModels'
 import HistoricalColumnContent from '@/pages/database/elements/HistoricalColumnContent.vue'
 import HistoricalColumnEdit from '@/pages/database/elements/HistoricalColumnEdit.vue'
 import type { PropType } from 'vue'
-import { userUpdate } from '@/api/users'
-import { updatePerson, updatePersonByModer } from '@/api/person'
+import { updatePersonByModer } from '@/api/person'
 import type { PersonType } from '@/pages/database/types/historicalTypes'
 import { acceptStore } from '@/stores/acceptPerson'
-import axios from 'axios'
 
-const props = defineProps({
+defineProps({
   label: {
     type: String,
     required: true

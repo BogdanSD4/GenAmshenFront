@@ -4,13 +4,16 @@ import { getImg } from '@/utils/imageManager'
 import { type UserInfo, UserType } from '@/pages/users/components/userControl/types/userData'
 import { userDelete, userList } from '@/api/users'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
+import { userStore } from '@/stores/userRole'
+import { UserRole } from '@/types/userRole'
 
 const emit = defineEmits(['editUser'])
 const users = ref<UserInfo[]>([])
 const label = ref<string>('')
+const user = userStore()
 
 const props = defineProps({
-  user: {
+  userType: {
     type: Number as PropType<UserType>,
     required: true
   }
@@ -24,7 +27,7 @@ function imgSource(index: number) {
 async function deleteClerk(id: number) {
   const modal = modalStore()
   let type: ModalTypes = ModalTypes.NONE
-  switch (props.user) {
+  switch (props.userType) {
     case UserType.CLERK:
       type = ModalTypes.NINE
       break
@@ -42,14 +45,14 @@ async function deleteClerk(id: number) {
   })
 }
 function editClerk(id: number) {
-  emit('editUser', 4, { user: props.user, id: id })
+  emit('editUser', 4, { user: props.userType, id: id })
 }
 
 async function updateListData() {
-  users.value = await userList({ group_id: props.user })
+  users.value = await userList({ group_id: props.userType })
   const haveUsers = users.value.length > 0
 
-  switch (props.user) {
+  switch (props.userType) {
     case UserType.CLERK:
       label.value = haveUsers ? 'Список операторов' : 'Нет операторов'
       break
@@ -70,15 +73,15 @@ onMounted(async () => {
   <div id="clerk-container" class="team">
     <h4>{{ label }}</h4>
     <br />
-    <div class="team-member" v-for="(user, index) in users" :key="index">
+    <div class="team-member" v-for="(role, index) in users" :key="index">
       <div class="user-list-info">
         <img id="clerk-image" class="user-size" :src="imgSource(index)" alt="Image" />
-        <h4 id="clerk-name" class="member-name">{{ user.first_name }} {{ user.last_name }}</h4>
+        <h4 id="clerk-name" class="member-name">{{ role.first_name }} {{ role.last_name }}</h4>
       </div>
 
-      <div class="user-list-btn">
-        <button class="btn-edit-clerk" @click="editClerk(user.id)">Редактировать</button>
-        <button class="btn-delete-clerk" @click="deleteClerk(user.id)">Удалить</button>
+      <div v-if="user.access(UserRole.ADMIN)" class="user-list-btn">
+        <button class="btn-edit-clerk" @click="editClerk(role.id)">Редактировать</button>
+        <button class="btn-delete-clerk" @click="deleteClerk(role.id)">Удалить</button>
       </div>
     </div>
   </div>

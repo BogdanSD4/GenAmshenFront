@@ -10,7 +10,7 @@ import { UserRole } from '@/types/userRole'
 const user = userStore()
 const menuIndex = ref<number>(-1)
 const editUserData = ref<EditUser>({
-  user: UserType.NONE,
+  userType: UserType.NONE,
   id: -1
 })
 
@@ -63,9 +63,9 @@ onMounted(() => {
     </div>
 
     <div id="infoDisplayTeam">
-      <UserList v-if="menuIndex == 0" :user="UserType.CLERK" @edit-user="editUser" />
+      <UserList v-if="menuIndex == 0" :userType="UserType.CLERK" @edit-user="editUser" />
       <UserAdd v-if="menuIndex == 1" :user="UserType.CLERK" @change-index="changeIndex" />
-      <UserList v-if="menuIndex == 2" :user="UserType.MODER" @edit-user="editUser" />
+      <UserList v-if="menuIndex == 2" :userType="UserType.MODER" @edit-user="editUser" />
       <UserAdd v-if="menuIndex == 3" :user="UserType.MODER" @change-index="changeIndex" />
 
       <UserEdit v-if="menuIndex == 4" :edit="editUserData" @change-index="changeIndex" />

@@ -21,3 +21,9 @@ export interface PendingUser {
   photo: string
   capture: number
 }
+
+export interface PendingPerson {
+  id: number
+  first_name: string
+  last_name: string
+}

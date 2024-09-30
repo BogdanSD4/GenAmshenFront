@@ -19,6 +19,7 @@ export interface UserData {
   comments: string
   groups: UserType[]
   password: string
+  id?: number
 }
 
 export interface UserInfo {

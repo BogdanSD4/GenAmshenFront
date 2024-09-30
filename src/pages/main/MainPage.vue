@@ -9,13 +9,16 @@ import MainFooter from '@/components/MainFooter.vue'
 
 import MainHeader from '@/components/MainHeader.vue'
 import MainLandingHeader from '@/components/MainLandingHeader.vue'
+import { sendFeedback } from '@/api/person'
+import type { Feedback } from '@/api/types/request'
+import { modalStore } from '@/stores/modalViews'
 
 document.title = 'ГенАмшен'
 
 const route = useRoute()
-const name = ref<string>()
-const email = ref<string>()
-const message = ref<string>()
+const name = ref<string>('')
+const email = ref<string>('')
+const message = ref<string>('')
 
 watch(
   () => route.params.id,
@@ -24,8 +27,23 @@ watch(
   }
 )
 
-function handleFeedbackFormSubmit() {
-  //TODO: send feedback
+async function handleFeedbackFormSubmit() {
+  const email_check = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+  const modal = modalStore()
+
+  if (!email_check.test(email.value)) {
+    modal.activate('Неверная електронная почта')
+    return false
+  }
+
+  const data: Feedback = {
+    name: name.value,
+    email: email.value,
+    comments: message.value
+  }
+  await sendFeedback(data).then(() => {
+    modal.activate('Отзыв успешно отправлен')
+  })
 }
 
 function goToObject(id: string) {

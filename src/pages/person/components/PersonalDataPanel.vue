@@ -7,6 +7,7 @@ import { createPerson } from '@/api/person'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { useCookies } from 'vue3-cookies'
 import { isEmpty } from '@/utils/objectManager'
+import { userStore } from '@/stores/userRole'
 
 const menuIndex = defineModel<number>('menu', { default: -1 })
 
@@ -31,16 +32,21 @@ function changeMenu(index: number) {
       return
     }
   }
+
   menuIndex.value = index
+  const user = userStore()
+  user.personFirstName = ''
+  user.personLastName = ''
 }
 
 function catchErrors(error: any) {
   const data = error.response.data
   const modal = modalStore()
+  if (!data) return
 
-  if ('non_field_errors' in data) {
+  if (data.includes('non_field_errors')) {
     modal.activate(ModalTypes.ELEVEN)
-  } else if ('error' in data) {
+  } else if (data.includes('error')) {
     if ('You already have unapproved data' in data.error) {
       modal.activate(ModalTypes.THIRTEEN)
     }
@@ -73,6 +79,8 @@ function dataSave(data: any, menuChapter: number) {
 }
 
 async function onSave(type: PersonType, panel: number, data: any, callback: () => void) {
+  data['capture'] = panel
+
   await createPerson(type, data)
     .then(() => {
       menuIndex.value = panel
@@ -118,23 +126,23 @@ async function onSave(type: PersonType, panel: number, data: any, callback: () =
     </div>
     <div id="infoDisplay">
       <PersonalBirthDisplay
-        v-show="menuIndex == 1"
         :index="1"
+        :current-index="menuIndex"
         @change-panel="changeMenu"
         @on-save="onSave"
         @on-save-to-cookies="dataSave"
       />
       <PersonalMarriageDisplay
-        v-show="menuIndex == 2"
         :index="2"
+        :current-index="menuIndex"
         to-cookies
         @change-panel="changeMenu"
         @on-save="onSave"
         @on-save-to-cookies="dataSave"
       />
       <PersonalDeathDisplay
-        v-show="menuIndex == 3"
         :index="3"
+        :current-index="menuIndex"
         to-cookies
         @change-panel="changeMenu"
         @on-save="onSave"

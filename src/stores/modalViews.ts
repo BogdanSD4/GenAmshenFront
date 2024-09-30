@@ -31,7 +31,7 @@ interface ModalChoseEvent {
 type ModalEvent = ModalChoseEvent | ModalCloseEvent
 
 interface State {
-  modalType: ModalTypes
+  modalType: ModalTypes | string
   event?: ModalEvent
   btnCancel?: string
   btnApprove?: string
@@ -44,7 +44,12 @@ export const modalStore = defineStore('modalViews', {
     }
   },
   actions: {
-    activate(type: ModalTypes, event?: ModalEvent, btnCancel?: string, btnApprove?: string) {
+    activate(
+      type: ModalTypes | string,
+      event?: ModalEvent,
+      btnCancel?: string,
+      btnApprove?: string
+    ) {
       this.event = event
       this.modalType = type
       this.btnCancel = btnCancel

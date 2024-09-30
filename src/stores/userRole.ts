@@ -14,6 +14,8 @@ interface State {
   first_name: string
   last_name: string
   background_photo: string
+  personFirstName: string
+  personLastName: string
 }
 
 const defaultState: State = {
@@ -24,7 +26,9 @@ const defaultState: State = {
   photo: '',
   first_name: '',
   last_name: '',
-  background_photo: ''
+  background_photo: '',
+  personFirstName: '',
+  personLastName: ''
 }
 
 export const userStore = defineStore('user', {
@@ -44,6 +48,8 @@ export const userStore = defineStore('user', {
           this.first_name = response.first_name
           this.last_name = response.last_name
           this.background_photo = response.background_photo
+          this.personFirstName = ''
+          this.personLastName = ''
         })
         .catch((error) => (result = false))
 

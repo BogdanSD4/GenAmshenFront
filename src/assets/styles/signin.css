@@ -240,6 +240,13 @@ input[type="password"]::placeholder {
     height: 32px;
     margin-right: 25px;
     transition: 0.3s ease;
+    text-align: center;
+    color: #282F44;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 
 .signinbtn {

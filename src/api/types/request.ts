@@ -14,3 +14,9 @@ export interface ApprovePerson {
   id: number
   capture: number
 }
+
+export interface Feedback {
+  name: string
+  email: string
+  comments: string
+}

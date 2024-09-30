@@ -68,7 +68,11 @@ async function onSave() {
   if (!userForm.value.background_photo) delete userForm.value.background_photo
   if (!userForm.value.birth_date) delete userForm.value.birth_date
 
-  await userUpdate(userForm.value)
+  userForm.value.id = edit.value.id
+
+  await userUpdate(userForm.value).then(() => {
+    modal.activate(ModalTypes.EIGHT)
+  })
 }
 
 onMounted(async () => {

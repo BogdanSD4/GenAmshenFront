@@ -6,7 +6,7 @@ import {
   MarriagePersonModel,
   WitnessModel
 } from '@/pages/person/components/data/models/marriageModel'
-import { type ModelRef, onMounted, onUnmounted, ref } from 'vue'
+import { type ModelRef, onMounted, onUnmounted, ref, watch } from 'vue'
 import MarriageAdress from '@/pages/person/components/data/content/PersonAdress.vue'
 import { userStore } from '@/stores/userRole'
 import { createPerson } from '@/api/person'
@@ -25,11 +25,16 @@ const props = defineProps({
     type: Number,
     required: true
   },
+  currentIndex: {
+    type: Number,
+    required: true
+  },
   toCookies: Boolean
 })
 const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
 const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalMarriage>
 
+const user = userStore()
 const man = ref<MarriagePersonModel>(new MarriagePersonModel())
 const bride = ref<BrideModel>(new BrideModel())
 const weddingDate = ref<MarriageDateModel>(new MarriageDateModel())
@@ -63,7 +68,6 @@ function moreToggle(value: keyof MoreTypes) {
 
 function setData() {
   if (!personData.value) return
-  console.log(props.toCookies, personData.value)
   man.value.info.first_name = personData.value.first_name
   man.value.info.last_name = personData.value.last_name
   man.value.info.patronymic = personData.value.patronymic
@@ -234,6 +238,28 @@ function onKeyDown(event: KeyboardEvent) {
   checkSymbolArmenian(event)
 }
 
+watch(
+  () => props.currentIndex,
+  (n) => {
+    if (n == props.index) {
+      user.personFirstName = man.value.info.first_name
+      user.personLastName = man.value.info.last_name
+    }
+  }
+)
+watch(
+  () => man.value.info.first_name,
+  (n) => {
+    user.personFirstName = n
+  }
+)
+watch(
+  () => man.value.info.last_name,
+  (n) => {
+    user.personLastName = n
+  }
+)
+
 onMounted(() => {
   if (props.toCookies) {
     window.addEventListener('beforeunload', () => {
@@ -257,7 +283,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="marriage">
+  <div v-show="index == currentIndex" class="marriage">
     <MarriagePerson :include-age="true" lable="Жених" :person-item="man.info" />
 
     <div class="labels-left">

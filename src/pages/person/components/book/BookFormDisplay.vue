@@ -6,6 +6,10 @@ import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
 import { createBook } from '@/api/person'
 import { checkSymbolArmenian } from '@/utils/textCheck'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
+import { changeBackPhoto } from '@/api/users'
+import { userStore } from '@/stores/userRole'
+import router from '@/router'
+import { UserRole } from '@/types/userRole'
 
 const props = defineProps({
   bookName: {
@@ -27,24 +31,20 @@ const book = ref<BookModel>(new BookModel())
 const comment = ref<string>('')
 let moreActive = ref<boolean>(false)
 
-function photoValid(file: File) {
-  const size = 2
-  const maxSize = size * 1024 * 1024
-  return file.size <= maxSize
-}
-
 function imageHandler(event: Event) {
   const target = event.target as HTMLInputElement
   if (!target.files) return
   const file = target.files[0]
 
   if (file) {
-    if (!photoValid(file)) {
-      const modal = modalStore()
-      modal.activate(ModalTypes.SEVEN)
-      return
-    }
     book.value.book_image = file
+
+    const reader = new FileReader()
+    reader.onload = (loadEvent) => {
+      const user = userStore()
+      user.background_photo = loadEvent.target?.result as string
+    }
+    reader.readAsDataURL(file)
   }
 }
 
@@ -100,8 +100,18 @@ async function onSave() {
     baptism_note_priest: book.value.priest_baptism_adress.place_note,
     comments: comment.value
   }
+  const image = book.value.book_image
+  if (image) data['book_photo'] = image
 
-  await createBook(props.index, data)
+  await createBook(props.index, data).then(async () => {
+    if (image) await changeBackPhoto(image)
+
+    const user = userStore()
+    if (user.role == UserRole.USER) {
+      localStorage.setItem('page', '5')
+      await router.push(`/${user.role}`)
+    }
+  })
 }
 </script>
 

@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import BirthObject from '@/pages/person/components/data/content/BirthObject.vue'
 import { BaseBirthModel } from '@/pages/person/components/data/models/birthModel'
-import { type ModelRef, onMounted, onUnmounted, ref } from 'vue'
-import { createPerson } from '@/api/person'
-import {
-  type ClerkPersonInfo,
-  type HistoricalDeath,
-  PersonType
-} from '@/pages/database/types/historicalTypes'
+import { type ModelRef, onMounted, onUnmounted, ref, watch } from 'vue'
+import { type ClerkPersonInfo, PersonType } from '@/pages/database/types/historicalTypes'
 import { useCookies } from 'vue3-cookies'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { checkSymbolArmenian } from '@/utils/textCheck'
 import { isEmpty } from '@/utils/objectManager'
+import { userStore } from '@/stores/userRole'
 
+const user = userStore()
 const person = ref<BaseBirthModel>(new BaseBirthModel('Имя', '', false, true))
 const father = ref<BaseBirthModel>(new BaseBirthModel('Отец', 'father', true))
 const mother = ref<BaseBirthModel>(new BaseBirthModel('Мать', 'mother', true))
@@ -21,6 +18,10 @@ const comment = ref<string>('')
 
 const props = defineProps({
   index: {
+    type: Number,
+    required: true
+  },
+  currentIndex: {
     type: Number,
     required: true
   },
@@ -124,31 +125,29 @@ function setData() {
 }
 function getData() {
   return {
-    main: {
-      first_name: person.value.info.first_name,
-      last_name: person.value.info.last_name,
-      patronymic: person.value.info.patronymic,
-      gender: person.value.gender,
-      name_note: person.value.info.name_note,
-      birth_date: person.value.date.date,
-      birth_date_note: person.value.date.date_note,
-      birth_country: person.value.birth_adress.country,
-      birth_region: person.value.birth_adress.region,
-      birth_city: person.value.birth_adress.city,
-      birth_street: person.value.birth_adress.street,
-      birth_building: person.value.birth_adress.building,
-      birth_postal: person.value.birth_adress.postal,
-      birth_place_note: person.value.birth_adress.place_note,
-      baptism_date: person.value.baptism_date.date,
-      baptism_date_note: person.value.baptism_date.date_note,
-      baptism_country: person.value.baptism_adress.country,
-      baptism_region: person.value.baptism_adress.region,
-      baptism_city: person.value.baptism_adress.city,
-      baptism_street: person.value.baptism_adress.street,
-      baptism_building: person.value.baptism_adress.building,
-      baptism_postal: person.value.baptism_adress.postal,
-      baptism_note_priest: person.value.baptism_adress.place_note
-    },
+    first_name: person.value.info.first_name,
+    last_name: person.value.info.last_name,
+    patronymic: person.value.info.patronymic,
+    gender: person.value.gender,
+    name_note: person.value.info.name_note,
+    birth_date: person.value.date.date,
+    birth_date_note: person.value.date.date_note,
+    birth_country: person.value.birth_adress.country,
+    birth_region: person.value.birth_adress.region,
+    birth_city: person.value.birth_adress.city,
+    birth_street: person.value.birth_adress.street,
+    birth_building: person.value.birth_adress.building,
+    birth_postal: person.value.birth_adress.postal,
+    birth_place_note: person.value.birth_adress.place_note,
+    baptism_date: person.value.baptism_date.date,
+    baptism_date_note: person.value.baptism_date.date_note,
+    baptism_country: person.value.baptism_adress.country,
+    baptism_region: person.value.baptism_adress.region,
+    baptism_city: person.value.baptism_adress.city,
+    baptism_street: person.value.baptism_adress.street,
+    baptism_building: person.value.baptism_adress.building,
+    baptism_postal: person.value.baptism_adress.postal,
+    baptism_note_priest: person.value.baptism_adress.place_note,
     father: {
       first_name: father.value.info.first_name,
       last_name: father.value.info.last_name,
@@ -234,7 +233,7 @@ function clear() {
 }
 
 function validation(data: any): boolean {
-  if (data.main.first_name == '' || data.main.last_name == '') {
+  if (data.first_name == '' || data.last_name == '') {
     const modal = modalStore()
     modal.activate(ModalTypes.SIX)
     return false
@@ -260,6 +259,28 @@ function onKeyDown(event: KeyboardEvent) {
   checkSymbolArmenian(event)
 }
 
+watch(
+  () => props.currentIndex,
+  (n) => {
+    if (n == props.index) {
+      user.personFirstName = person.value.info.first_name
+      user.personLastName = person.value.info.last_name
+    }
+  }
+)
+watch(
+  () => person.value.info.first_name,
+  (n) => {
+    user.personFirstName = n
+  }
+)
+watch(
+  () => person.value.info.last_name,
+  (n) => {
+    user.personLastName = n
+  }
+)
+
 onMounted(() => {
   if (props.toCookies) {
     window.addEventListener('beforeunload', () => {
@@ -284,7 +305,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="birth-date">
+  <div v-show="index == currentIndex" class="birth-date">
     <BirthObject :birth-model="person" />
 
     <hr />

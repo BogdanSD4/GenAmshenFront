@@ -13,6 +13,8 @@ defineProps({
 const user = userStore()
 
 const name = computed(() => {
+  if (user.personFirstName || user.personLastName)
+    return `${user.personFirstName} ${user.personLastName}`
   return `${user.first_name} ${user.last_name}`
 })
 const imgFrontSource = computed(() => {
@@ -20,7 +22,6 @@ const imgFrontSource = computed(() => {
   return user.photo ?? getImg('user-login')
 })
 const imgBackSource = computed(() => {
-  console.log()
   return user.background_photo ?? ''
 })
 

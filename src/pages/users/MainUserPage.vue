@@ -23,14 +23,6 @@ function changePanel(index: number) {
 }
 
 onMounted(async () => {
-  console.log(user)
-  if (user.role == UserRole.GUEST) {
-    const valid = await user.valid()
-    if (!valid) {
-      await router.push('/login')
-    }
-  }
-
   switch (user.role) {
     case UserRole.ADMIN:
       document.title = 'ГенАмшен - Администратор'
@@ -39,7 +31,7 @@ onMounted(async () => {
       break
     case UserRole.MODER:
       document.title = 'ГенАмшен - Модератор'
-      panelIndex.value = 1
+      panelIndex.value = 0
       userRoleName.value = 'Модератор'
       break
     case UserRole.USER:
@@ -47,6 +39,12 @@ onMounted(async () => {
       panelIndex.value = 2
       userRoleName.value = 'Оператор ввода данных'
       break
+  }
+
+  const page = localStorage.getItem('page')
+  if (page) {
+    panelIndex.value = Number(page)
+    localStorage.removeItem('page')
   }
 })
 </script>

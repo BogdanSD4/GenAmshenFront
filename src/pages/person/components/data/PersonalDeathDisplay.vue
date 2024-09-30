@@ -15,14 +15,20 @@ import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { checkSymbolArmenian } from '@/utils/textCheck'
 import { useCookies } from 'vue3-cookies'
 import { isEmpty } from '@/utils/objectManager'
+import { userStore } from '@/stores/userRole'
 
 const props = defineProps({
   index: {
     type: Number,
     required: true
   },
+  currentIndex: {
+    type: Number,
+    required: true
+  },
   toCookies: Boolean
 })
+const user = userStore()
 const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
 const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalDeath>
 
@@ -107,6 +113,36 @@ function onKeyDown(event: KeyboardEvent) {
   checkSymbolArmenian(event)
 }
 
+watch(
+  () => props.currentIndex,
+  (n) => {
+    if (n == props.index) {
+      console.log('me')
+    }
+  }
+)
+watch(
+  () => props.currentIndex,
+  (n) => {
+    if (n == props.index) {
+      user.personFirstName = person.value.first_name
+      user.personLastName = person.value.last_name
+    }
+  }
+)
+watch(
+  () => person.value.first_name,
+  (n) => {
+    user.personFirstName = n
+  }
+)
+watch(
+  () => person.value.last_name,
+  (n) => {
+    user.personLastName = n
+  }
+)
+
 onMounted(() => {
   if (props.toCookies) {
     window.addEventListener('beforeunload', () => {
@@ -131,7 +167,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="death">
+  <div v-show="index == currentIndex" class="death">
     <PersonInfo :include-age="true" :person-item="person" />
 
     <div class="field-name">

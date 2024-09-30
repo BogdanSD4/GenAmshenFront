@@ -23,14 +23,12 @@ const personData = ref<ClerkPersonInfo>()
 const isEdit = ref<boolean>(false)
 
 function changePanel(index: number) {
-  console.log('changePanel')
   emit('changePanel', index)
 }
 function changeMenu(index: number) {
   displayIndex.value = index
 }
 function changeMode() {
-  console.log('changeMode')
   isEdit.value = !isEdit.value
 }
 
@@ -60,9 +58,7 @@ async function onSave(type: PersonType, panel: number, data?: any) {
 onMounted(async () => {
   await getPersonData()
     .then((response) => {
-      console.log(response)
       personData.value = response as ClerkPersonInfo
-      console.log(personData.value)
       displayIndex.value = personData.value?.capture
     })
     .catch(() => {
@@ -73,10 +69,18 @@ onMounted(async () => {
 
 <template>
   <div v-if="isEdit">
-    <!--        <PersonalBirthDisplay v-if="displayIndex == 1" />-->
+    <PersonalBirthDisplay
+      v-if="displayIndex == 1"
+      :index="1"
+      :current-index="displayIndex"
+      :person-data="personData"
+      @change-panel="changeMenu"
+      @on-save="onSave"
+    />
     <PersonalMarriageDisplay
       v-if="displayIndex == 2"
       :index="2"
+      :current-index="displayIndex"
       :person-data="personData"
       @change-panel="changeMenu"
       @on-save="onSave"
@@ -84,6 +88,7 @@ onMounted(async () => {
     <PersonalDeathDisplay
       v-if="displayIndex == 3"
       :index="3"
+      :current-index="displayIndex"
       :person-data="personData"
       @on-save="onSave"
       @change-panel="changeMenu"
@@ -110,7 +115,7 @@ onMounted(async () => {
     />
   </div>
 
-  <p v-if="displayIndex == 4" class="no-profiles">Немає профілів на підтвердження</p>
+  <p v-if="displayIndex == 4" class="no-profiles">Нет профилей на подтверждение</p>
 </template>
 
 <style scoped>

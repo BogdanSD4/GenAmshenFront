@@ -3,12 +3,13 @@ import { userStore } from '@/stores/userRole'
 import { UserRole } from '@/types/userRole'
 import { computed } from 'vue'
 import { toFormData } from '@/api/serializers/formData'
-import type { ApprovePerson } from '@/api/types/request'
+import type { ApprovePerson, Feedback } from '@/api/types/request'
 import {
   type HistoricalPersonTls,
   type PersonInfo,
   PersonType
 } from '@/pages/database/types/historicalTypes'
+import type { PendingPerson } from '@/api/types/response'
 
 const user = userStore()
 const userType = computed(() => {
@@ -24,7 +25,6 @@ const userType = computed(() => {
 })
 
 export async function getPersonData(params?: ApprovePerson): Promise<PersonInfo> {
-  console.log(params)
   return await api.get(`api/check/${userType.value}/`, { params }).then((response) => response.data)
 }
 
@@ -59,4 +59,14 @@ export async function updatePerson(type: PersonType, params: any): Promise<any> 
     default:
       throw new Error('Invalid user')
   }
+}
+
+export async function checkUserData(id: number): Promise<PendingPerson[]> {
+  return await api
+    .get('api/check/user_data/', { params: { user_id: id } })
+    .then((response) => response.data)
+}
+
+export async function sendFeedback(params: Feedback): Promise<PendingPerson[]> {
+  return await api.post('api/send/feedback/', toFormData(params)).then((response) => response.data)
 }
