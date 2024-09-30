@@ -44,6 +44,6 @@ export enum UserMenuType {
 }
 
 export interface EditUser {
-  user: UserType
+  userType: UserType
   id: number
 }

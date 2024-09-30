@@ -35,7 +35,7 @@ const userForm = ref<UserData>({
 })
 
 const textAdd = computed(() => {
-  switch (edit.value.user) {
+  switch (edit.value.userType) {
     case UserType.CLERK:
       return 'Редактор оператора'
     case UserType.MODER:
@@ -63,7 +63,7 @@ async function onSave() {
     return
   }
 
-  userForm.value.groups = [edit.value.user]
+  userForm.value.groups = [edit.value.userType]
 
   if (!userForm.value.background_photo) delete userForm.value.background_photo
   if (!userForm.value.birth_date) delete userForm.value.birth_date
