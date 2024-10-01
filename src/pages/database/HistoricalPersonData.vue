@@ -57,7 +57,7 @@ onMounted(async () => {
     v-if="marriageBlock && displayIndex == 2"
     :type="PersonType.WEDDING"
     label="Браки"
-    :historical-block="marriageBlock as HistoricalBlock"
+    :historical-block="marriageBlock as HistoricalBlock<ModerPersonInfo>"
   />
   <HistoricalPersonContent
     v-if="deathBlock && displayIndex == 3"

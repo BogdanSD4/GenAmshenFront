@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { HistoricalForm } from '@/pages/database/models/historicalModels'
+import type { ModerPersonInfo } from '@/pages/database/types/historicalTypes'
 
-const form = defineModel<HistoricalForm>('historicalForm', { required: true })
+const form = defineModel<HistoricalForm<ModerPersonInfo>>('historicalForm', { required: true })
 </script>
 
 <template>
