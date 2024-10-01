@@ -9,16 +9,15 @@ import {
   type HistoricalFormItem,
   type HistoricalInput,
   HistoricalLang,
-  type HistoricalPersonTls,
-  type HistoricalPersonBase
+  type ModerPersonInfo
 } from '@/pages/database/types/historicalTypes'
 import { acceptStore } from '@/stores/acceptPerson'
 
 export class HistoricalEditForm {
   items: HistoricalEditItem[]
-  private block: HistoricalBlock
+  private block: HistoricalBlock<ModerPersonInfo>
 
-  constructor(items: HistoricalFormItem[], index: number, block: HistoricalBlock) {
+  constructor(items: HistoricalFormItem[], index: number, block: HistoricalBlock<ModerPersonInfo>) {
     this.block = block
     this.items = items.map((item, i) => {
       return {
@@ -35,29 +34,35 @@ export class HistoricalEditForm {
 export class HistoricalEditColumn {
   items: HistoricalEditForm[]
 
-  constructor(forms: HistoricalFormDTO[], block: HistoricalBlock) {
+  constructor(forms: HistoricalFormDTO[], block: HistoricalBlock<ModerPersonInfo>) {
     this.items = forms.map((form, index) => {
       return new HistoricalEditForm(form.items, index, block)
     })
   }
 }
 
-export class HistoricalForm {
+export class HistoricalForm<T extends ModerPersonInfo> {
   label: string
   items: HistoricalInput[]
 
   constructor(form: HistoricalFormDTO, ln: HistoricalLang, isStatic: boolean) {
     this.label = getWord(form.label, ln)
     const lnIndex = getLangIndex(ln)
+
     this.items = form.items.map((input) => {
       const accept = acceptStore()
-      const text = accept.data ? accept.data[input.code as keyof HistoricalPersonBase] : ''
+      const text = accept.data ? ((accept.data as T)[input.code as keyof T] as string[]) : ''
+      let result: string | null = null
+
+      if (accept.data && typeof text[lnIndex] == 'string') {
+        result = text[lnIndex].replace(/^:|:$/g, '')
+      }
 
       const key = getWord(input.value as keyof Translation, ln)
       return {
         field: form.field,
         code: input.code,
-        text: isStatic ? '' : text ? text[lnIndex] : '',
+        text: isStatic ? '' : (result ?? ''),
         placeholder: key,
         disabled: true
       }
@@ -82,8 +87,8 @@ export class HistoricalForm {
   }
 }
 
-export class HistiricalColumn {
-  items: HistoricalForm[]
+export class HistiricalColumn<T extends ModerPersonInfo> {
+  items: HistoricalForm<T>[]
   mainClass: string
 
   constructor(
@@ -92,7 +97,7 @@ export class HistiricalColumn {
     className: string,
     isStatic: boolean = false
   ) {
-    this.items = forms.map((form) => new HistoricalForm(form, ln, isStatic))
+    this.items = forms.map((form) => new HistoricalForm<T>(form, ln, isStatic))
     this.mainClass = className
   }
 
@@ -107,17 +112,17 @@ export class HistiricalColumn {
   }
 }
 
-export class HistoricalBlock {
-  title: HistiricalColumn
-  arContent: HistiricalColumn
-  ruContent: HistiricalColumn
-  enContent: HistiricalColumn
+export class HistoricalBlock<T extends ModerPersonInfo> {
+  title: HistiricalColumn<T>
+  arContent: HistiricalColumn<T>
+  ruContent: HistiricalColumn<T>
+  enContent: HistiricalColumn<T>
   editContent: HistoricalEditColumn
   constructor(forms: HistoricalFormDTO[]) {
     this.title = new HistiricalColumn(forms, HistoricalLang.RUSSIAN, 'column-title', true)
-    this.arContent = new HistiricalColumn(forms, HistoricalLang.ARMENIAN, 'column-ar')
-    this.ruContent = new HistiricalColumn(forms, HistoricalLang.RUSSIAN, 'column-ru')
-    this.enContent = new HistiricalColumn(forms, HistoricalLang.ENGLISH, 'column-en')
+    this.arContent = new HistiricalColumn<T>(forms, HistoricalLang.ARMENIAN, 'column-ar')
+    this.ruContent = new HistiricalColumn<T>(forms, HistoricalLang.RUSSIAN, 'column-ru')
+    this.enContent = new HistiricalColumn<T>(forms, HistoricalLang.ENGLISH, 'column-en')
     this.editContent = new HistoricalEditColumn(forms, this)
   }
 

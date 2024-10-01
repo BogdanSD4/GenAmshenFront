@@ -37,7 +37,7 @@ async function handleSignInSubmit() {
 
     cookies.set('gen_token', response.token)
 
-    user.setRole(response.role)
+    user.setRole(response.groups)
     user.username = response.username
     user.email = response.email
 

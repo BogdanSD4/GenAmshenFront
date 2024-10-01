@@ -22,6 +22,8 @@ const form = defineModel<HistoricalForm>('historicalForm', { required: true })
 </template>
 
 <style scoped>
+@import '@/assets/styles/historical_person.css';
+
 .historical-form {
   display: flex;
   flex-direction: column;

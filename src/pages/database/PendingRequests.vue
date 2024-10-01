@@ -15,7 +15,7 @@ const isPersonList = ref<boolean>(false)
 async function checkUser(response: PendingResponse) {
   const accept = acceptStore()
   //accept.approve.id = response.user.id
-  accept.approve.capture = response.user.capture
+  accept.approve.capture = 3
 
   persons.value = await checkUserData(response.user.id)
   isPersonList.value = true

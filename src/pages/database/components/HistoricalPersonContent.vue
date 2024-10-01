@@ -5,7 +5,7 @@ import HistoricalColumnContent from '@/pages/database/elements/HistoricalColumnC
 import HistoricalColumnEdit from '@/pages/database/elements/HistoricalColumnEdit.vue'
 import type { PropType } from 'vue'
 import { updatePersonByModer } from '@/api/person'
-import type { PersonType } from '@/pages/database/types/historicalTypes'
+import type { ModerPersonInfo, PersonType } from '@/pages/database/types/historicalTypes'
 import { acceptStore } from '@/stores/acceptPerson'
 
 defineProps({
@@ -14,12 +14,12 @@ defineProps({
     required: true
   },
   type: {
-    type: Object as PropType<PersonType>,
+    type: String,
     required: true
   }
 })
 
-const block = defineModel<HistoricalBlock>('historicalBlock', { required: true })
+const block = defineModel<HistoricalBlock<ModerPersonInfo>>('historicalBlock', { required: true })
 
 async function approve() {
   const accept = acceptStore()
@@ -44,4 +44,6 @@ async function approve() {
   </HstoricalBaseContent>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/historical_person.css';
+</style>

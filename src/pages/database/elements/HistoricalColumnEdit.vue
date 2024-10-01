@@ -14,6 +14,8 @@ const column = defineModel<HistoricalEditColumn>('editColumn', { required: true 
 </template>
 
 <style scoped>
+@import '@/assets/styles/historical_person.css';
+
 .historical-edit-form {
   display: flex;
   gap: 10px;

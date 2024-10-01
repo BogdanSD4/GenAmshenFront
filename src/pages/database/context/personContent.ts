@@ -338,8 +338,8 @@ export const HPersonDeathContent: HistoricalFormDTO[] = [
   {
     label: 'name',
     items: [
-      { value: 'firstName', code: 'firstName' },
-      { value: 'lastName', code: 'lastName' },
+      { value: 'firstName', code: 'first_name' },
+      { value: 'lastName', code: 'last_name' },
       { value: 'patronymic', code: 'patronymic' },
       { value: 'age', code: 'age' },
       { value: 'note', code: 'name_note' }
@@ -366,8 +366,6 @@ export const HPersonDeathContent: HistoricalFormDTO[] = [
       { value: 'region', code: 'burial_region' },
       { value: 'city', code: 'burial_city' },
       { value: 'street', code: 'burial_street' },
-      { value: 'building', code: 'burial_building' },
-      { value: 'postalCode', code: 'burial_postal_code' },
       { value: 'note', code: 'burial_place_note' }
     ]
   },

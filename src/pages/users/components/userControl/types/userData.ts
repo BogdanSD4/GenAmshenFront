@@ -35,14 +35,6 @@ export enum UserType {
   CLERK = 3
 }
 
-export enum UserMenuType {
-  NONE = 'none',
-  clerkList = 'clist',
-  clerkAdd = 'cadd',
-  moderList = 'mlist',
-  moderAdd = 'madd'
-}
-
 export interface EditUser {
   userType: UserType
   id: number

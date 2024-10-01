@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { HistiricalColumn } from '@/pages/database/models/historicalModels'
 import HistoricalFormContent from '@/pages/database/elements/HistoricalFormContent.vue'
+import type { ModerPersonInfo } from '@/pages/database/types/historicalTypes'
 
-const column = defineModel<HistiricalColumn>('historicalColumn', { required: true })
+const column = defineModel<HistiricalColumn<ModerPersonInfo>>('historicalColumn', {
+  required: true
+})
 </script>
 
 <template>
@@ -15,4 +18,6 @@ const column = defineModel<HistiricalColumn>('historicalColumn', { required: tru
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/historical_person.css';
+</style>

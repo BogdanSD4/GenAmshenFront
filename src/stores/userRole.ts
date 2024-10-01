@@ -40,7 +40,7 @@ export const userStore = defineStore('user', {
       let result = true
       await personInfo()
         .then((response) => {
-          this.setRole(response.role)
+          this.setRole(response.groups)
           this.id = response.id
           this.username = response.username
           this.email = response.email

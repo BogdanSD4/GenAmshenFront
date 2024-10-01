@@ -63,6 +63,28 @@ export interface HistoricalPersonTls extends HistoricalPersonBase {
   comments: string[]
 }
 
+export interface HistoricalDeathTls {
+  age: string[]
+  book: string[]
+  burial_city: string[]
+  burial_country: string[]
+  burial_date: string[]
+  burial_date_note: string[]
+  burial_place_note: string[]
+  burial_region: string[]
+  burial_street: string[]
+  comments: string[]
+  death_date: string[]
+  death_date_note: string[]
+  first_name: string[]
+  id: string[]
+  last_name: string[]
+  name_note: string[]
+  patronymic: string[]
+  review: string[]
+  user: string[]
+}
+
 export interface HistoricalDeath {
   age: string
   book: number
@@ -152,7 +174,7 @@ export interface HistoricalMarriage {
 }
 
 export type ClerkPersonInfo = HistoricalDeath | HistoricalMarriage
-export type ModerPersonInfo = HistoricalPersonTls
+export type ModerPersonInfo = HistoricalPersonTls | HistoricalDeathTls
 
 export type PersonInfo = ClerkPersonInfo | ModerPersonInfo
 

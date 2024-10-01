@@ -19,8 +19,10 @@ function edit(item: HistoricalEditItem) {
 </template>
 
 <style scoped>
+@import '@/assets/styles/historical_person.css';
+
 .historical-edit-item {
-  height: 50px;
+  height: 54px;
   display: flex;
   justify-content: center;
   align-items: center;

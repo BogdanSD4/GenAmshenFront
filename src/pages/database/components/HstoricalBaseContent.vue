@@ -49,4 +49,6 @@ const expandImage = ref<boolean>(false)
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import '@/assets/styles/historical_person.css';
+</style>
