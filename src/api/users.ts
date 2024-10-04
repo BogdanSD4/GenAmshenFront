@@ -13,7 +13,7 @@ export async function userAdd(params: UserData): Promise<UserInfo[]> {
 }
 
 export async function userDelete(id: number): Promise<any> {
-  return await api.delete('users/delete/', { params: { id: id } }).then((response) => response)
+  return await api.delete('users/delete/', { params: { user_id: id } }).then((response) => response)
 }
 
 export async function userEdit(id: number): Promise<UserData> {

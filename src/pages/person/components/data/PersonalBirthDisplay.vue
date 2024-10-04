@@ -7,9 +7,9 @@ import { useCookies } from 'vue3-cookies'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { checkSymbolArmenian } from '@/utils/textCheck'
 import { isEmpty } from '@/utils/objectManager'
-import { userStore } from '@/stores/userRole'
+import { personStore } from '@/stores/personalStore'
 
-const user = userStore()
+const personInfo = personStore()
 const person = ref<BaseBirthModel>(new BaseBirthModel('Имя', '', false, true))
 const father = ref<BaseBirthModel>(new BaseBirthModel('Отец', 'father', true))
 const mother = ref<BaseBirthModel>(new BaseBirthModel('Мать', 'mother', true))
@@ -32,29 +32,29 @@ const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<any>
 
 function setData() {
   if (!personData.value) return
-  person.value.info.first_name = personData.value.main.first_name
-  person.value.info.last_name = personData.value.main.last_name
-  person.value.info.patronymic = personData.value.main.patronymic
-  person.value.gender = personData.value.main.gender
-  person.value.info.name_note = personData.value.main.name_note
-  person.value.date.date = personData.value.main.birth_date
-  person.value.date.date_note = personData.value.main.birth_date_note
-  person.value.birth_adress.country = personData.value.main.birth_country
-  person.value.birth_adress.region = personData.value.main.birth_region
-  person.value.birth_adress.city = personData.value.main.birth_city
-  person.value.birth_adress.street = personData.value.main.birth_street
-  person.value.birth_adress.building = personData.value.main.birth_building
-  person.value.birth_adress.postal = personData.value.main.birth_postal
-  person.value.birth_adress.place_note = personData.value.main.birth_place_note
-  person.value.baptism_date.date = personData.value.main.baptism_date
-  person.value.baptism_date.date_note = personData.value.main.baptism_date_note
-  person.value.baptism_adress.country = personData.value.main.baptism_country
-  person.value.baptism_adress.region = personData.value.main.baptism_region
-  person.value.baptism_adress.city = personData.value.main.baptism_city
-  person.value.baptism_adress.street = personData.value.main.baptism_street
-  person.value.baptism_adress.building = personData.value.main.baptism_building
-  person.value.baptism_adress.postal = personData.value.main.baptism_postal
-  person.value.baptism_adress.place_note = personData.value.main.baptism_note_priest
+  person.value.info.first_name = personData.value.first_name
+  person.value.info.last_name = personData.value.last_name
+  person.value.info.patronymic = personData.value.patronymic
+  person.value.gender = personData.value.gender
+  person.value.info.name_note = personData.value.name_note
+  person.value.date.date = personData.value.birth_date
+  person.value.date.date_note = personData.value.birth_date_note
+  person.value.birth_adress.country = personData.value.birth_country
+  person.value.birth_adress.region = personData.value.birth_region
+  person.value.birth_adress.city = personData.value.birth_city
+  person.value.birth_adress.street = personData.value.birth_street
+  person.value.birth_adress.building = personData.value.birth_building
+  person.value.birth_adress.postal = personData.value.birth_postal
+  person.value.birth_adress.place_note = personData.value.birth_place_note
+  person.value.baptism_date.date = personData.value.baptism_date
+  person.value.baptism_date.date_note = personData.value.baptism_date_note
+  person.value.baptism_adress.country = personData.value.baptism_country
+  person.value.baptism_adress.region = personData.value.baptism_region
+  person.value.baptism_adress.city = personData.value.baptism_city
+  person.value.baptism_adress.street = personData.value.baptism_street
+  person.value.baptism_adress.building = personData.value.baptism_building
+  person.value.baptism_adress.postal = personData.value.baptism_postal
+  person.value.baptism_adress.place_note = personData.value.baptism_note_priest
   father.value.info.first_name = personData.value.father.first_name
   father.value.info.last_name = personData.value.father.last_name
   father.value.info.patronymic = personData.value.father.patronymic
@@ -130,7 +130,7 @@ function getData() {
     patronymic: person.value.info.patronymic,
     gender: person.value.gender,
     name_note: person.value.info.name_note,
-    birth_date: person.value.date.date,
+    birth_date: person.value.date.date == '' ? null : person.value.date.date,
     birth_date_note: person.value.date.date_note,
     birth_country: person.value.birth_adress.country,
     birth_region: person.value.birth_adress.region,
@@ -139,7 +139,7 @@ function getData() {
     birth_building: person.value.birth_adress.building,
     birth_postal: person.value.birth_adress.postal,
     birth_place_note: person.value.birth_adress.place_note,
-    baptism_date: person.value.baptism_date.date,
+    baptism_date: person.value.baptism_date.date == '' ? null : person.value.baptism_date.date,
     baptism_date_note: person.value.baptism_date.date_note,
     baptism_country: person.value.baptism_adress.country,
     baptism_region: person.value.baptism_adress.region,
@@ -153,7 +153,7 @@ function getData() {
       last_name: father.value.info.last_name,
       patronymic: father.value.info.patronymic,
       name_note: father.value.info.name_note,
-      birth_date: father.value.date.date,
+      birth_date: father.value.date.date == '' ? null : father.value.date.date,
       birth_date_note: father.value.date.date_note,
       birth_country: father.value.birth_adress.country,
       birth_region: father.value.birth_adress.region,
@@ -162,7 +162,7 @@ function getData() {
       birth_building: father.value.birth_adress.building,
       birth_postal: father.value.birth_adress.postal,
       birth_place_note: father.value.birth_adress.place_note,
-      baptism_date: father.value.baptism_date.date,
+      baptism_date: father.value.baptism_date.date == '' ? null : father.value.baptism_date.date,
       baptism_date_note: father.value.baptism_date.date_note,
       baptism_country: father.value.baptism_adress.country,
       baptism_region: father.value.baptism_adress.region,
@@ -177,7 +177,7 @@ function getData() {
       last_name: mother.value.info.last_name,
       patronymic: mother.value.info.patronymic,
       name_note: mother.value.info.name_note,
-      birth_date: mother.value.date.date,
+      birth_date: mother.value.date.date == '' ? null : mother.value.date.date,
       birth_date_note: mother.value.date.date_note,
       birth_country: mother.value.birth_adress.country,
       birth_region: mother.value.birth_adress.region,
@@ -186,7 +186,7 @@ function getData() {
       birth_building: mother.value.birth_adress.building,
       birth_postal: mother.value.birth_adress.postal,
       birth_place_note: mother.value.birth_adress.place_note,
-      baptism_date: mother.value.baptism_date.date,
+      baptism_date: mother.value.baptism_date.date == '' ? null : mother.value.baptism_date.date,
       baptism_date_note: mother.value.baptism_date.date_note,
       baptism_country: mother.value.baptism_adress.country,
       baptism_region: mother.value.baptism_adress.region,
@@ -201,7 +201,7 @@ function getData() {
       last_name: godFather.value.info.last_name,
       patronymic: godFather.value.info.patronymic,
       name_note: godFather.value.info.name_note,
-      birth_date: godFather.value.date.date,
+      birth_date: godFather.value.date.date == '' ? null : godFather.value.date.date,
       birth_date_note: godFather.value.date.date_note,
       birth_country: godFather.value.birth_adress.country,
       birth_region: godFather.value.birth_adress.region,
@@ -210,7 +210,8 @@ function getData() {
       birth_building: godFather.value.birth_adress.building,
       birth_postal: godFather.value.birth_adress.postal,
       birth_place_note: godFather.value.birth_adress.place_note,
-      baptism_date: godFather.value.baptism_date.date,
+      baptism_date:
+        godFather.value.baptism_date.date == '' ? null : godFather.value.baptism_date.date,
       baptism_date_note: godFather.value.baptism_date.date_note,
       baptism_country: godFather.value.baptism_adress.country,
       baptism_region: godFather.value.baptism_adress.region,
@@ -244,7 +245,6 @@ function validation(data: any): boolean {
 
 async function onSave() {
   const data = getData()
-
   if (!validation(data)) return
 
   emit('onSave', PersonType.BIRTH, props.index, data, clear)
@@ -263,21 +263,21 @@ watch(
   () => props.currentIndex,
   (n) => {
     if (n == props.index) {
-      user.personFirstName = person.value.info.first_name
-      user.personLastName = person.value.info.last_name
+      personInfo.firstName = person.value.info.first_name
+      personInfo.lastName = person.value.info.last_name
     }
   }
 )
 watch(
   () => person.value.info.first_name,
   (n) => {
-    user.personFirstName = n
+    personInfo.firstName = n
   }
 )
 watch(
   () => person.value.info.last_name,
   (n) => {
-    user.personLastName = n
+    personInfo.lastName = n
   }
 )
 

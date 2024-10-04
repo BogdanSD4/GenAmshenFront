@@ -35,7 +35,6 @@ function previousPage() {
     currentPage.value--
 
     const page = document.querySelector(`#page${currentPage.value}`) as HTMLElement
-    console.log(10 - currentPage.value)
     setTimeout(() => {
       page.style.zIndex = `${10 - currentPage.value}`
     }, 100)

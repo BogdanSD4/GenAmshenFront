@@ -19,6 +19,7 @@ import { checkSymbolArmenian } from '@/utils/textCheck'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { useCookies } from 'vue3-cookies'
 import { isEmpty } from '@/utils/objectManager'
+import { personStore } from '@/stores/personalStore'
 
 const props = defineProps({
   index: {
@@ -34,7 +35,7 @@ const props = defineProps({
 const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
 const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalMarriage>
 
-const user = userStore()
+const personInfo = personStore()
 const man = ref<MarriagePersonModel>(new MarriagePersonModel())
 const bride = ref<BrideModel>(new BrideModel())
 const weddingDate = ref<MarriageDateModel>(new MarriageDateModel())
@@ -138,9 +139,9 @@ function getData() {
     first_name: man.value.info.first_name,
     last_name: man.value.info.last_name,
     patronymic: man.value.info.patronymic,
-    age: man.value.info.age,
+    age: man.value.info.age == '' ? null : man.value.info.age,
     name_note: man.value.info.name_note,
-    wedding_number: man.value.wedding_number,
+    wedding_number: man.value.wedding_number == '' ? null : man.value.wedding_number,
     country: man.value.adress.country,
     region: man.value.adress.region,
     city: man.value.adress.city,
@@ -152,9 +153,9 @@ function getData() {
     bride_first_name: bride.value.info.first_name,
     bride_last_name: bride.value.info.last_name,
     bride_patronymic: bride.value.info.patronymic,
-    bride_age: bride.value.info.age,
+    bride_age: bride.value.info.age == '' ? null : bride.value.info.age,
     bride_name_note: bride.value.info.name_note,
-    bride_wedding_number: bride.value.wedding_number,
+    bride_wedding_number: bride.value.wedding_number == '' ? null : bride.value.wedding_number,
     bride_country: bride.value.adress.country,
     bride_region: bride.value.adress.region,
     bride_city: bride.value.adress.city,
@@ -167,7 +168,7 @@ function getData() {
     bride_father_patronymic: bride.value.father.patronymic,
     bride_father_name_note: bride.value.father.name_note,
 
-    wedding_date: weddingDate.value.date,
+    wedding_date: weddingDate.value.date == '' ? null : weddingDate.value.date,
     wedding_date_note: weddingDate.value.date_note,
     wedding_country: weddingDate.value.adress.country,
     wedding_region: weddingDate.value.adress.region,
@@ -242,21 +243,21 @@ watch(
   () => props.currentIndex,
   (n) => {
     if (n == props.index) {
-      user.personFirstName = man.value.info.first_name
-      user.personLastName = man.value.info.last_name
+      personInfo.firstName = man.value.info.first_name
+      personInfo.lastName = man.value.info.last_name
     }
   }
 )
 watch(
   () => man.value.info.first_name,
   (n) => {
-    user.personFirstName = n
+    personInfo.firstName = n
   }
 )
 watch(
   () => man.value.info.last_name,
   (n) => {
-    user.personLastName = n
+    personInfo.lastName = n
   }
 )
 

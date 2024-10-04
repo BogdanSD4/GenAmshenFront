@@ -79,7 +79,7 @@ function dataSave(data: any, menuChapter: number) {
 }
 
 async function onSave(type: PersonType, panel: number, data: any, callback: () => void) {
-  data['capture'] = panel
+  //data['capture'] = panel
 
   await createPerson(type, data)
     .then(() => {
@@ -109,16 +109,14 @@ async function onSave(type: PersonType, panel: number, data: any, callback: () =
       </button>
       <button
         id="btn-marriage"
-        :class="{ 'active-btn': menuIndex == 2 }"
-        class="yellow-btn"
+        :class="[{ 'active-btn': menuIndex == 2 }, 'yellow-btn']"
         @click="changeMenu(2)"
       >
         Браки
       </button>
       <button
         id="btn-death"
-        :class="{ 'active-btn': menuIndex == 3 }"
-        class="yellow-btn"
+        :class="[{ 'active-btn': menuIndex == 3 }, 'yellow-btn']"
         @click="changeMenu(3)"
       >
         Смерти
@@ -128,6 +126,7 @@ async function onSave(type: PersonType, panel: number, data: any, callback: () =
       <PersonalBirthDisplay
         :index="1"
         :current-index="menuIndex"
+        to-cookies
         @change-panel="changeMenu"
         @on-save="onSave"
         @on-save-to-cookies="dataSave"

@@ -27,6 +27,7 @@ const userForm = ref<UserData>({
   building: '',
   postal: '',
   address_note: '',
+  background_photo: '',
   photo: '',
   username: '',
   email: '',
@@ -65,7 +66,9 @@ async function onSave() {
 
   userForm.value.groups = [edit.value.userType]
 
-  if (!userForm.value.background_photo) delete userForm.value.background_photo
+  if (!userForm.value.background_photo || typeof userForm.value.background_photo == 'string')
+    delete userForm.value.background_photo
+  if (!userForm.value.photo || typeof userForm.value.photo == 'string') delete userForm.value.photo
   if (!userForm.value.birth_date) delete userForm.value.birth_date
 
   userForm.value.id = edit.value.id

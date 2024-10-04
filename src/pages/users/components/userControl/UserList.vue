@@ -45,7 +45,7 @@ async function deleteClerk(id: number) {
   })
 }
 function editClerk(id: number) {
-  emit('editUser', 4, { user: props.userType, id: id })
+  emit('editUser', 4, { userType: props.userType, id: id })
 }
 
 async function updateListData() {

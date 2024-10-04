@@ -7,6 +7,7 @@ import BooksPanel from '@/pages/person/components/BooksPanel.vue'
 import { getImg } from '@/utils/imageManager'
 import UserInfo from '@/components/UserInfo.vue'
 import { useCookies } from 'vue3-cookies'
+import PersonInfo from '@/components/PersonInfo.vue'
 
 const menuIndex = ref<number>(0)
 const saveIndex = ref<number>(-1)
@@ -21,7 +22,7 @@ function changeMenu(index: number) {
 
   <main>
     <section>
-      <UserInfo />
+      <PersonInfo />
 
       <div class="bottom">
         <button id="personal-btn" :class="{ 'active-btn': menuIndex == 0 }" @click="changeMenu(0)">

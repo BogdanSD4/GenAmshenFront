@@ -4,27 +4,18 @@ import { userStore } from '@/stores/userRole'
 import { computed } from 'vue'
 import { changeBackPhoto, changePhoto } from '@/api/users'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
+import { personStore } from '@/stores/personalStore'
 
-defineProps({
-  roleName: {
-    type: String
-  }
-})
-const user = userStore()
+const person = personStore()
 
-const name = computed(() => {
-  if (user.personFirstName || user.personLastName)
-    return `${user.personFirstName} ${user.personLastName}`
-  return `${user.first_name} ${user.last_name}`
-})
 const imgFrontSource = computed(() => {
-  return user.photo ?? getImg('user-login')
+  return person.photo == '' ? getImg('user-login') : person.photo
 })
 const imgBackSource = computed(() => {
-  return user.background_photo ?? ''
+  return person.background_photo == '' ? '' : person.background_photo
 })
 
-async function changeImage(event: Event, type: 'front' | 'back') {
+async function changeImage(event: Event) {
   const target = event.target as HTMLInputElement
   if (!target.files) return
   const file = target.files[0]
@@ -36,15 +27,11 @@ async function changeImage(event: Event, type: 'front' | 'back') {
       return
     }
 
-    if (type == 'front') {
-      await changePhoto(file).then(async () => {
-        await user.valid()
-      })
-    } else if (type == 'back') {
-      await changeBackPhoto(file).then(async () => {
-        await user.valid()
-      })
+    const reader = new FileReader()
+    reader.onload = (loadEvent) => {
+      person.photo = loadEvent.target?.result as string
     }
+    reader.readAsDataURL(file)
   }
 }
 
@@ -61,20 +48,9 @@ function photoValid(file: File) {
       <div class="image-back image-back-container">
         <img v-if="imgBackSource" class="back-photo" :src="imgBackSource" alt="Image" />
       </div>
-      <label class="change-photo-back" for="file-back">
-        <img class="change-photo-icon" :src="getImg('change-photo')" alt="Image" />
-      </label>
-      <input
-        type="file"
-        id="file-back"
-        accept="image/*"
-        hidden
-        @change="changeImage($event, 'back')"
-      />
     </div>
 
     <div class="personal-photo">
-      <input type="file" id="file" accept="image/*" hidden />
       <div class="img-area">
         <img class="photo-upload" :src="imgFrontSource" alt="" />
       </div>
@@ -86,15 +62,12 @@ function photoValid(file: File) {
             id="file-front"
             accept="image/*"
             hidden
-            @change="changeImage($event, 'front')"
+            @change="changeImage($event)"
           />
         </label>
       </div>
       <div class="name-personal">
-        <h2 id="output1">{{ name }}</h2>
-      </div>
-      <div>
-        <h2 class="role">{{ roleName }}</h2>
+        <h2 id="output1">{{ person.firstName }} {{ person.lastName }}</h2>
       </div>
     </div>
   </div>

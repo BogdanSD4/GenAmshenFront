@@ -40,7 +40,7 @@ async function handleSignInSubmit() {
     user.setRole(response.groups)
     user.username = response.username
     user.email = response.email
-
+    console.log(user.role)
     await router.push(`/${user.role}`)
   })
 }

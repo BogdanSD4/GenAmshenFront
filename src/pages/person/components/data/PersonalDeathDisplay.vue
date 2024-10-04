@@ -16,6 +16,7 @@ import { checkSymbolArmenian } from '@/utils/textCheck'
 import { useCookies } from 'vue3-cookies'
 import { isEmpty } from '@/utils/objectManager'
 import { userStore } from '@/stores/userRole'
+import { personStore } from '@/stores/personalStore'
 
 const props = defineProps({
   index: {
@@ -28,7 +29,8 @@ const props = defineProps({
   },
   toCookies: Boolean
 })
-const user = userStore()
+
+const personInfo = personStore()
 const emit = defineEmits(['changePanel', 'onSave', 'onSaveToCookies'])
 const personData = defineModel<ClerkPersonInfo>('personData') as ModelRef<HistoricalDeath>
 
@@ -63,11 +65,11 @@ function getData() {
     first_name: person.value.first_name,
     last_name: person.value.last_name,
     patronymic: person.value.patronymic,
-    age: person.value.age,
+    age: person.value.age == '' ? null : person.value.age,
     name_note: person.value.name_note,
-    death_date: death.value.date,
+    death_date: death.value.date == '' ? null : death.value.date,
     death_date_note: death.value.date_note,
-    burial_date: burial.value.date,
+    burial_date: burial.value.date == '' ? null : burial.value.date,
     burial_date_note: burial.value.date_note,
     burial_country: adress.value.country,
     burial_region: adress.value.region,
@@ -125,21 +127,21 @@ watch(
   () => props.currentIndex,
   (n) => {
     if (n == props.index) {
-      user.personFirstName = person.value.first_name
-      user.personLastName = person.value.last_name
+      personInfo.firstName = person.value.first_name
+      personInfo.lastName = person.value.last_name
     }
   }
 )
 watch(
   () => person.value.first_name,
   (n) => {
-    user.personFirstName = n
+    personInfo.firstName = n
   }
 )
 watch(
   () => person.value.last_name,
   (n) => {
-    user.personLastName = n
+    personInfo.lastName = n
   }
 )
 
