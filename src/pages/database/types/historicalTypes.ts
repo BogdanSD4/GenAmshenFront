@@ -61,6 +61,7 @@ export interface HistoricalPersonTls extends HistoricalPersonBase {
   mother: HistoricalPersonBase
   godfather: HistoricalPersonBase
   comments: string[]
+  capture: number[]
 }
 
 export interface HistoricalDeathTls {
@@ -83,6 +84,7 @@ export interface HistoricalDeathTls {
   patronymic: string[]
   review: string[]
   user: string[]
+  capture: number[]
 }
 
 export interface HistoricalDeath {
@@ -170,7 +172,7 @@ export interface HistoricalMarriage {
   witness_2_postal: string
   witness_2_place_note: string
   comments: string
-  capture: 2
+  capture: number
 }
 
 export type ClerkPersonInfo = HistoricalDeath | HistoricalMarriage

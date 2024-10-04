@@ -29,8 +29,11 @@ const displayIndex = ref<number>(-1)
 onMounted(async () => {
   const accept = acceptStore()
 
-  const data = await getPersonData({ id: accept.approve.id, capture: accept.approve.capture })
-  displayIndex.value = accept.approve.capture
+  const data = (await getPersonData({
+    id: accept.approve.id,
+    capture: accept.approve.capture
+  })) as ModerPersonInfo
+  displayIndex.value = data.capture[0]
   accept.data = data as ModerPersonInfo
 
   if (displayIndex.value == 1)

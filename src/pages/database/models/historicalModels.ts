@@ -51,10 +51,11 @@ export class HistoricalForm<T extends ModerPersonInfo> {
 
     this.items = form.items.map((input) => {
       const accept = acceptStore()
+      console.log(accept.data)
       const text = accept.data ? ((accept.data as T)[input.code as keyof T] as string[]) : ''
       let result: string | null = null
 
-      if (accept.data && typeof text[lnIndex] == 'string') {
+      if (accept.data && text && typeof text[lnIndex] == 'string') {
         result = text[lnIndex].replace(/^:|:$/g, '')
       }
 

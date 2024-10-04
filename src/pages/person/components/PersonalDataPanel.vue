@@ -44,11 +44,11 @@ function catchErrors(error: any) {
   const modal = modalStore()
   if (!data) return
 
-  if (data.includes('non_field_errors')) {
-    modal.activate(ModalTypes.ELEVEN)
-  } else if (data.includes('error')) {
+  if ('error' in data) {
     if ('You already have unapproved data' in data.error) {
       modal.activate(ModalTypes.THIRTEEN)
+    } else if ('non_field_errors' in data.error) {
+      modal.activate(ModalTypes.ELEVEN)
     }
   }
 }

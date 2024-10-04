@@ -38,7 +38,7 @@ export async function createBook(book_capture: number, data: any): Promise<any> 
 
 export async function updatePersonByModer(params: ApprovePerson, data: any) {
   return await api
-    .post('api/check/by_moder/', toFormData(data), { params })
+    .put('api/check/by_moder/', toFormData(data), { params })
     .then((response) => response.data)
 }
 

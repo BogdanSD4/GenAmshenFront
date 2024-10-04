@@ -10,6 +10,7 @@ import { changeBackPhoto } from '@/api/users'
 import { userStore } from '@/stores/userRole'
 import router from '@/router'
 import { UserRole } from '@/types/userRole'
+import { personStore } from '@/stores/personalStore'
 
 const props = defineProps({
   bookName: {
@@ -41,8 +42,8 @@ function imageHandler(event: Event) {
 
     const reader = new FileReader()
     reader.onload = (loadEvent) => {
-      const user = userStore()
-      user.background_photo = loadEvent.target?.result as string
+      const person = personStore()
+      person.background_photo = loadEvent.target?.result as string
     }
     reader.readAsDataURL(file)
   }

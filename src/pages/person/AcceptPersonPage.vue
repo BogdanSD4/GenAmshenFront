@@ -58,8 +58,10 @@ async function onSave(type: PersonType, panel: number, data?: any) {
 onMounted(async () => {
   await getPersonData()
     .then((response) => {
-      personData.value = response as ClerkPersonInfo
-      displayIndex.value = personData.value?.capture
+      personData.value = response as any
+      //displayIndex.value = 2
+      if (personData.value && 'capture' in personData.value)
+        displayIndex.value = personData.value.capture
     })
     .catch(() => {
       displayIndex.value = 4

@@ -27,28 +27,28 @@ function onSave() {
     @change-panel="changePanel"
   />
   <AcceptProfile
-    v-if="personData.bride_first_name || personData.bride_last_name"
+    v-if="personData.bride_first_name != '' || personData.bride_last_name != ''"
     role="Невеста"
     :first-name="personData.bride_first_name"
     :last-name="personData.bride_last_name"
     @change-panel="changePanel"
   />
   <AcceptProfile
-    v-if="personData.bride_father_first_name || personData.bride_father_last_name"
+    v-if="personData.bride_father_first_name != '' || personData.bride_father_last_name != ''"
     role="Отец невесты"
     :first-name="personData.bride_father_first_name"
     :last-name="personData.bride_father_last_name"
     @change-panel="changePanel"
   />
   <AcceptProfile
-    v-if="personData.witness_1_first_name || personData.witness_1_last_name"
+    v-if="personData.witness_1_first_name != '' || personData.witness_1_last_name != ''"
     role="Свидетель"
     :first-name="personData.witness_1_first_name"
     :last-name="personData.witness_1_last_name"
     @change-panel="changePanel"
   />
   <AcceptProfile
-    v-if="personData.witness_2_first_name || personData.witness_2_last_name"
+    v-if="personData.witness_2_first_name != '' || personData.witness_2_last_name != ''"
     role="Свидетель 2"
     :first-name="personData.witness_2_first_name"
     :last-name="personData.witness_2_last_name"
