@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import type { UserInfo } from '@/pages/users/components/userControl/types/userData'
 import { pendingList } from '@/api/users'
 import { getImg } from '@/utils/imageManager'
-import type { PendingPerson, PendingResponse, PendingUser } from '@/api/types/response'
+import type { PendingPerson, PendingResponse } from '@/api/types/response'
 import { acceptStore } from '@/stores/acceptPerson'
 import { checkUserData } from '@/api/person'
 
@@ -17,7 +17,7 @@ async function checkUser(response: PendingResponse) {
   //accept.approve.id = response.user.id
   accept.approve.capture = 3
 
-  persons.value = await checkUserData(response.user.id)
+  persons.value = await checkUserData(response.id)
   isPersonList.value = true
 }
 
@@ -32,8 +32,7 @@ onMounted(async () => {
   const response = await pendingList()
   const userId: number[] = []
   response.forEach((m) => {
-    if (!m.user) return
-    const id = m.user.id
+    const id = m.id
     if (!userId.includes(id)) {
       userId.push(id)
       members.value.push(m)
@@ -45,8 +44,8 @@ onMounted(async () => {
 <template>
   <div v-if="!isPersonList" class="team">
     <div v-for="(member, index) in members" :key="index" class="team-member">
-      <img class="user-size" :src="member.user.photo ?? getImg('user-login')" alt="" />
-      <h4 class="member-name">{{ member.user.first_name }} {{ member.user.last_name }}</h4>
+      <img class="user-size" :src="member.photo ?? getImg('user-login')" alt="" />
+      <h4 class="member-name">{{ member.first_name }} {{ member.last_name }}</h4>
       <button class="btn-edit-clerk" @click="checkUser(member)">Проверить</button>
     </div>
   </div>

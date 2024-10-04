@@ -12,14 +12,9 @@ export interface LoginResponse {
 
 export interface PendingResponse {
   id: number
-  user: PendingUser
-}
-export interface PendingUser {
-  id: number
   first_name: string
   last_name: string
   photo: string
-  capture: number
 }
 
 export interface PendingPerson {
