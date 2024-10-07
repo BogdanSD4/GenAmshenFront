@@ -48,6 +48,10 @@ function catchErrors(error: any) {
 async function onSave(type: PersonType, panel: number, data?: any) {
   if (!data) data = personData.value
 
+  if ('father' in data) delete data['father']
+  if ('mother' in data) delete data['mother']
+  if ('godfather' in data) delete data['godfather']
+
   await updatePerson(type, data)
     .then(() => {
       changePanel(panel)
