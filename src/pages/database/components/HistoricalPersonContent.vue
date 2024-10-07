@@ -3,7 +3,6 @@ import HstoricalBaseContent from '@/pages/database/components/HstoricalBaseConte
 import type { HistoricalBlock } from '@/pages/database/models/historicalModels'
 import HistoricalColumnContent from '@/pages/database/elements/HistoricalColumnContent.vue'
 import HistoricalColumnEdit from '@/pages/database/elements/HistoricalColumnEdit.vue'
-import type { PropType } from 'vue'
 import { updatePersonByModer } from '@/api/person'
 import type { ModerPersonInfo, PersonType } from '@/pages/database/types/historicalTypes'
 import { acceptStore } from '@/stores/acceptPerson'
@@ -24,6 +23,10 @@ const block = defineModel<HistoricalBlock<ModerPersonInfo>>('historicalBlock', {
 async function approve() {
   const accept = acceptStore()
   const data = block.value.getData()
+
+  delete data['father']
+  delete data['mother']
+  delete data['godfather']
 
   await updatePersonByModer(accept.approve, data)
 }

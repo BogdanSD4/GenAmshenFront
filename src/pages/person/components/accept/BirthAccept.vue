@@ -30,21 +30,28 @@ function onSave() {
     @change-panel="changePanel"
   />
   <AcceptProfile
-    v-if="personData.father.first_name != '' || personData.father.last_name != ''"
+    v-if="
+      personData.father && (personData.father.first_name != '' || personData.father.last_name != '')
+    "
     role="Отец"
     :first-name="personData.father.first_name"
     :last-name="personData.father.last_name"
     @change-panel="changePanel"
   />
   <AcceptProfile
-    v-if="personData.mother.first_name != '' || personData.mother.last_name != ''"
+    v-if="
+      personData.mother && (personData.mother.first_name != '' || personData.mother.last_name != '')
+    "
     role="Мать"
     :first-name="personData.mother.first_name"
     :last-name="personData.mother.last_name"
     @change-panel="changePanel"
   />
   <AcceptProfile
-    v-if="personData.godfather.first_name != '' || personData.godfather.last_name != ''"
+    v-if="
+      personData.godfather &&
+      (personData.godfather.first_name != '' || personData.godfather.last_name != '')
+    "
     role="Крестный"
     :first-name="personData.godfather.first_name"
     :last-name="personData.godfather.last_name"

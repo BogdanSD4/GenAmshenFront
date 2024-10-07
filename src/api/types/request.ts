@@ -12,7 +12,7 @@ export interface UserListResponce {
 
 export interface ApprovePerson {
   id: number
-  capture: number
+  capture?: number
 }
 
 export interface Feedback {

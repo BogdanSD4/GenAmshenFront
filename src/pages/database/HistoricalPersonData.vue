@@ -30,10 +30,11 @@ onMounted(async () => {
   const accept = acceptStore()
 
   const data = (await getPersonData({
-    id: accept.approve.id,
-    capture: accept.approve.capture
+    id: accept.approve.id
   })) as ModerPersonInfo
+
   displayIndex.value = data.capture[0]
+  accept.approve.capture = displayIndex.value
   accept.data = data as ModerPersonInfo
 
   if (displayIndex.value == 1)
