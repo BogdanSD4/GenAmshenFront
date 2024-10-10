@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { BookModel } from '@/pages/person/components/book/models/bookModel'
 import PersonAdress from '@/pages/person/components/data/content/PersonAdress.vue'
 import PersonInfo from '@/pages/person/components/data/content/PersonInfo.vue'
@@ -28,7 +28,7 @@ const props = defineProps({
   }
 })
 
-const book = ref<BookModel>(new BookModel())
+const book = defineModel<BookModel>('book', { required: true })
 const comment = ref<string>('')
 let moreActive = ref<boolean>(false)
 
@@ -62,6 +62,10 @@ function onKeyDown(event: KeyboardEvent) {
 }
 
 async function onSave() {
+  const image = book.value.book_image
+
+  console.log(image)
+
   const data: any = {
     archive: book.value.archive,
     fund: book.value.fund,
@@ -101,18 +105,18 @@ async function onSave() {
     baptism_note_priest: book.value.priest_baptism_adress.place_note,
     comments: comment.value
   }
-  const image = book.value.book_image
+
   if (image) data['book_photo'] = image
-
   await createBook(props.index, data).then(async () => {
-    if (image) await changeBackPhoto(image)
-
     const user = userStore()
     if (user.role == UserRole.USER) {
       localStorage.setItem('page', '5')
       await router.push(`/${user.role}`)
     }
   })
+
+  const person = personStore()
+  person.background_photo = ''
 }
 </script>
 

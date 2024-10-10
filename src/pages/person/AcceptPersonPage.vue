@@ -54,7 +54,7 @@ async function onSave(type: PersonType, panel: number, data?: any) {
 
   await updatePerson(type, data)
     .then(() => {
-      changePanel(panel)
+      changePanel(2)
     })
     .catch((error) => catchErrors(error))
 }

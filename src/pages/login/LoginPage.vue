@@ -8,6 +8,7 @@ import router from '@/router'
 import { userStore } from '@/stores/userRole'
 import { useCookies } from 'vue3-cookies'
 import type { Login } from '@/api/types/request'
+import { modalStore } from '@/stores/modalViews'
 
 document.title = 'ГенАмшен - Войти'
 
@@ -32,17 +33,26 @@ async function handleSignInSubmit() {
   cookies.remove('gen_token')
   cookies.remove('person_save')
 
-  await login(creditals).then(async (response) => {
-    const user = userStore()
+  await login(creditals)
+    .then(async (response) => {
+      const user = userStore()
 
-    cookies.set('gen_token', response.token)
+      cookies.set('gen_token', response.token)
 
-    user.setRole(response.groups)
-    user.username = response.username
-    user.email = response.email
-    console.log(user.role)
-    await router.push(`/${user.role}`)
-  })
+      user.setRole(response.groups)
+      user.username = response.username
+      user.email = response.email
+
+      await router.push(`/${user.role}`)
+    })
+    .catch((error) => {
+      const modal = modalStore()
+      const err = error.response.data
+      console.log(err)
+      if ('non_field_errors' in err) {
+        modal.activate('Неверные данные для входа')
+      }
+    })
 }
 
 function validation() {

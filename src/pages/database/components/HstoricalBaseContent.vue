@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, ref } from 'vue'
+import { computed, type PropType, ref } from 'vue'
 import type { PersonType } from '@/pages/database/types/historicalTypes'
 import { userUpdate } from '@/api/users'
 
@@ -11,6 +11,10 @@ defineProps({
 })
 const expandContent = ref<boolean>(false)
 const expandImage = ref<boolean>(false)
+
+const expandBtnText = computed(() => {
+  return expandContent.value ? 'Свернуть' : 'Развернуть'
+})
 </script>
 
 <template>
@@ -27,7 +31,9 @@ const expandImage = ref<boolean>(false)
           Открыть книгу
         </button>
         <p class="part-name">{{ label }}</p>
-        <button id="showBtnBirth" @click="expandContent = !expandContent">Развернуть</button>
+        <button id="showBtnBirth" @click="expandContent = !expandContent">
+          {{ expandBtnText }}
+        </button>
       </div>
 
       <br />

@@ -36,14 +36,20 @@ async function changeImage(event: Event, type: 'front' | 'back') {
       return
     }
 
+    const reader = new FileReader()
+
     if (type == 'front') {
-      await changePhoto(file).then(async () => {
-        await user.valid()
-      })
+      reader.onload = (loadEvent) => {
+        user.photo = loadEvent.target?.result as string
+      }
+      reader.readAsDataURL(file)
+      await changePhoto(file)
     } else if (type == 'back') {
-      await changeBackPhoto(file).then(async () => {
-        await user.valid()
-      })
+      reader.onload = (loadEvent) => {
+        user.background_photo = loadEvent.target?.result as string
+      }
+      reader.readAsDataURL(file)
+      await changeBackPhoto(file)
     }
   }
 }

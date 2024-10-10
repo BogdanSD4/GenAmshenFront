@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import BookFormDisplay from '@/pages/person/components/book/BookFormDisplay.vue'
+import { BookModel } from '@/pages/person/components/book/models/bookModel'
 
 const menuIndex = defineModel<number>('menu', { default: -1 })
+const books = ['book-birth', 'book-marriage', 'book-death']
+const bookItem = ref<BookModel>(new BookModel())
 
 function changeMenu(index: number) {
   menuIndex.value = index
@@ -39,9 +42,14 @@ function changeMenu(index: number) {
     </div>
 
     <div id="infoDisplayBooks">
-      <BookFormDisplay book-name="book-birth" :index="1" :current-index="menuIndex" />
-      <BookFormDisplay book-name="book-marriage" :index="2" :current-index="menuIndex" />
-      <BookFormDisplay book-name="book-death" :index="3" :current-index="menuIndex" />
+      <BookFormDisplay
+        v-for="(book, index) in books"
+        :key="index"
+        :book="bookItem"
+        :book-name="book"
+        :index="index + 1"
+        :current-index="menuIndex"
+      />
     </div>
   </div>
 </template>
