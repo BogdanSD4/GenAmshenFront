@@ -102,7 +102,7 @@ onMounted(async () => {
       />
       <AdminProfileControlPanel v-show="panelIndex == 2" class="active-btn" />
       <div id="historical-person-data">
-        <HistoricalPersonData v-if="panelIndex == 3" />
+        <HistoricalPersonData v-if="panelIndex == 3" @change-panel="changePanel" />
         <PendingRequests v-if="panelIndex == 4" @change-panel="changePanel" />
         <AcceptPersonPage v-if="panelIndex == 5" @change-panel="changePanel" />
       </div>

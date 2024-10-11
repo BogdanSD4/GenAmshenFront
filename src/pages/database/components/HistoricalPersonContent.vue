@@ -6,6 +6,7 @@ import HistoricalColumnEdit from '@/pages/database/elements/HistoricalColumnEdit
 import { updatePersonByModer } from '@/api/person'
 import type { ModerPersonInfo, PersonType } from '@/pages/database/types/historicalTypes'
 import { acceptStore } from '@/stores/acceptPerson'
+import { onMounted } from 'vue'
 
 defineProps({
   label: {
@@ -15,10 +16,20 @@ defineProps({
   type: {
     type: String,
     required: true
+  },
+  bookPhoto: {
+    type: String
   }
 })
 
+const emit = defineEmits(['changePanel'])
+
 const block = defineModel<HistoricalBlock<ModerPersonInfo>>('historicalBlock', { required: true })
+let userIndex = -1
+
+function changePanel(index: number) {
+  emit('changePanel', index)
+}
 
 async function approve() {
   const accept = acceptStore()
@@ -28,12 +39,23 @@ async function approve() {
   delete data['mother']
   delete data['godfather']
 
-  await updatePersonByModer(accept.approve, data)
+  await updatePersonByModer(accept.approve, data).then(() => {
+    localStorage.setItem('pendingId', userIndex.toString())
+    changePanel(4)
+  })
 }
+
+onMounted(() => {
+  const index = localStorage.getItem('historicalId')
+  if (index) {
+    userIndex = Number(index)
+    localStorage.removeItem('historicalId')
+  }
+})
 </script>
 
 <template>
-  <HstoricalBaseContent :label="label" :type="type">
+  <HstoricalBaseContent :label="label" :type="type" :book-photo="bookPhoto">
     <div class="columns-grid">
       <HistoricalColumnContent :historical-column="block.title" />
       <HistoricalColumnContent :historical-column="block.arContent" />

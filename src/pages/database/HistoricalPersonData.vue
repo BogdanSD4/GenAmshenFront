@@ -6,7 +6,7 @@ import {
   HPersonDeathContent,
   HPersonMarriageContent
 } from '@/pages/database/context/personContent'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { acceptStore } from '@/stores/acceptPerson'
 import { getPersonData, updatePersonByModer } from '@/api/person'
 import {
@@ -16,6 +16,9 @@ import {
   PersonType
 } from '@/pages/database/types/historicalTypes'
 
+const emit = defineEmits(['changePanel'])
+
+const accept = acceptStore()
 const birthBlock = ref<HistoricalBlock<HistoricalPersonTls>>()
 const marriageBlock = ref<HistoricalBlock<ModerPersonInfo>>()
 const deathBlock = ref<HistoricalBlock<HistoricalDeathTls>>()
@@ -26,9 +29,15 @@ const deathBlock = ref<HistoricalBlock<HistoricalDeathTls>>()
 
 const displayIndex = ref<number>(-1)
 
-onMounted(async () => {
-  const accept = acceptStore()
+const bookPhoto = computed(() => {
+  return accept.data?.book_photo[0]
+})
 
+function changePanel(index: number) {
+  emit('changePanel', index)
+}
+
+onMounted(async () => {
   const data = (await getPersonData({
     id: accept.approve.id
   })) as ModerPersonInfo
@@ -54,20 +63,26 @@ onMounted(async () => {
   <HistoricalPersonContent
     v-if="birthBlock && displayIndex == 1"
     :type="PersonType.BIRTH"
+    :book-photo="bookPhoto"
     label="Рождения"
     :historical-block="birthBlock as HistoricalBlock<HistoricalPersonTls>"
+    @change-panel="changePanel"
   />
   <HistoricalPersonContent
     v-if="marriageBlock && displayIndex == 2"
     :type="PersonType.WEDDING"
+    :book-photo="bookPhoto"
     label="Браки"
     :historical-block="marriageBlock as HistoricalBlock<ModerPersonInfo>"
+    @change-panel="changePanel"
   />
   <HistoricalPersonContent
     v-if="deathBlock && displayIndex == 3"
     :type="PersonType.DEATH"
+    :book-photo="bookPhoto"
     label="Смерти"
     :historical-block="deathBlock as HistoricalBlock<HistoricalDeathTls>"
+    @change-panel="changePanel"
   />
 
   <!--Books birth data-->

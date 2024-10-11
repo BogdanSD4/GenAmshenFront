@@ -12,12 +12,10 @@ const members = ref<PendingResponse[]>([])
 const persons = ref<PendingPerson[]>([])
 const isPersonList = ref<boolean>(false)
 
-async function checkUser(response: PendingResponse) {
-  const accept = acceptStore()
-  //accept.approve.id = response.user.id
-  accept.approve.capture = 3
+async function checkUser(userId: number) {
+  localStorage.setItem('historicalId', userId.toString())
 
-  persons.value = await checkUserData(response.id)
+  persons.value = await checkUserData(userId)
   isPersonList.value = true
 }
 
@@ -29,6 +27,17 @@ async function checkPeson(response: PendingPerson) {
 }
 
 onMounted(async () => {
+  const index = localStorage.getItem('pendingId')
+  if (index) {
+    const num = Number(index)
+    localStorage.removeItem('pendingId')
+
+    if (num > 0) {
+      await checkUser(num)
+      return
+    }
+  }
+
   const response = await pendingList()
   const userId: number[] = []
   response.forEach((m) => {
@@ -42,13 +51,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <p v-if="members.length == 0" class="no-profiles">Нет профилей на подтверждение</p>
+  <p v-if="members.length == 0 && persons.length == 0" class="no-profiles">
+    Нет профилей на подтверждение
+  </p>
   <div v-else>
     <div v-if="!isPersonList" class="team">
       <div v-for="(member, index) in members" :key="index" class="team-member">
         <img class="user-size" :src="member.photo ?? getImg('user-login')" alt="" />
         <h4 class="member-name">{{ member.first_name }} {{ member.last_name }}</h4>
-        <button class="btn-edit-clerk" @click="checkUser(member)">Проверить</button>
+        <button class="btn-edit-clerk" @click="checkUser(member.id)">Проверить</button>
       </div>
     </div>
     <div v-else class="team">

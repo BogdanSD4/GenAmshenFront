@@ -61,6 +61,7 @@ export interface HistoricalPersonTls extends HistoricalPersonBase {
   mother: HistoricalPersonBase
   godfather: HistoricalPersonBase
   comments: string[]
+  book_photo: string
   capture: number[]
 }
 
@@ -85,6 +86,7 @@ export interface HistoricalDeathTls {
   review: string[]
   user: string[]
   capture: number[]
+  book_photo: string
 }
 
 export interface HistoricalDeath {

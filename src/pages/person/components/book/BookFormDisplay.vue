@@ -64,8 +64,6 @@ function onKeyDown(event: KeyboardEvent) {
 async function onSave() {
   const image = book.value.book_image
 
-  console.log(image)
-
   const data: any = {
     archive: book.value.archive,
     fund: book.value.fund,

@@ -105,7 +105,6 @@
     width: fit-content;
 }
 
-#birth-image,
 #wed-image,
 #death-image,
 #children-image,
@@ -129,7 +128,8 @@
 
 .image {
     width: 100%; /* Ensure the image width adjusts to the container width */
-    height: auto; /* Ensure the image height adjusts proportionally */
+    height: 100%; /* Ensure the image height adjusts proportionally */
+    object-fit: contain;
 }
 
 .columns-grid {
