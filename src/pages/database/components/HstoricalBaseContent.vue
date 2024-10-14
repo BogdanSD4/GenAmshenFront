@@ -2,6 +2,7 @@
 import { computed, type PropType, ref } from 'vue'
 import type { PersonType } from '@/pages/database/types/historicalTypes'
 import { userUpdate } from '@/api/users'
+import * as events from 'node:events'
 
 defineProps({
   label: {
@@ -25,23 +26,26 @@ const expandBtnBook = computed(() => {
 
 function onBookToggle(event: Event) {
   expandImage.value = !expandImage.value
+  if (expandImage.value) {
+    const target = document.querySelector('#person-image') as HTMLElement
+    target.style.pointerEvents = 'auto'
+  }
 }
 
 function onMouseDown(event: Event) {
   const target = document.querySelector('#person-image') as HTMLElement
   target.style.pointerEvents = 'none'
+
   setTimeout(() => {
     target.style.pointerEvents = 'auto'
-  }, 100)
+  }, 500)
 }
 function onMouseEnter(event: Event) {
-  const target = event.target as HTMLElement
-
+  const target = document.querySelector('#person-source') as HTMLElement
   target.style.opacity = '0.3'
 }
 function onMouseOut(event: Event) {
-  const target = event.target as HTMLElement
-
+  const target = document.querySelector('#person-source') as HTMLElement
   target.style.opacity = '1'
 }
 </script>
@@ -54,15 +58,11 @@ function onMouseOut(event: Event) {
         id="person-image"
         class="image-container"
         :style="{ display: expandImage ? 'block' : 'none' }"
+        @mousedown="onMouseDown"
+        @mouseenter="onMouseEnter"
+        @mouseout="onMouseOut"
       >
-        <img
-          class="image book-image"
-          :src="bookPhoto"
-          alt="Image"
-          @mousedown="onMouseDown"
-          @mouseenter="onMouseEnter"
-          @mouseout="onMouseOut"
-        />
+        <img id="person-source" class="image book-image" :src="bookPhoto" alt="Image" />
       </div>
 
       <br />
@@ -102,5 +102,6 @@ function onMouseOut(event: Event) {
 .book-image {
   opacity: 1;
   transition: opacity 0.3s;
+  pointer-events: none;
 }
 </style>
