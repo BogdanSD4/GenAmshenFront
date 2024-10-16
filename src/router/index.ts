@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { userStore } from '@/stores/userRole'
-import { UserRole } from '@/types/userRole'
 
 const catchPath = 'catchAll'
 

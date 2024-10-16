@@ -45,7 +45,11 @@ function catchErrors(error: any) {
   if (!data) return
 
   if ('error' in data) {
-    if ('You already have unapproved data' in data.error) {
+    if (data.error.includes('There are data in processing')) {
+      modal.activate(
+        'У вас есть не подтвержденная историческая личность или личности не добавлена книга'
+      )
+    } else if ('You already have unapproved data' in data.error) {
       modal.activate(ModalTypes.THIRTEEN)
     } else if ('non_field_errors' in data.error) {
       modal.activate(ModalTypes.ELEVEN)
