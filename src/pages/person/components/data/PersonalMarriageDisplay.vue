@@ -8,8 +8,6 @@ import {
 } from '@/pages/person/components/data/models/marriageModel'
 import { type ModelRef, onMounted, onUnmounted, ref, watch } from 'vue'
 import MarriageAdress from '@/pages/person/components/data/content/PersonAdress.vue'
-import { userStore } from '@/stores/userRole'
-import { createPerson } from '@/api/person'
 import {
   type ClerkPersonInfo,
   type HistoricalMarriage,
@@ -18,7 +16,6 @@ import {
 import { checkSymbolArmenian } from '@/utils/textCheck'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { useCookies } from 'vue3-cookies'
-import { isEmpty } from '@/utils/objectManager'
 import { personStore } from '@/stores/personalStore'
 
 const props = defineProps({
@@ -232,7 +229,7 @@ async function onSave() {
 
 function saveToCookie() {
   const data = getData()
-  if (!isEmpty(data)) emit('onSaveToCookies', data, props.index)
+  emit('onSaveToCookies', data, props.index)
 }
 
 function onKeyDown(event: KeyboardEvent) {

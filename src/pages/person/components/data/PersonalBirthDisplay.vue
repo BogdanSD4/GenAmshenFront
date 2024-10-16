@@ -6,8 +6,8 @@ import { type ClerkPersonInfo, PersonType } from '@/pages/database/types/histori
 import { useCookies } from 'vue3-cookies'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { checkSymbolArmenian } from '@/utils/textCheck'
-import { isEmpty } from '@/utils/objectManager'
 import { personStore } from '@/stores/personalStore'
+import { isEmpty } from '@/utils/objectManager'
 
 const personInfo = personStore()
 const person = ref<BaseBirthModel>(new BaseBirthModel('Имя', '', false, true))
@@ -252,7 +252,8 @@ async function onSave() {
 
 function saveToCookie() {
   const data = getData()
-  if (!isEmpty(data)) emit('onSaveToCookies', data, props.index)
+  console.log(data)
+  emit('onSaveToCookies', data, props.index)
 }
 
 function onKeyDown(event: KeyboardEvent) {

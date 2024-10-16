@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { computed, type PropType, ref } from 'vue'
-import type { PersonType } from '@/pages/database/types/historicalTypes'
-import { userUpdate } from '@/api/users'
-import * as events from 'node:events'
+import { computed, ref } from 'vue'
 
 defineProps({
   label: {

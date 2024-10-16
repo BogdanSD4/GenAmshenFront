@@ -14,8 +14,6 @@ import {
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { checkSymbolArmenian } from '@/utils/textCheck'
 import { useCookies } from 'vue3-cookies'
-import { isEmpty } from '@/utils/objectManager'
-import { userStore } from '@/stores/userRole'
 import { personStore } from '@/stores/personalStore'
 
 const props = defineProps({
@@ -108,7 +106,7 @@ async function onSave() {
 
 function saveToCookie() {
   const data = getData()
-  if (!isEmpty(data)) emit('onSaveToCookies', data, props.index)
+  emit('onSaveToCookies', data, props.index)
 }
 
 function onKeyDown(event: KeyboardEvent) {

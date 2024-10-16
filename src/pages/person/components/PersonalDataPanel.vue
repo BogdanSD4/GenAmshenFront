@@ -6,8 +6,8 @@ import { PersonType } from '@/pages/database/types/historicalTypes'
 import { createPerson } from '@/api/person'
 import { modalStore, ModalTypes } from '@/stores/modalViews'
 import { useCookies } from 'vue3-cookies'
-import { isEmpty } from '@/utils/objectManager'
 import { userStore } from '@/stores/userRole'
+import { isEmpty } from '@/utils/objectManager'
 
 const menuIndex = defineModel<number>('menu', { default: -1 })
 
@@ -57,28 +57,28 @@ function catchErrors(error: any) {
   }
 }
 function dataSave(data: any, menuChapter: number) {
-  const cookies = useCookies().cookies
-  const oldData = cookies.get('person_save') as any
-  const dataIsEmpty = isEmpty(data)
+  if (menuChapter != menuIndex.value) return
 
-  if (oldData) {
-    if (oldData.menuChapter == menuChapter) {
-      if (dataIsEmpty) {
-        cookies.remove('person_save')
-      } else {
-        data['menu'] = 0
-        data['menuChapter'] = menuChapter
-        cookies.set('person_save', JSON.stringify(data))
-      }
-    }
+  const cookies = useCookies().cookies
+
+  if (isEmpty(data)) {
+    cookies.remove('person_save')
     return
   }
 
-  if (dataIsEmpty || menuChapter != menuIndex.value) return
+  const oldData = cookies.get('person_save') as any
+
+  // if (oldData) {
+  //   if (oldData.menuChapter == menuChapter) {
+  //     data['menu'] = 0
+  //     data['menuChapter'] = menuChapter
+  //     cookies.set('person_save', JSON.stringify(data))
+  //   }
+  //   return
+  // }
 
   data['menu'] = 0
   data['menuChapter'] = menuChapter
-
   cookies.set('person_save', JSON.stringify(data))
 }
 
@@ -92,6 +92,7 @@ async function onSave(type: PersonType, panel: number, data: any, callback: () =
       cookies.remove('person_save')
       const modal = modalStore()
       modal.activate(ModalTypes.EIGHT)
+      changeMenu(0)
       callback()
     })
     .catch((error) => catchErrors(error))
