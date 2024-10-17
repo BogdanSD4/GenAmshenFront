@@ -31,7 +31,7 @@ onMounted(async () => {
       break
     case UserRole.MODER:
       document.title = 'ГенАмшен - Модератор'
-      panelIndex.value = 0
+      panelIndex.value = 4
       userRoleName.value = 'Модератор'
       break
     case UserRole.USER:
