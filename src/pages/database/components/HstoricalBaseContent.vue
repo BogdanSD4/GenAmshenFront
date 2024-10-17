@@ -39,11 +39,11 @@ function onMouseDown(event: Event) {
 }
 function onMouseEnter(event: Event) {
   const target = document.querySelector('#person-source') as HTMLElement
-  target.style.opacity = '0.3'
+  //target.style.opacity = '0.3'
 }
 function onMouseOut(event: Event) {
   const target = document.querySelector('#person-source') as HTMLElement
-  target.style.opacity = '1'
+  //target.style.opacity = '1'
 }
 </script>
 
