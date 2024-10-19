@@ -9,6 +9,7 @@ import {
   type HistoricalFormItem,
   type HistoricalInput,
   HistoricalLang,
+  type HistoricalPersonBase,
   type ModerPersonInfo
 } from '@/pages/database/types/historicalTypes'
 import { acceptStore } from '@/stores/acceptPerson'
@@ -51,10 +52,18 @@ export class HistoricalForm<T extends ModerPersonInfo> {
 
     this.items = form.items.map((input) => {
       const accept = acceptStore()
-      const text = accept.data ? ((accept.data as T)[input.code as keyof T] as string[]) : ''
+      const data = accept.data as T
+
+      let text = []
+      if (form.field) {
+        const obj = data[form.field as keyof T] as HistoricalPersonBase
+        text = obj[input.code as keyof HistoricalPersonBase] as string[]
+      } else {
+        text = data[input.code as keyof T] as string[]
+      }
       let result: string | null = null
 
-      if (accept.data && text && typeof text[lnIndex] == 'string') {
+      if (text && typeof text[lnIndex] == 'string') {
         result = text[lnIndex].replace(/^:|:$/g, '')
       }
 
