@@ -2,10 +2,9 @@ version: '3.8'
 
 services:
   app:
-    container_name: app
     build:
       context: .
       dockerfile: Dockerfile
       target: "prod"
     ports:
-      - '443:443'
+      - '85:85'
